@@ -32,35 +32,45 @@
     </div>
 
 
-    <script src="./lib/zepto.min.js"></script>
-    <script src="./src/core/TY.js"></script>
-    <script src="./src/core/utils.js"></script>
-    <script src="./src/core/EventDispatcher.js"></script>
-    <script src="./src/skin.js"></script>
-    <script src="./src/TYplayer.js"></script>
+<!--     <script src="lib/zepto.min.js"></script>
+    <script src="src/core/TY.js"></script>
+    <script src="src/core/utils.js"></script>
+    <script src="src/core/EventDispatcher.js"></script>
+    <script src="src/TYskin.js"></script>
+    <script src="src/TYplayer.js"></script> -->
 
 
-    <!-- <script src="./build/TYplayer.min.js"></script> -->
+    <script src="./build/TYplayer.min.js"></script>
 
     <script>
 
         var videoUrl1 = 'http://pili-live-hls.appmagics.cn/appmagics-avatar-live/785192071480585578293.m3u8';
         var videoUrl = 'http://alcdn.hls.xiaoka.tv/2016121/4c8/834/JQzoRZZaz2zJ5GbS/index.m3u8';
-        var videoUrl= './v3.mp4';
+        var videoUrl2= './v3.mp4';
 
         var videoBg='./p.jpg';
 
-        var player = new TY.TYplayer(videoUrl,".video_wrap",videoBg);
-        player.addEventListener("VidoeError",function(e)
-        {
-            console.log(e);
-        })
+        init();
 
-        player.addEventListener("VidoeEnd",function(e)
+        function init()
         {
-            console.log(e);
-            player.removeThis();
-        })
+            var player = new TY.TYplayer(videoUrl,".video_wrap",videoBg);
+            player.addEventListener("VidoeError",function(e)
+            {
+                console.log(e);
+            })
+
+            player.addEventListener("VidoeEnd",function(e)
+            {
+                console.log(e);
+                player.removeThis();
+                setTimeout(function(){
+                    init()
+                },1000)
+            }) 
+        }
+
+
 
     </script>    
 

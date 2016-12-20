@@ -2,43 +2,34 @@
  * @author waterTian
  */
 
-// namespace:
-this.TY = this.TY || {};
+TY.TYskin = function(_v, _d) {
 
-(function() {
-	"use strict";
+	_video = _v;
+	_dom = _d;
+	_dom.append(TY.templates.replay);
 
-	var pause, waiting, warning, tip_btn, process_bar;
-	var _video, _dom, _svg;
+	pause = $(".h5_player_pause");
+	waiting = $(".h5_player_waiting");
+	warning = $(".h5_player_warning");
+	tip_btn = $(".h5_player_tip_btn");
+	process_bar = $(".h5_player_process_bar");
 
-	function skin(_v, _d) {
-		_video = _v;
-		_dom = _d;
-		_dom.append(TY.templates.replay);
-
-		pause = $(".h5_player_pause");
-		waiting = $(".h5_player_waiting");
-		warning = $(".h5_player_warning");
-		tip_btn = $(".h5_player_tip_btn");
-		process_bar = $(".h5_player_process_bar");
-
-		tip_btn.height(tip_btn.height() - 80);
-		pause.css("top", (tip_btn.height() + 80) / 2);
-		waiting.css("top", (tip_btn.height() + 80) / 2);
-		warning.css("top", (tip_btn.height() + 80) / 2);
+	tip_btn.height(tip_btn.height() - 80);
+	pause.css("top", (tip_btn.height()) / 2);
+	waiting.css("top", (tip_btn.height()) / 2);
+	warning.css("top", (tip_btn.height()) / 2);
 
 
-		process_bar.css({
-			width: $(window).width() - 40,
-			left: 20
-		});
-		process_bar.find(".process_bg").css("width", process_bar.width());
-		process_bar.find(".process_line").css("width", 0);
+	process_bar.css({
+		width: $(window).width() - 40,
+		left: 20
+	});
+	process_bar.find(".process_bg").css("width", process_bar.width());
+	process_bar.find(".process_line").css("width", 0);
 
-		_dom.append(TY.templates.svg_template);
+	_dom.append(TY.templates.svg_template);
 
-		addEvents();
-	}
+	addEvents();
 
 	function addEvents() {
 		var btn = document.querySelector(".h5_player_tip_btn");
@@ -81,7 +72,8 @@ this.TY = this.TY || {};
 	}
 
 
-	var isProcessing, l;
+	var l;
+	isProcessing = 0;
 
 	function processTouchstart(e) {
 		e.stopPropagation();
@@ -97,7 +89,6 @@ this.TY = this.TY || {};
 			n = e.touches[0].pageX - parseInt(i.css("left")) - parseInt(t.width()) / 4;
 		0 > n ? n = 0 : n > i.width() - t.width() + parseInt(t.width()) / 2 && (n = i.width() - t.width() + parseInt(t.width()) / 2);
 		l = n;
-
 		setProcess(n);
 		// $(".h5_player_process_forward_wrap").show();
 		// $(".h5_player_process_forward").show();
@@ -138,7 +129,7 @@ this.TY = this.TY || {};
 		_bar_x = 0;
 	}
 
-	function setProcess(e) {
+	setProcess = function(e) {
 		$(".process_line").css({
 			width: e + 10
 		}), $(".process_btn").css({
@@ -146,59 +137,45 @@ this.TY = this.TY || {};
 		})
 	}
 
-	function seek(e) {
+	seek = function(e) {
 		_video.currentTime = e
 	}
 
-
-	function update_bar() {
-		if (isProcessing) return !1;
-		var e = parseInt(_video.duration),
-			t = parseInt(_video.currentTime),
-			n = ($(".process_btn"), parseInt($(".process_bg").width() - $(".process_btn").width() / 2 + 12) * t / e);
-		setProcess(n)
-	}
-
-	function show_waiting() {
-		if (isProcessing) return !1;
-		hide_icon();
-		waiting.show();
-	}
-
-	function show_warning() {
-		if (isProcessing) return !1;
-		hide_icon();
-		warning.show();
-	}
-
-	function show_pause() {
-		if (isProcessing) return !1;
-		pause.show();
-		tip_btn.css("margin-left", "1px");
-	}
-
-
-	function hide_icon() {
+	hide_icon = function() {
 		pause.hide();
 		waiting.hide();
 		warning.hide();
 		tip_btn.css("margin-left", "-1px")
 	}
 
-	function remove_this() {
-		
+};
+TY.TYskin.prototype = {
+	constructor: TY.TYskin,
+	isFirstOpen: true,
+	showPause: function() {
+		if (isProcessing) return !1;
+		pause.show();
+		tip_btn.css("margin-left", "1px");
+	},
+	updateBar: function() {
+		if (isProcessing) return !1;
+		var e = parseInt(_video.duration),
+			t = parseInt(_video.currentTime),
+			n = ($(".process_btn"), parseInt($(".process_bg").width() - $(".process_btn").width() / 2 + 12) * t / e);
+		setProcess(n);
+	},
+	showWaiting: function() {
+		if (isProcessing) return !1;
+		hide_icon();
+		waiting.show();
+	},
+	showWarning: function() {
+		if (isProcessing) return !1;
+		hide_icon();
+		warning.show();
+	},
+	removeThis: function() {
+
 	}
-
-
-	skin.prototype = Object.assign(TY.EventDispatcher.prototype, {
-		constructor: skin,
-		updateBar: update_bar,
-		showWaiting: show_waiting,
-		showWarning: show_warning,
-		showPause: show_pause,
-		hide_icon: hide_icon,
-		removeThis: remove_this
-	});
-
-	TY.skin = skin;
-})();
+};
+TY.extend(TY.TYskin.prototype, TY.EventDispatcher.prototype);

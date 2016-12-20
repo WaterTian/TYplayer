@@ -12,7 +12,7 @@
 		"src/core/TY.js",
 		"src/core/utils.js",
 		"src/core/EventDispatcher.js",
-		"src/skin.js",
+		"src/TYskin.js",
 		"src/TYplayer.js"
 	],
 	"libs": [

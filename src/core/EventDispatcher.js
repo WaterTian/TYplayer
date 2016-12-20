@@ -2,12 +2,11 @@
 this.TY = this.TY || {};
 
 (function() {
-	"use strict";
 
+	TY.EventDispatcher = EventDispatcher;
 	function EventDispatcher() {}
 
 	Object.assign(EventDispatcher.prototype, {
-
 		addEventListener: function(type, listener) {
 			if (!this._listeners) {
 				this._listeners = {};
@@ -71,8 +70,5 @@ this.TY = this.TY || {};
 			}
 			return !!ret;
 		}
-
 	});
-
-	TY.EventDispatcher = EventDispatcher;
 })();

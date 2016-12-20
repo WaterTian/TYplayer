@@ -1,55 +1,37 @@
 /**
  * @author waterTian
  */
-// namespace:
-this.TY = this.TY || {};
+TY.TYplayer = function(videoUrl, divClass, videoBg) {
+    _self = this;
 
-(function() {
-    "use strict";
+    _dom = $(divClass);
 
-    var _self;
-    var _video, _dom , _player;
-    var _skin;
-    var player_bg;
-    var _w = $(window).width();
-    var _h = $(window).width();
+    // if (!TY.isMobileDevice) return;
 
-    function TYplayer(videoUrl, divClass, videoBg) {
+    //////
+    _dom.append(TY.videoDiv);
+    _player = _dom.find(".h5_player");
+    _player.append(TY.videoTemplate);
 
-        _self = this;
-        TY.videoUrl = videoUrl;
-        _dom = $(divClass);
-
-        // if (!TY.isMobileDevice) return;
-
-        //////
-        _dom.append(TY.videoDiv);
-        _player = _dom.find(".h5_player");
-        _player.append(TY.videoTemplate);
-
-        //videoBg
-        _player.append(TY.videoBgTemplate);
-        player_bg = $(".h5_player_bg");
-        player_bg.css("background-image", 'url(' + videoBg + ')');
+    //videoBg
+    _player.append(TY.videoBgTemplate);
+    player_bg = $(".h5_player_bg");
+    player_bg.css("background-image", 'url(' + videoBg + ')');
 
 
-        //video
-        _video = _player.find("video")[0];
-        _video.src = videoUrl;
-        tyLog(_video);
-        addVideoEvents(_video);
+    //video
+    _video = _player.find("video")[0];
+    _video.src = videoUrl;
+    tyLog(_video);
 
+    // 
+    console.log(_video.height);
 
+    addVideoEvents(_video);
 
-        //skin
-        _skin = new TY.skin(_video, _dom);
-        _skin.showPause();
-    }
-
-    function hide_palyerBg() {
-        player_bg.hide();
-    }
-
+    // //skin
+    _skin = new TY.TYskin(_video, _dom);
+    _skin.showPause();
 
     function tyLog(_t) {
         if (!TY.Debug) return;
@@ -57,6 +39,17 @@ this.TY = this.TY || {};
         else console.log(_t);
     }
 
+    function setVideoPostion(_height) {
+        if (_height < 200) {
+            setTimeout(function() {
+                setVideoPostion(_video.clientHeight);
+            }, 1000)
+        } else {
+            var _h = $(window).height();
+            var _top = _h - _height;
+            $("#video").css("margin-top", _top);
+        }
+    }
 
     function addVideoEvents(_video) {
         _video.addEventListener("error", videoError, false);
@@ -73,11 +66,15 @@ this.TY = this.TY || {};
         _video.addEventListener("canplay", function() {
             tyLog("canplay");
             $(".h5_player_waiting").hide();
-            _skin.showPause();
-            hide_palyerBg();
+            if (TY.isIphone) player_bg.hide();
+            setVideoPostion(_video.clientHeight);
         }, false);
         _video.addEventListener("play", function() {
             tyLog("play");
+            if (!_skin.isFirstOpen) {
+                player_bg.hide();
+            }
+            _skin.isFirstOpen = false;
         }, false);
         _video.addEventListener("playing", function() {
             tyLog("playing");
@@ -89,7 +86,7 @@ this.TY = this.TY || {};
         }, false);
         _video.addEventListener("ended", function() {
             tyLog("ended");
-            _self.dispatchEvent("VidoeEnd", this);
+            _self.dispatchEvent("VidoeEnd", _self);
         }, false);
         _video.addEventListener("progress", function() {}, false);
         _video.addEventListener("suspend", function() {}, false);
@@ -130,14 +127,20 @@ this.TY = this.TY || {};
         tyLog("player VidoeError:" + err.error);
 
         _self.dispatchEvent("VidoeError", err);
+        _skin.showWarning();
+        _skin.showWarning();
     }
 
     function update_time() {
         _skin.updateBar();
     }
+};
 
-    function remove_this()
-    {
+
+TY.TYplayer.prototype = {
+    constructor: TY.TYplayer,
+    removeThis: function() {
+        _skin.removeThis();
         _video.remove();
         var videoBox = _dom.get(0)
         var _num = videoBox.childNodes.length;
@@ -145,12 +148,5 @@ this.TY = this.TY || {};
             videoBox.removeChild(videoBox.childNodes[0]);
         }
     }
-
-    TYplayer.prototype = Object.assign(TY.EventDispatcher.prototype, {
-        constructor: TYplayer,
-        removeThis:remove_this
-    });
-
-
-    TY.TYplayer = TYplayer;
-})();
+};
+TY.extend(TY.TYplayer.prototype, TY.EventDispatcher.prototype);
