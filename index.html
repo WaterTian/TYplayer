@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <title>TYpalyer</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+        <style>
+            body {
+                font-family: Monospace;
+                background-color: #000;
+                margin: 0px;
+                overflow: hidden;
+            }
+            .video_wrap{overflow:hidden;position:absolute}
+            .video_wrap,.video_wrap .h5_player {width: 100%; height: 100%; margin: 0;padding: 0; border: 0;font: inherit; vertical-align: baseline;}
+            .video_wrap .h5_player .h5_player_bg{position:absolute;width:100%;height:100%;top:0;background-position: center center;background-size: cover; background-color:transparent;}
+            .video_wrap .h5_player_tip_btn{background-size:100% 100%;width:100%;height:100%;position:absolute;left:0;top:0;z-index:4}
+            .video_wrap .h5_player_pause,.video_wrap .h5_player_waiting,.video_wrap .h5_player_warning{left:50%;background-image:url(./playerIcons.png);z-index:4;position:absolute}
+            .video_wrap .h5_player_pause{width:93px;height:93px;top:50%;margin-left:-46px;margin-top:-46px;}
+            .video_wrap .h5_player_waiting{width:80px;height:100px;top:50%;margin-left:-40px;margin-top:-50px;background-position:left -128px}
+            .video_wrap .h5_player_warning{width:90px;height:90px;top:50%;margin-left:-45px;margin-top:-45px;background-position:left -254px}
+            .video_wrap .h5_player_process_bar,.video_wrap .h5_player_process_bar_hover{width:100%;height:18px;position:absolute;bottom:30px;left:0}
+            .video_wrap .h5_player_process_bar .process_bg,.video_wrap .h5_player_process_bar .process_line{position:absolute;height:10px;width:100%;left:0;bottom:0}
+            .video_wrap .h5_player_process_bar .process_btn{position:absolute;width:44px;height:44px;bottom:-20px}
+
+        </style>
+
+    </head>
+    <body>
+
+    <div class="video_wrap">
+        
+    </div>
+
+
+    <script src="./lib/zepto.min.js"></script>
+    <script src="./src/core/TY.js"></script>
+    <script src="./src/core/utils.js"></script>
+    <script src="./src/core/EventDispatcher.js"></script>
+    <script src="./src/skin.js"></script>
+    <script src="./src/TYplayer.js"></script>
+
+
+    <!-- <script src="./build/TYplayer.min.js"></script> -->
+
+    <script>
+
+        var videoUrl1 = 'http://pili-live-hls.appmagics.cn/appmagics-avatar-live/785192071480585578293.m3u8';
+        var videoUrl = 'http://alcdn.hls.xiaoka.tv/2016121/4c8/834/JQzoRZZaz2zJ5GbS/index.m3u8';
+        var videoUrl= './v3.mp4';
+
+        var videoBg='./p.jpg';
+
+        var player = new TY.TYplayer(videoUrl,".video_wrap",videoBg);
+        player.addEventListener("VidoeError",function(e)
+        {
+            console.log(e);
+        })
+
+        player.addEventListener("VidoeEnd",function(e)
+        {
+            console.log(e);
+            player.removeThis();
+        })
+
+    </script>    
+
+
+    </body>
+</html>

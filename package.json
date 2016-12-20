@@ -1,0 +1,21 @@
+{
+	"name": "TYplayer",
+	"version": "0.0.1",
+	"devDependencies": {
+		"grunt": "^1.0.1",
+		"grunt-contrib-concat": "^1.0.1",
+		"grunt-contrib-uglify": "^2.0.0"
+	},
+	
+	"main": [
+		"lib/zepto.min.js",
+		"src/core/TY.js",
+		"src/core/utils.js",
+		"src/core/EventDispatcher.js",
+		"src/skin.js",
+		"src/TYplayer.js"
+	],
+	"libs": [
+		
+	]
+}
