@@ -444,7 +444,8 @@ TY.TYskin.prototype = {
 		})
 	},
 	showProcessBar: function() {
-		process_bar.show()
+		process_bar.show();
+		_self.updateBar();
 		process_bar.animate({
 			transform: 'translate(0px,0px)'
 		}, 200, 'ease-out')
@@ -482,10 +483,10 @@ TY.extend(TY.TYskin.prototype, TY.EventDispatcher.prototype);
 /**
  * @author waterTian
  */
-TY.TYplayer = function(videoUrl, divClass, videoBg ,isLive) {
+TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
     _self = this;
 
-    _dom = $(divClass);
+    _dom = $(divID);
 
     // if (!TY.isMobileDevice) return;
 

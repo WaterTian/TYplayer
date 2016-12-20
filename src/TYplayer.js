@@ -1,10 +1,10 @@
 /**
  * @author waterTian
  */
-TY.TYplayer = function(videoUrl, divClass, videoBg ,isLive) {
+TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
     _self = this;
 
-    _dom = $(divClass);
+    _dom = $(divID);
 
     // if (!TY.isMobileDevice) return;
 

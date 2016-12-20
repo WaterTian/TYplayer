@@ -184,7 +184,8 @@ TY.TYskin.prototype = {
 		})
 	},
 	showProcessBar: function() {
-		process_bar.show()
+		process_bar.show();
+		_self.updateBar();
 		process_bar.animate({
 			transform: 'translate(0px,0px)'
 		}, 200, 'ease-out')
