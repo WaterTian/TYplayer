@@ -40,7 +40,7 @@
     <script src="src/TYplayer.js"></script> -->
 
 
-    <script src="./build/TYplayer.min.js"></script>
+    <script src="./build/TYplayer_v1.min.js"></script>
 
     <script>
 
@@ -49,27 +49,20 @@
         var videoUrl2= './v3.mp4';
 
         var videoBg='./p.jpg';
+        var isLive=true;
 
-        init();
-
-        function init()
+        var player = new TY.TYplayer(videoUrl,".video_wrap",videoBg,isLive);
+        player.addEventListener("VidoeError",function(e)
         {
-            var player = new TY.TYplayer(videoUrl,".video_wrap",videoBg);
-            player.addEventListener("VidoeError",function(e)
-            {
-                console.log(e);
-            })
+            console.log(e);
+            //{code: 4, error: "播放过程中URL无效"}
+        })
 
-            player.addEventListener("VidoeEnd",function(e)
-            {
-                console.log(e);
-                player.removeThis();
-                setTimeout(function(){
-                    init()
-                },1000)
-            }) 
-        }
-
+        player.addEventListener("VidoeEnd",function(e)
+        {
+            console.log(e);
+            player.removeThis();
+        }) 
 
 
     </script>    

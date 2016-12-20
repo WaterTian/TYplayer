@@ -7,7 +7,6 @@ module.exports = function(grunt) {
 			dist: {
 				files: {
 					'build/<%= pkg.name %>.js': '<%= pkg.main %>',
-					'build/<%= pkg.name %>libs.js': '<%= pkg.libs %>',
 				}
 			}
 		},
@@ -15,7 +14,6 @@ module.exports = function(grunt) {
 			dist: {
 				files: {
 					'build/<%= pkg.name %>.min.js':['build/<%= pkg.name %>.js'],
-					'build/<%= pkg.name %>libs.min.js':['build/<%= pkg.name %>libs.js'],
 				}
 			}
 		}

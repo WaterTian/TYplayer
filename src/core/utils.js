@@ -1,13 +1,5 @@
-/**
- * @author waterTian
- */
-
-// namespace:
-this.TY = this.TY || {};
-
-
 TY.templates = {
-	svg_template: '<div style="display:none"><svg><symbol id="process_bg"><line x1="0" y1="2" x2="1000" y2="2" style="stroke:#fff; stroke-width:2; fill-opacity:0.5"/></symbol><symbol id="process"><line x1="0" y1="2" x2="1000" y2="2" style="stroke:#b163ff;stroke-width:2"/></symbol><symbol id="process_btn"><circle cx="12" cy="17" r="12" style="fill:#fff; fill-opacity:0.5"/><circle cx="12" cy="17" r="6" style="fill:#fff"/></symbol><symbol id="play"><polyline class="play" points="0,0  14,9  0,18" style="stroke:#fff;fill:#fff;"/></symbol><symbol id="pause"><line class="pause" x1="2" y1="0" x2="2" y2="18" stroke="#fff" stroke-width="5" /><line class="pause" x1="11" y1="0" x2="11" y2="18" stroke="#fff" stroke-width="5" /></symbol><symbol id="control_btn_bg"><circle cx="25" cy="25" r="25" style="fill:#000; fill-opacity:0.3"/></symbol></svg></div>',
+	svg_template: '<div style="display:none"><svg><symbol id="process_bg"><line x1="0" y1="2" x2="1000" y2="2" style="stroke:#fff; stroke-width:2; fill-opacity:0.5"/></symbol><symbol id="process"><line x1="0" y1="2" x2="1000" y2="2" style="stroke:#7c85db;stroke-width:2"/></symbol><symbol id="process_btn"><circle cx="12" cy="17" r="12" style="fill:#fff; fill-opacity:0.5"/><circle cx="12" cy="17" r="6" style="fill:#fff"/></symbol><symbol id="play"><polyline class="play" points="0,0  14,9  0,18" style="stroke:#fff;fill:#fff;"/></symbol><symbol id="pause"><line class="pause" x1="2" y1="0" x2="2" y2="18" stroke="#fff" stroke-width="5" /><line class="pause" x1="11" y1="0" x2="11" y2="18" stroke="#fff" stroke-width="5" /></symbol><symbol id="control_btn_bg"><circle cx="25" cy="25" r="25" style="fill:#000; fill-opacity:0.3"/></symbol></svg></div>',
 
 	replay: '<div class="h5_player_tip_btn"><div class="h5_player_pause" style="display:none"></div><div class="h5_player_waiting" style="display:none"></div><div class="h5_player_warning" style="display:none"></div></div><div class="h5_player_process_bar"><svg class="process_bg"><use xlink:href="#process_bg"/></svg><svg class="process_line"><use xlink:href="#process"/></svg><svg class="process_btn"><use xlink:href="#process_btn"/></svg></div>',
 

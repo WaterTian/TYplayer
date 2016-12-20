@@ -1,5 +1,5 @@
 {
-	"name": "TYplayer",
+	"name": "TYplayer_v1",
 	"version": "0.0.1",
 	"devDependencies": {
 		"grunt": "^1.0.1",
@@ -14,8 +14,6 @@
 		"src/core/EventDispatcher.js",
 		"src/TYskin.js",
 		"src/TYplayer.js"
-	],
-	"libs": [
-		
 	]
 }
+

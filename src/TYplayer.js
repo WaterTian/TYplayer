@@ -1,7 +1,7 @@
 /**
  * @author waterTian
  */
-TY.TYplayer = function(videoUrl, divClass, videoBg) {
+TY.TYplayer = function(videoUrl, divClass, videoBg ,isLive) {
     _self = this;
 
     _dom = $(divClass);
@@ -18,6 +18,14 @@ TY.TYplayer = function(videoUrl, divClass, videoBg) {
     player_bg = $(".h5_player_bg");
     player_bg.css("background-image", 'url(' + videoBg + ')');
 
+    function hildPlayerBg() {
+        player_bg.animate({
+            opacity: 0,
+            transform: 'scale(1.5,1.5)'
+        }, 200, 'ease-out', function() {
+            player_bg.hide();
+        })
+    }
 
     //video
     _video = _player.find("video")[0];
@@ -25,12 +33,10 @@ TY.TYplayer = function(videoUrl, divClass, videoBg) {
     tyLog(_video);
 
     // 
-    console.log(_video.height);
-
     addVideoEvents(_video);
 
-    // //skin
-    _skin = new TY.TYskin(_video, _dom);
+    //skin
+    _skin = new TY.TYskin(_video, _dom ,isLive);
     _skin.showPause();
 
     function tyLog(_t) {
@@ -46,7 +52,7 @@ TY.TYplayer = function(videoUrl, divClass, videoBg) {
             }, 1000)
         } else {
             var _h = $(window).height();
-            var _top = _h - _height;
+            var _top = (_h - _height) / 2;
             $("#video").css("margin-top", _top);
         }
     }
@@ -66,19 +72,23 @@ TY.TYplayer = function(videoUrl, divClass, videoBg) {
         _video.addEventListener("canplay", function() {
             tyLog("canplay");
             $(".h5_player_waiting").hide();
-            if (TY.isIphone) player_bg.hide();
+            if (TY.isIphone) hildPlayerBg();
             setVideoPostion(_video.clientHeight);
         }, false);
         _video.addEventListener("play", function() {
             tyLog("play");
             if (!_skin.isFirstOpen) {
-                player_bg.hide();
+                hildPlayerBg();
             }
-            _skin.isFirstOpen = false;
+            
         }, false);
         _video.addEventListener("playing", function() {
             tyLog("playing");
-            $(".h5_player_pause").hide();
+            if (!_skin.isFirstOpen) {
+                _skin.hidePause();
+            }
+            _skin.isFirstOpen = false;
+            
         }, false);
         _video.addEventListener("pause", function() {
             tyLog("pause");
@@ -127,6 +137,7 @@ TY.TYplayer = function(videoUrl, divClass, videoBg) {
         tyLog("player VidoeError:" + err.error);
 
         _self.dispatchEvent("VidoeError", err);
+
         _skin.showWarning();
         _skin.showWarning();
     }

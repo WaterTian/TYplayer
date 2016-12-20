@@ -2,10 +2,14 @@
  * @author waterTian
  */
 
-TY.TYskin = function(_v, _d) {
+TY.TYskin = function(_v, _d, _l) {
+	_self = this;
 
 	_video = _v;
 	_dom = _d;
+	_isLive = _l;
+
+
 	_dom.append(TY.templates.replay);
 
 	pause = $(".h5_player_pause");
@@ -15,9 +19,9 @@ TY.TYskin = function(_v, _d) {
 	process_bar = $(".h5_player_process_bar");
 
 	tip_btn.height(tip_btn.height() - 80);
-	pause.css("top", (tip_btn.height()) / 2);
-	waiting.css("top", (tip_btn.height()) / 2);
-	warning.css("top", (tip_btn.height()) / 2);
+	pause.css("top", (tip_btn.height() + 40) / 2);
+	waiting.css("top", (tip_btn.height() + 40) / 2);
+	warning.css("top", (tip_btn.height() + 40) / 2);
 
 
 	process_bar.css({
@@ -29,7 +33,17 @@ TY.TYskin = function(_v, _d) {
 
 	_dom.append(TY.templates.svg_template);
 
-	addEvents();
+
+	if (_isLive) {
+		document.querySelector(".h5_player_pause").addEventListener("touchend", function(e) {
+			e.stopPropagation();
+			_video.play();
+		});
+		process_bar.hide();
+	} else {
+		addEvents();
+	}
+
 
 	function addEvents() {
 		var btn = document.querySelector(".h5_player_tip_btn");
@@ -66,7 +80,7 @@ TY.TYskin = function(_v, _d) {
 		e.stopPropagation();
 		(Math.abs(Math.abs(_my) - Math.abs(_sy)) <= 5 || 0 == _my) ?
 		(_video.paused ? _video.play() : _video.pause()) :
-		((process_bar.css("display") == "none") ? process_bar.show() : process_bar.hide());
+		((process_bar.css("display") == "none") ? _self.showProcessBar() : _self.hideProcessBar());
 		_sy = 0;
 		_my = 0;
 	}
@@ -155,9 +169,35 @@ TY.TYskin.prototype = {
 	showPause: function() {
 		if (isProcessing) return !1;
 		pause.show();
-		tip_btn.css("margin-left", "1px");
+		pause.css("opacity", 1);
+		pause.css("transform", 'scale(.1,.1)');
+		pause.animate({
+			transform: 'scale(1,1)'
+		}, 100, 'ease-out')
+	},
+	hidePause: function() {
+		pause.animate({
+			opacity: 0,
+			transform: 'scale(2,2)'
+		}, 100, 'ease-out', function() {
+			pause.hide();
+		})
+	},
+	showProcessBar: function() {
+		process_bar.show()
+		process_bar.animate({
+			transform: 'translate(0px,0px)'
+		}, 200, 'ease-out')
+	},
+	hideProcessBar: function() {
+		process_bar.animate({
+			transform: 'translate(0px,60px)'
+		}, 200, 'ease-out', function() {
+			process_bar.hide();
+		})
 	},
 	updateBar: function() {
+		if (_isLive) return !1;
 		if (isProcessing) return !1;
 		var e = parseInt(_video.duration),
 			t = parseInt(_video.currentTime),
