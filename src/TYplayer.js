@@ -2,7 +2,7 @@
  * @author waterTian
  */
 TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
-    _self = this;
+    _TYplayer = this;
 
     _dom = $(divID);
 
@@ -38,6 +38,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
     //skin
     _skin = new TY.TYskin(_video, _dom ,isLive);
     _skin.showPause();
+
 
     function tyLog(_t) {
         if (!TY.Debug) return;
@@ -96,7 +97,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
         }, false);
         _video.addEventListener("ended", function() {
             tyLog("ended");
-            _self.dispatchEvent("VidoeEnd", _self);
+            _TYplayer.dispatchEvent("VidoeEnd", _TYplayer);
         }, false);
         _video.addEventListener("progress", function() {}, false);
         _video.addEventListener("suspend", function() {}, false);
@@ -136,7 +137,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
         }
         tyLog("player VidoeError:" + err.error);
 
-        _self.dispatchEvent("VidoeError", err);
+        _TYplayer.dispatchEvent("VidoeError", err);
 
         _skin.showWarning();
         _skin.showWarning();

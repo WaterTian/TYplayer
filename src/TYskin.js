@@ -3,10 +3,10 @@
  */
 
 TY.TYskin = function(_v, _d, _l) {
-	_self = this;
+	_TYskin = this;
 
-	_video = _v;
-	_dom = _d;
+	var _video = _v;
+	var _dom = _d;
 	_isLive = _l;
 
 
@@ -80,7 +80,7 @@ TY.TYskin = function(_v, _d, _l) {
 		e.stopPropagation();
 		(Math.abs(Math.abs(_my) - Math.abs(_sy)) <= 5 || 0 == _my) ?
 		(_video.paused ? _video.play() : _video.pause()) :
-		((process_bar.css("display") == "none") ? _self.showProcessBar() : _self.hideProcessBar());
+		((process_bar.css("display") == "none") ? _TYskin.showProcessBar() : _TYskin.hideProcessBar());
 		_sy = 0;
 		_my = 0;
 	}
@@ -185,7 +185,7 @@ TY.TYskin.prototype = {
 	},
 	showProcessBar: function() {
 		process_bar.show();
-		_self.updateBar();
+		_TYskin.updateBar();
 		process_bar.animate({
 			transform: 'translate(0px,0px)'
 		}, 200, 'ease-out')
