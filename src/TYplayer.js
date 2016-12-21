@@ -38,6 +38,10 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
     //skin
     _skin = new TY.TYskin(_video, _dom ,isLive);
     _skin.showPause();
+    _skin.addEventListener("VidoeClick",function(e)
+    {
+        _TYplayer.dispatchEvent("VidoeClick",e);
+    })
 
 
     function tyLog(_t) {

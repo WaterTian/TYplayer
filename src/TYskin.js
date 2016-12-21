@@ -9,7 +9,6 @@ TY.TYskin = function(_v, _d, _l) {
 	var _dom = _d;
 	_isLive = _l;
 
-
 	_dom.append(TY.templates.replay);
 
 	pause = $(".h5_player_pause");
@@ -67,22 +66,27 @@ TY.TYskin = function(_v, _d, _l) {
 	var _sy, _my;
 
 	function tipTouchstart(e) {
-		e.stopPropagation();
+		e.preventDefault();//取消事件的默认动作
+		e.stopPropagation();//不再派发事件
 		_sy = e.touches[0].pageY;
 	}
 
 	function tipTouchmove(e) {
-		e.stopPropagation();
+		e.preventDefault();//取消事件的默认动作
+		e.stopPropagation();//不再派发事件
 		_my = e.touches[0].pageY;
 	}
 
 	function tipTouchend(e) {
-		e.stopPropagation();
+		e.preventDefault();//取消事件的默认动作
+		e.stopPropagation();//不再派发事件
 		(Math.abs(Math.abs(_my) - Math.abs(_sy)) <= 5 || 0 == _my) ?
 		(_video.paused ? _video.play() : _video.pause()) :
 		((process_bar.css("display") == "none") ? _TYskin.showProcessBar() : _TYskin.hideProcessBar());
 		_sy = 0;
 		_my = 0;
+
+		_TYskin.dispatchEvent("VidoeClick", _TYskin);
 	}
 
 
@@ -95,7 +99,8 @@ TY.TYskin = function(_v, _d, _l) {
 	}
 
 	function processTouchmove(e) {
-		e.stopPropagation();
+		e.preventDefault();//取消事件的默认动作
+		e.stopPropagation();//不再派发事件
 		isProcessing = 1;
 
 		var t = $(".process_btn"),
@@ -128,6 +133,8 @@ TY.TYskin = function(_v, _d, _l) {
 	}
 
 	function barTouchmove(e) {
+		e.preventDefault();//取消事件的默认动作
+		e.stopPropagation();//不再派发事件
 		_bar_x = e.touches[0].pageX;
 	}
 

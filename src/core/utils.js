@@ -9,10 +9,9 @@ TY.templates = {
 }
 
 TY.videoUrl = "";
-TY.videoDiv ='<div class="h5_player"></div>';
+TY.videoDiv = '<div class="h5_player"></div>';
 TY.videoTemplate = '<video id="video" autoplay=""  webkit-playsinline="true" x-webkit-airplay="true" x5-video-player-type="h5" playsinline width="100%"  preload="auto" poster="" src="' + TY.videoUrl + '" ></video>';
 TY.videoBgTemplate = '<div class="h5_player_bg"></div>';
-
 
 
 
@@ -23,6 +22,7 @@ TY.isWeixin = /MicroMessenger\//i.test(navigator.userAgent);
 
 
 TY.isMobileDevice = isMobileDevice;
+
 function isMobileDevice() {
 	if (navigator === undefined || navigator.userAgent === undefined) {
 		return true;
@@ -33,3 +33,25 @@ function isMobileDevice() {
 	}
 	return false;
 }
+
+
+TY.cssremConfig = {
+	"px_to_rem": 75,
+	"max_rem_fraction_length": 6,
+	"available_file_types": [".css", ".less", ".sass"]
+}
+
+
+/*
+#video_wrap{overflow:hidden;position:absolute}
+#video_wrap,#video_wrap .h5_player {width: 100%; height: 100%; margin: 0;padding: 0; border: 0;font: inherit; vertical-align: baseline;}
+#video_wrap .h5_player .h5_player_bg{position:absolute;width:100%;height:100%;top:0;background-position: center center;background-size: cover; background-color:transparent;}
+#video_wrap .h5_player_tip_btn{background-size:100% 100%;width:100%;height:100%;position:absolute;left:0;top:0;z-index:4}
+#video_wrap .h5_player_pause,#video_wrap .h5_player_waiting,#video_wrap .h5_player_warning{left:50%;background-image:url(./playerIcons.png);z-index:4;position:absolute}
+#video_wrap .h5_player_pause{width:93px;height:93px;top:50%;margin-left:-46px;margin-top:-46px;}
+#video_wrap .h5_player_waiting{width:80px;height:100px;top:50%;margin-left:-40px;margin-top:-50px;background-position:left -128px}
+#video_wrap .h5_player_warning{width:90px;height:90px;top:50%;margin-left:-45px;margin-top:-45px;background-position:left -254px}
+#video_wrap .h5_player_process_bar,#video_wrap .h5_player_process_bar_hover{width:100%;height:18px;position:absolute;bottom:30px;left:0}
+#video_wrap .h5_player_process_bar .process_bg,#video_wrap .h5_player_process_bar .process_line{position:absolute;height:10px;width:100%;left:0;bottom:0}
+#video_wrap .h5_player_process_bar .process_btn{position:absolute;width:44px;height:44px;bottom:-20px}
+*/
