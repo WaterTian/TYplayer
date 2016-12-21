@@ -34,8 +34,19 @@ TY.TYskin = function(_v, _d, _l) {
 
 
 	if (_isLive) {
+		document.querySelector(".h5_player_tip_btn").addEventListener("touchmove", function(e) {
+			e.preventDefault(); //取消事件的默认动作
+			e.stopPropagation(); //不再派发事件
+		});
+		document.querySelector(".h5_player_tip_btn").addEventListener("touchend", function(e) {
+			e.preventDefault(); //取消事件的默认动作
+			e.stopPropagation(); //不再派发事件
+			_video.paused ? _video.play() : _video.pause();
+			_TYskin.dispatchEvent("VidoeClick", _TYskin);
+		});
 		document.querySelector(".h5_player_pause").addEventListener("touchend", function(e) {
-			e.stopPropagation();
+			e.preventDefault(); //取消事件的默认动作
+			e.stopPropagation(); //不再派发事件
 			_video.play();
 		});
 		process_bar.hide();
@@ -66,20 +77,20 @@ TY.TYskin = function(_v, _d, _l) {
 	var _sy, _my;
 
 	function tipTouchstart(e) {
-		e.preventDefault();//取消事件的默认动作
-		e.stopPropagation();//不再派发事件
+		e.preventDefault(); //取消事件的默认动作
+		e.stopPropagation(); //不再派发事件
 		_sy = e.touches[0].pageY;
 	}
 
 	function tipTouchmove(e) {
-		e.preventDefault();//取消事件的默认动作
-		e.stopPropagation();//不再派发事件
+		e.preventDefault(); //取消事件的默认动作
+		e.stopPropagation(); //不再派发事件
 		_my = e.touches[0].pageY;
 	}
 
 	function tipTouchend(e) {
-		e.preventDefault();//取消事件的默认动作
-		e.stopPropagation();//不再派发事件
+		e.preventDefault(); //取消事件的默认动作
+		e.stopPropagation(); //不再派发事件
 		(Math.abs(Math.abs(_my) - Math.abs(_sy)) <= 5 || 0 == _my) ?
 		(_video.paused ? _video.play() : _video.pause()) :
 		((process_bar.css("display") == "none") ? _TYskin.showProcessBar() : _TYskin.hideProcessBar());
@@ -91,17 +102,18 @@ TY.TYskin = function(_v, _d, _l) {
 
 
 	var l;
-	isProcessing = 0;
+	_isProcessing = 0;
+	_isWaiting = 0;
 
 	function processTouchstart(e) {
 		e.stopPropagation();
-		isProcessing = 1;
+		_isProcessing = 1;
 	}
 
 	function processTouchmove(e) {
-		e.preventDefault();//取消事件的默认动作
-		e.stopPropagation();//不再派发事件
-		isProcessing = 1;
+		e.preventDefault(); //取消事件的默认动作
+		e.stopPropagation(); //不再派发事件
+		_isProcessing = 1;
 
 		var t = $(".process_btn"),
 			i = $(".h5_player_process_bar"),
@@ -118,7 +130,7 @@ TY.TYskin = function(_v, _d, _l) {
 
 	function processTouchend(e) {
 		e.stopPropagation();
-		isProcessing = 0;
+		_isProcessing = 0;
 		// $(".h5_player_process_forward_wrap").hide();
 		// $(".h5_player_process_forward").hide();
 		var t = parseInt(_video.duration),
@@ -133,8 +145,8 @@ TY.TYskin = function(_v, _d, _l) {
 	}
 
 	function barTouchmove(e) {
-		e.preventDefault();//取消事件的默认动作
-		e.stopPropagation();//不再派发事件
+		e.preventDefault(); //取消事件的默认动作
+		e.stopPropagation(); //不再派发事件
 		_bar_x = e.touches[0].pageX;
 	}
 
@@ -163,7 +175,7 @@ TY.TYskin = function(_v, _d, _l) {
 	}
 
 	hide_icon = function() {
-		pause.hide();
+		_TYskin.hidePause();
 		waiting.hide();
 		warning.hide();
 		tip_btn.css("margin-left", "-1px")
@@ -174,11 +186,13 @@ TY.TYskin.prototype = {
 	constructor: TY.TYskin,
 	isFirstOpen: true,
 	showPause: function() {
-		if (isProcessing) return !1;
+		if (_isProcessing) return !1;
+		if (_isWaiting) return !1;
 		pause.show();
-		pause.css("opacity", 1);
+		pause.css("opacity", 0);
 		pause.css("transform", 'scale(.1,.1)');
 		pause.animate({
+			opacity: 1,
 			transform: 'scale(1,1)'
 		}, 100, 'ease-out')
 	},
@@ -206,19 +220,36 @@ TY.TYskin.prototype = {
 	},
 	updateBar: function() {
 		if (_isLive) return !1;
-		if (isProcessing) return !1;
+		if (_isProcessing) return !1;
 		var e = parseInt(_video.duration),
 			t = parseInt(_video.currentTime),
 			n = ($(".process_btn"), parseInt($(".process_bg").width() - $(".process_btn").width() / 2 + 12) * t / e);
 		setProcess(n);
 	},
 	showWaiting: function() {
-		if (isProcessing) return !1;
+		if (_isProcessing) return !1;
 		hide_icon();
+		_isWaiting = 1;
 		waiting.show();
+		waiting.css("opacity", 0);
+		waiting.css("transform", 'scale(.1,.1)');
+		waiting.animate({
+			opacity: 1,
+			transform: 'scale(1,1)'
+		}, 100, 'ease-out')
 	},
+	hideWaiting: function() {
+		_isWaiting = 0;
+		waiting.animate({
+			opacity: 0,
+			transform: 'scale(2,2)'
+		}, 100, 'ease-out', function() {
+			waiting.hide();
+		})
+	},
+
 	showWarning: function() {
-		if (isProcessing) return !1;
+		if (_isProcessing) return !1;
 		hide_icon();
 		warning.show();
 	},

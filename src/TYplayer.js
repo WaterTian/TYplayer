@@ -17,7 +17,16 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
     _player.append(TY.videoBgTemplate);
     player_bg = $(".h5_player_bg");
     player_bg.css("background-image", 'url(' + videoBg + ')');
+    showPlayerBg();
 
+    function showPlayerBg() {
+        player_bg.css("opacity", 0);
+        player_bg.css("transform", 'scale(1.5,1.5)');
+        player_bg.animate({
+            opacity: 1,
+            transform: 'scale(1,1)'
+        }, 200, 'ease-out')
+    }
     function hildPlayerBg() {
         player_bg.animate({
             opacity: 0,
@@ -75,8 +84,8 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
             _skin.showWaiting();
         }, false);
         _video.addEventListener("canplay", function() {
-            tyLog("canplay");
-            $(".h5_player_waiting").hide();
+            tyLog("canplay")
+            _skin.hideWaiting();
             if (TY.isIphone) hildPlayerBg();
             setVideoPostion(_video.clientHeight);
         }, false);
@@ -156,6 +165,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
 TY.TYplayer.prototype = {
     constructor: TY.TYplayer,
     removeThis: function() {
+        document.addEventListener("touchmove", function(e) {});
         _skin.removeThis();
         _video.remove();
         var videoBox = _dom.get(0)

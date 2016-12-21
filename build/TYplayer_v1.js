@@ -156,17 +156,16 @@ TY.extend = function(origin, add)
 TY.templates = {
 	svg_template: '<div style="display:none"><svg><symbol id="process_bg"><line x1="0" y1="2" x2="1000" y2="2" style="stroke:#fff; stroke-width:2; fill-opacity:0.5"/></symbol><symbol id="process"><line x1="0" y1="2" x2="1000" y2="2" style="stroke:#7c85db;stroke-width:2"/></symbol><symbol id="process_btn"><circle cx="12" cy="17" r="12" style="fill:#fff; fill-opacity:0.5"/><circle cx="12" cy="17" r="6" style="fill:#fff"/></symbol><symbol id="play"><polyline class="play" points="0,0  14,9  0,18" style="stroke:#fff;fill:#fff;"/></symbol><symbol id="pause"><line class="pause" x1="2" y1="0" x2="2" y2="18" stroke="#fff" stroke-width="5" /><line class="pause" x1="11" y1="0" x2="11" y2="18" stroke="#fff" stroke-width="5" /></symbol><symbol id="control_btn_bg"><circle cx="25" cy="25" r="25" style="fill:#000; fill-opacity:0.3"/></symbol></svg></div>',
 
-	replay: '<div class="h5_player_tip_btn"><div class="h5_player_pause" style="display:none"></div><div class="h5_player_waiting" style="display:none"></div><div class="h5_player_warning" style="display:none"></div></div><div class="h5_player_process_bar"><svg class="process_bg"><use xlink:href="#process_bg"/></svg><svg class="process_line"><use xlink:href="#process"/></svg><svg class="process_btn"><use xlink:href="#process_btn"/></svg></div>',
+	replay: '<div class="h5_player_tip_btn" style="background-size:100% 100%;width:100%;height:100%;position:absolute;left:0;top:0;z-index:20"><div class="h5_player_pause" style="display:none;left:50%;background-image:url(./playerIcons.png);z-index:4;position:absolute;width:93px;height:93px;top:50%;margin-left:-46px;margin-top:-46px;"></div><div class="h5_player_waiting" style="display:none;left:50%;background-image:url(./playerIcons.png);z-index:4;position:absolute;width:80px;height:100px;top:50%;margin-left:-40px;margin-top:-50px;background-position:left -128px"></div><div class="h5_player_warning" style="display:none;left:50%;background-image:url(./playerIcons.png);z-index:4;position:absolute;width:90px;height:90px;top:50%;margin-left:-45px;margin-top:-45px;background-position:left -254px"></div></div><div class="h5_player_process_bar" style="width:100%;height:18px;position:absolute;bottom:30px;left:0;z-index:20"><svg class="process_bg" style="position:absolute;height:10px;width:100%;left:0;bottom:0"><use xlink:href="#process_bg"/></svg><svg class="process_line" style="position:absolute;height:10px;width:100%;left:0;bottom:0"><use xlink:href="#process"/></svg><svg class="process_btn" style="position:absolute;width:44px;height:44px;bottom:-20px"><use xlink:href="#process_btn"/></svg></div>',
 
-	liveplay: '<div class="h5_player_tip_btn"><div class="h5_player_pause" style="display:none"></div><div class="h5_player_waiting" style="display:none"></div><div class="h5_player_warning" style="display:none"></div></div><div class="h5_player_control_bar" style="display:none"><svg class="h5_player_control_btn"><polyline class="play" points="0,0  14,9  0,18"style="stroke:#444844;fill:#444844; display:none"/><line class="pause" x1="2" y1="0" x2="2" y2="18" stroke="#444844" stroke-width="5" /><line class="pause" x1="11" y1="0" x2="11" y2="18" stroke="#444844" stroke-width="5" /></svg><div class="h5_player_control_time"><span class="now">00:00</span></div></div>',
-
-	mp4: '<div class="h5_player_tip_btn"><div class="h5_player_pause" style="display:none"></div><div class="h5_player_waiting" style="display:none"></div><div class="h5_player_warning" style="display:none"></div></div><div class="h5_player_control_btn"><svg class="control_btn_bg"><use xlink:href="#control_btn_bg"/></svg><svg class="play"><use xlink:href="#play"/></svg><svg class="pause"><use xlink:href="#pause"/></svg></div><div class="h5_player_control_time"><span class="now">00:00:00</span></div><div class="h5_player_process_bar"><svg class="process_bg"><use xlink:href="#process_bg"/></svg><svg class="process_line"><use xlink:href="#process"/></svg><svg class="process_btn"><use xlink:href="#process_btn"/></svg></div><div class="h5_player_process_forward_wrap" style="display:none"></div><div class="h5_player_process_forward" style="display:none"><div class="img forward"></div><div class="time">00:00</div></div>'
+	liveplay: '<div class="h5_player_tip_btn"><div class="h5_player_pause" style="display:none"></div><div class="h5_player_waiting" style="display:none"></div><div class="h5_player_warning" style="display:none"></div></div><div class="h5_player_control_bar" style="display:none"><svg class="h5_player_control_btn"><polyline class="play" points="0,0  14,9  0,18"style="stroke:#444844;fill:#444844; display:none"/><line class="pause" x1="2" y1="0" x2="2" y2="18" stroke="#444844" stroke-width="5" /><line class="pause" x1="11" y1="0" x2="11" y2="18" stroke="#444844" stroke-width="5" /></svg><div class="h5_player_control_time"><span class="now">00:00</span></div></div>'
 }
 
 TY.videoUrl = "";
-TY.videoDiv ='<div class="h5_player"></div>';
+TY.videoDiv ='<div class="h5_player" style="width: 100%; height: 100%; margin: 0;padding: 0; border: 0;font: inherit; vertical-align: baseline;"></div>';
 TY.videoTemplate = '<video id="video" autoplay=""  webkit-playsinline="true" x-webkit-airplay="true" x5-video-player-type="h5" playsinline width="100%"  preload="auto" poster="" src="' + TY.videoUrl + '" ></video>';
-TY.videoBgTemplate = '<div class="h5_player_bg"></div>';
+TY.videoBgTemplate = '<div class="h5_player_bg" style="position:absolute;width:100%;height:100%;top:0;background-position:center;background-size: cover; background-color:transparent;;background-image:url()"></div>';
+
 
 
 
@@ -178,6 +177,7 @@ TY.isWeixin = /MicroMessenger\//i.test(navigator.userAgent);
 
 
 TY.isMobileDevice = isMobileDevice;
+
 function isMobileDevice() {
 	if (navigator === undefined || navigator.userAgent === undefined) {
 		return true;
@@ -188,6 +188,28 @@ function isMobileDevice() {
 	}
 	return false;
 }
+
+
+TY.cssremConfig = {
+	"px_to_rem": 75,
+	"max_rem_fraction_length": 6,
+	"available_file_types": [".css", ".less", ".sass"]
+}
+
+
+/*
+#video_wrap{overflow:hidden;position:absolute}
+#video_wrap,#video_wrap .h5_player {width: 100%; height: 100%; margin: 0;padding: 0; border: 0;font: inherit; vertical-align: baseline;}
+#video_wrap .h5_player .h5_player_bg{position:absolute;width:100%;height:100%;top:0;background-position: center center;background-size: cover; background-color:transparent;}
+#video_wrap .h5_player_tip_btn{background-size:100% 100%;width:100%;height:100%;position:absolute;left:0;top:0;z-index:4}
+#video_wrap .h5_player_pause,#video_wrap .h5_player_waiting,#video_wrap .h5_player_warning{left:50%;background-image:url(./playerIcons.png);z-index:4;position:absolute}
+#video_wrap .h5_player_pause{width:93px;height:93px;top:50%;margin-left:-46px;margin-top:-46px;}
+#video_wrap .h5_player_waiting{width:80px;height:100px;top:50%;margin-left:-40px;margin-top:-50px;background-position:left -128px}
+#video_wrap .h5_player_warning{width:90px;height:90px;top:50%;margin-left:-45px;margin-top:-45px;background-position:left -254px}
+#video_wrap .h5_player_process_bar,#video_wrap .h5_player_process_bar_hover{width:100%;height:18px;position:absolute;bottom:30px;left:0}
+#video_wrap .h5_player_process_bar .process_bg,#video_wrap .h5_player_process_bar .process_line{position:absolute;height:10px;width:100%;left:0;bottom:0}
+#video_wrap .h5_player_process_bar .process_btn{position:absolute;width:44px;height:44px;bottom:-20px}
+*/
 /**
  * @author waterTian
  */
@@ -263,12 +285,11 @@ TY.EventDispatcher.prototype = {
  */
 
 TY.TYskin = function(_v, _d, _l) {
-	_self = this;
+	_TYskin = this;
 
-	_video = _v;
-	_dom = _d;
+	var _video = _v;
+	var _dom = _d;
 	_isLive = _l;
-
 
 	_dom.append(TY.templates.replay);
 
@@ -295,8 +316,19 @@ TY.TYskin = function(_v, _d, _l) {
 
 
 	if (_isLive) {
+		document.querySelector(".h5_player_tip_btn").addEventListener("touchmove", function(e) {
+			e.preventDefault(); //取消事件的默认动作
+			e.stopPropagation(); //不再派发事件
+		});
+		document.querySelector(".h5_player_tip_btn").addEventListener("touchend", function(e) {
+			e.preventDefault(); //取消事件的默认动作
+			e.stopPropagation(); //不再派发事件
+			_video.paused ? _video.play() : _video.pause();
+			_TYskin.dispatchEvent("VidoeClick", _TYskin);
+		});
 		document.querySelector(".h5_player_pause").addEventListener("touchend", function(e) {
-			e.stopPropagation();
+			e.preventDefault(); //取消事件的默认动作
+			e.stopPropagation(); //不再派发事件
 			_video.play();
 		});
 		process_bar.hide();
@@ -327,36 +359,43 @@ TY.TYskin = function(_v, _d, _l) {
 	var _sy, _my;
 
 	function tipTouchstart(e) {
-		e.stopPropagation();
+		e.preventDefault(); //取消事件的默认动作
+		e.stopPropagation(); //不再派发事件
 		_sy = e.touches[0].pageY;
 	}
 
 	function tipTouchmove(e) {
-		e.stopPropagation();
+		e.preventDefault(); //取消事件的默认动作
+		e.stopPropagation(); //不再派发事件
 		_my = e.touches[0].pageY;
 	}
 
 	function tipTouchend(e) {
-		e.stopPropagation();
+		e.preventDefault(); //取消事件的默认动作
+		e.stopPropagation(); //不再派发事件
 		(Math.abs(Math.abs(_my) - Math.abs(_sy)) <= 5 || 0 == _my) ?
 		(_video.paused ? _video.play() : _video.pause()) :
-		((process_bar.css("display") == "none") ? _self.showProcessBar() : _self.hideProcessBar());
+		((process_bar.css("display") == "none") ? _TYskin.showProcessBar() : _TYskin.hideProcessBar());
 		_sy = 0;
 		_my = 0;
+
+		_TYskin.dispatchEvent("VidoeClick", _TYskin);
 	}
 
 
 	var l;
-	isProcessing = 0;
+	_isProcessing = 0;
+	_isWaiting = 0;
 
 	function processTouchstart(e) {
 		e.stopPropagation();
-		isProcessing = 1;
+		_isProcessing = 1;
 	}
 
 	function processTouchmove(e) {
-		e.stopPropagation();
-		isProcessing = 1;
+		e.preventDefault(); //取消事件的默认动作
+		e.stopPropagation(); //不再派发事件
+		_isProcessing = 1;
 
 		var t = $(".process_btn"),
 			i = $(".h5_player_process_bar"),
@@ -373,7 +412,7 @@ TY.TYskin = function(_v, _d, _l) {
 
 	function processTouchend(e) {
 		e.stopPropagation();
-		isProcessing = 0;
+		_isProcessing = 0;
 		// $(".h5_player_process_forward_wrap").hide();
 		// $(".h5_player_process_forward").hide();
 		var t = parseInt(_video.duration),
@@ -388,6 +427,8 @@ TY.TYskin = function(_v, _d, _l) {
 	}
 
 	function barTouchmove(e) {
+		e.preventDefault(); //取消事件的默认动作
+		e.stopPropagation(); //不再派发事件
 		_bar_x = e.touches[0].pageX;
 	}
 
@@ -416,7 +457,7 @@ TY.TYskin = function(_v, _d, _l) {
 	}
 
 	hide_icon = function() {
-		pause.hide();
+		_TYskin.hidePause();
 		waiting.hide();
 		warning.hide();
 		tip_btn.css("margin-left", "-1px")
@@ -427,11 +468,13 @@ TY.TYskin.prototype = {
 	constructor: TY.TYskin,
 	isFirstOpen: true,
 	showPause: function() {
-		if (isProcessing) return !1;
+		if (_isProcessing) return !1;
+		if (_isWaiting) return !1;
 		pause.show();
-		pause.css("opacity", 1);
+		pause.css("opacity", 0);
 		pause.css("transform", 'scale(.1,.1)');
 		pause.animate({
+			opacity: 1,
 			transform: 'scale(1,1)'
 		}, 100, 'ease-out')
 	},
@@ -445,7 +488,7 @@ TY.TYskin.prototype = {
 	},
 	showProcessBar: function() {
 		process_bar.show();
-		_self.updateBar();
+		_TYskin.updateBar();
 		process_bar.animate({
 			transform: 'translate(0px,0px)'
 		}, 200, 'ease-out')
@@ -459,19 +502,36 @@ TY.TYskin.prototype = {
 	},
 	updateBar: function() {
 		if (_isLive) return !1;
-		if (isProcessing) return !1;
+		if (_isProcessing) return !1;
 		var e = parseInt(_video.duration),
 			t = parseInt(_video.currentTime),
 			n = ($(".process_btn"), parseInt($(".process_bg").width() - $(".process_btn").width() / 2 + 12) * t / e);
 		setProcess(n);
 	},
 	showWaiting: function() {
-		if (isProcessing) return !1;
+		if (_isProcessing) return !1;
 		hide_icon();
+		_isWaiting = 1;
 		waiting.show();
+		waiting.css("opacity", 0);
+		waiting.css("transform", 'scale(.1,.1)');
+		waiting.animate({
+			opacity: 1,
+			transform: 'scale(1,1)'
+		}, 100, 'ease-out')
 	},
+	hideWaiting: function() {
+		_isWaiting = 0;
+		waiting.animate({
+			opacity: 0,
+			transform: 'scale(2,2)'
+		}, 100, 'ease-out', function() {
+			waiting.hide();
+		})
+	},
+
 	showWarning: function() {
-		if (isProcessing) return !1;
+		if (_isProcessing) return !1;
 		hide_icon();
 		warning.show();
 	},
@@ -484,7 +544,7 @@ TY.extend(TY.TYskin.prototype, TY.EventDispatcher.prototype);
  * @author waterTian
  */
 TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
-    _self = this;
+    _TYplayer = this;
 
     _dom = $(divID);
 
@@ -499,7 +559,16 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
     _player.append(TY.videoBgTemplate);
     player_bg = $(".h5_player_bg");
     player_bg.css("background-image", 'url(' + videoBg + ')');
+    showPlayerBg();
 
+    function showPlayerBg() {
+        player_bg.css("opacity", 0);
+        player_bg.css("transform", 'scale(1.5,1.5)');
+        player_bg.animate({
+            opacity: 1,
+            transform: 'scale(1,1)'
+        }, 200, 'ease-out')
+    }
     function hildPlayerBg() {
         player_bg.animate({
             opacity: 0,
@@ -520,6 +589,11 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
     //skin
     _skin = new TY.TYskin(_video, _dom ,isLive);
     _skin.showPause();
+    _skin.addEventListener("VidoeClick",function(e)
+    {
+        _TYplayer.dispatchEvent("VidoeClick",e);
+    })
+
 
     function tyLog(_t) {
         if (!TY.Debug) return;
@@ -552,8 +626,8 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
             _skin.showWaiting();
         }, false);
         _video.addEventListener("canplay", function() {
-            tyLog("canplay");
-            $(".h5_player_waiting").hide();
+            tyLog("canplay")
+            _skin.hideWaiting();
             if (TY.isIphone) hildPlayerBg();
             setVideoPostion(_video.clientHeight);
         }, false);
@@ -578,7 +652,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
         }, false);
         _video.addEventListener("ended", function() {
             tyLog("ended");
-            _self.dispatchEvent("VidoeEnd", _self);
+            _TYplayer.dispatchEvent("VidoeEnd", _TYplayer);
         }, false);
         _video.addEventListener("progress", function() {}, false);
         _video.addEventListener("suspend", function() {}, false);
@@ -618,7 +692,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
         }
         tyLog("player VidoeError:" + err.error);
 
-        _self.dispatchEvent("VidoeError", err);
+        _TYplayer.dispatchEvent("VidoeError", err);
 
         _skin.showWarning();
         _skin.showWarning();
@@ -633,6 +707,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
 TY.TYplayer.prototype = {
     constructor: TY.TYplayer,
     removeThis: function() {
+        document.addEventListener("touchmove", function(e) {});
         _skin.removeThis();
         _video.remove();
         var videoBox = _dom.get(0)
