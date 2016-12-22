@@ -1,8 +1,10 @@
 <html>
     <head>
         <title>TYpalyer</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+        <meta charset="utf-8" />
+        <meta name="viewport" id="viewport"  content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <style>
             body {
                 font-family: Monospace;
@@ -20,17 +22,20 @@
     </div>
 
 
-<!--     <script src="lib/zepto.min.js"></script>
+    <script src="lib/zepto.min.js"></script>
     <script src="src/core/TY.js"></script>
     <script src="src/core/utils.js"></script>
     <script src="src/core/EventDispatcher.js"></script>
     <script src="src/TYskin.js"></script>
-    <script src="src/TYplayer.js"></script> -->
+    <script src="src/TYplayer.js"></script>
 
 
-    <script src="./build/TYplayer_v1.min.js"></script>
+    <!-- <script src="./build/TYplayer_v1.min.js"></script> -->
 
     <script>
+        console.log(TY.dpr);
+        $("#viewport")[0].content="width=device-width, minimum-scale="+1/TY.dpr+", maximum-scale="+1/TY.dpr;
+
 
         var videoUrl1 = 'http://pili-live-hls.appmagics.cn/appmagics-avatar-live/785192071480585578293.m3u8';
         var videoUrl3 = 'http://alcdn.hls.xiaoka.tv/2016121/4c8/834/JQzoRZZaz2zJ5GbS/index.m3u8';
@@ -38,6 +43,8 @@
 
         var videoBg='./p.jpg';
         var isLive=0;
+
+
         
         var player = new TY.TYplayer(videoUrl,"#video_wrap",videoBg,isLive);
         player.addEventListener("VidoeError",function(e)

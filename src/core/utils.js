@@ -7,19 +7,16 @@ TY.templates = {
 }
 
 TY.videoUrl = "";
-TY.videoDiv ='<div class="h5_player" style="width: 100%; height: 100%; margin: 0;padding: 0; border: 0;font: inherit; vertical-align: baseline;"></div>';
+TY.videoDiv = '<div class="h5_player" style="width: 100%; height: 100%; margin: 0;padding: 0; border: 0;font: inherit; vertical-align: baseline;"></div>';
 TY.videoTemplate = '<video id="video" autoplay=""  webkit-playsinline="true" x-webkit-airplay="true" x5-video-player-type="h5" playsinline width="100%"  preload="auto" poster="" src="' + TY.videoUrl + '" ></video>';
 TY.videoBgTemplate = '<div class="h5_player_bg" style="position:absolute;width:100%;height:100%;top:0;background-position:center;background-size: cover; background-color:transparent;;background-image:url()"></div>';
 
-
-
-
+TY.dpr = window.devicePixelRatio || 1;
 
 TY.isAndroid = /Android/i.test(navigator.userAgent);
 TY.isIphone = /iphone/i.test(navigator.userAgent);
 TY.isChrome = /chrome\//i.test(navigator.userAgent);
 TY.isWeixin = /MicroMessenger\//i.test(navigator.userAgent);
-
 
 TY.isMobileDevice = isMobileDevice;
 
@@ -34,12 +31,6 @@ function isMobileDevice() {
 	return false;
 }
 
-
-TY.cssremConfig = {
-	"px_to_rem": 75,
-	"max_rem_fraction_length": 6,
-	"available_file_types": [".css", ".less", ".sass"]
-}
 
 
 /*
