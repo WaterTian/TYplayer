@@ -162,19 +162,16 @@ TY.templates = {
 }
 
 TY.videoUrl = "";
-TY.videoDiv ='<div class="h5_player" style="width: 100%; height: 100%; margin: 0;padding: 0; border: 0;font: inherit; vertical-align: baseline;"></div>';
+TY.videoDiv = '<div class="h5_player" style="width: 100%; height: 100%; margin: 0;padding: 0; border: 0;font: inherit; vertical-align: baseline;"></div>';
 TY.videoTemplate = '<video id="video" autoplay=""  webkit-playsinline="true" x-webkit-airplay="true" x5-video-player-type="h5" playsinline width="100%"  preload="auto" poster="" src="' + TY.videoUrl + '" ></video>';
 TY.videoBgTemplate = '<div class="h5_player_bg" style="position:absolute;width:100%;height:100%;top:0;background-position:center;background-size: cover; background-color:transparent;;background-image:url()"></div>';
 
-
-
-
+TY.dpr = window.devicePixelRatio || 1;
 
 TY.isAndroid = /Android/i.test(navigator.userAgent);
 TY.isIphone = /iphone/i.test(navigator.userAgent);
 TY.isChrome = /chrome\//i.test(navigator.userAgent);
 TY.isWeixin = /MicroMessenger\//i.test(navigator.userAgent);
-
 
 TY.isMobileDevice = isMobileDevice;
 
@@ -189,12 +186,6 @@ function isMobileDevice() {
 	return false;
 }
 
-
-TY.cssremConfig = {
-	"px_to_rem": 75,
-	"max_rem_fraction_length": 6,
-	"available_file_types": [".css", ".less", ".sass"]
-}
 
 
 /*
@@ -299,16 +290,23 @@ TY.TYskin = function(_v, _d, _l) {
 	tip_btn = $(".h5_player_tip_btn");
 	process_bar = $(".h5_player_process_bar");
 
-	tip_btn.height(tip_btn.height() - 80);
-	pause.css("top", (tip_btn.height() + 40) / 2);
-	waiting.css("top", (tip_btn.height() + 40) / 2);
-	warning.css("top", (tip_btn.height() + 40) / 2);
+	tip_btn.height(tip_btn.height() - 80*TY.dpr);
+	pause.css("top", (tip_btn.height() + 40*TY.dpr) / 2);
+	waiting.css("top", (tip_btn.height() + 40*TY.dpr) / 2);
+	warning.css("top", (tip_btn.height() + 40*TY.dpr) / 2);
 
 
 	process_bar.css({
-		width: $(window).width() - 40,
-		left: 20
+		width: $(window).width() - 40*TY.dpr,
+		left: 20*TY.dpr
 	});
+
+
+
+	process_bar.find(".process_btn").css("transform", 'scale('+TY.dpr+','+TY.dpr+')');
+	process_bar.find(".process_bg").css("transform", 'scaleY('+TY.dpr+')');
+	process_bar.find(".process_line").css("transform", 'scaleY('+TY.dpr+')');
+
 	process_bar.find(".process_bg").css("width", process_bar.width());
 	process_bar.find(".process_line").css("width", 0);
 
@@ -475,13 +473,13 @@ TY.TYskin.prototype = {
 		pause.css("transform", 'scale(.1,.1)');
 		pause.animate({
 			opacity: 1,
-			transform: 'scale(1,1)'
+			transform: 'scale('+TY.dpr+','+TY.dpr+')'
 		}, 100, 'ease-out')
 	},
 	hidePause: function() {
 		pause.animate({
 			opacity: 0,
-			transform: 'scale(2,2)'
+			transform: 'scale('+2*TY.dpr+','+2*TY.dpr+')'
 		}, 100, 'ease-out', function() {
 			pause.hide();
 		})
@@ -495,7 +493,7 @@ TY.TYskin.prototype = {
 	},
 	hideProcessBar: function() {
 		process_bar.animate({
-			transform: 'translate(0px,60px)'
+			transform: 'translate(0px,'+80*TY.dpr+'px)'
 		}, 200, 'ease-out', function() {
 			process_bar.hide();
 		})
@@ -517,14 +515,14 @@ TY.TYskin.prototype = {
 		waiting.css("transform", 'scale(.1,.1)');
 		waiting.animate({
 			opacity: 1,
-			transform: 'scale(1,1)'
+			transform: 'scale('+TY.dpr+','+TY.dpr+')'
 		}, 100, 'ease-out')
 	},
 	hideWaiting: function() {
 		_isWaiting = 0;
 		waiting.animate({
 			opacity: 0,
-			transform: 'scale(2,2)'
+			transform: 'scale('+2*TY.dpr+','+2*TY.dpr+')'
 		}, 100, 'ease-out', function() {
 			waiting.hide();
 		})
