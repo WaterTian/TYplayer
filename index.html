@@ -34,6 +34,7 @@
 
     <script>
         console.log(TY.dpr);
+        if(TY.isAndroid)TY.dpr=2;
         $("#viewport")[0].content="width=device-width, minimum-scale="+1/TY.dpr+", maximum-scale="+1/TY.dpr;
 
 

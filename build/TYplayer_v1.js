@@ -541,12 +541,13 @@ TY.extend(TY.TYskin.prototype, TY.EventDispatcher.prototype);
 /**
  * @author waterTian
  */
-TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
+TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     _TYplayer = this;
 
     _dom = $(divID);
 
     // if (!TY.isMobileDevice) return;
+    if (TY.isAndroid) TY.dpr = 1;
 
     //////
     _dom.append(TY.videoDiv);
@@ -567,6 +568,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
             transform: 'scale(1,1)'
         }, 200, 'ease-out')
     }
+
     function hildPlayerBg() {
         player_bg.animate({
             opacity: 0,
@@ -585,11 +587,10 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
     addVideoEvents(_video);
 
     //skin
-    _skin = new TY.TYskin(_video, _dom ,isLive);
+    _skin = new TY.TYskin(_video, _dom, isLive);
     _skin.showPause();
-    _skin.addEventListener("VidoeClick",function(e)
-    {
-        _TYplayer.dispatchEvent("VidoeClick",e);
+    _skin.addEventListener("VidoeClick", function(e) {
+        _TYplayer.dispatchEvent("VidoeClick", e);
     })
 
 
@@ -634,7 +635,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
             if (!_skin.isFirstOpen) {
                 hildPlayerBg();
             }
-            
+
         }, false);
         _video.addEventListener("playing", function() {
             tyLog("playing");
@@ -642,7 +643,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg ,isLive) {
                 _skin.hidePause();
             }
             _skin.isFirstOpen = false;
-            
+
         }, false);
         _video.addEventListener("pause", function() {
             tyLog("pause");
