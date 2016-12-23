@@ -48,13 +48,11 @@ TY.TYskin = function(_v, _d, _l) {
 			e.stopPropagation(); //不再派发事件
 		});
 		document.querySelector(".h5_player_tip_btn").addEventListener("touchend", function(e) {
-			e.preventDefault(); //取消事件的默认动作
 			e.stopPropagation(); //不再派发事件
 			_video.paused ? _video.play() : _video.pause();
 			_TYskin.dispatchEvent("VidoeClick", _TYskin);
 		});
 		document.querySelector(".h5_player_pause").addEventListener("touchend", function(e) {
-			e.preventDefault(); //取消事件的默认动作
 			e.stopPropagation(); //不再派发事件
 			_video.play();
 		});
@@ -86,7 +84,6 @@ TY.TYskin = function(_v, _d, _l) {
 	var _sy, _my;
 
 	function tipTouchstart(e) {
-		e.preventDefault(); //取消事件的默认动作
 		e.stopPropagation(); //不再派发事件
 		_sy = e.touches[0].pageY;
 	}
@@ -98,7 +95,6 @@ TY.TYskin = function(_v, _d, _l) {
 	}
 
 	function tipTouchend(e) {
-		e.preventDefault(); //取消事件的默认动作
 		e.stopPropagation(); //不再派发事件
 		(Math.abs(Math.abs(_my) - Math.abs(_sy)) <= 5 || 0 == _my) ?
 		(_video.paused ? _video.play() : _video.pause()) :
