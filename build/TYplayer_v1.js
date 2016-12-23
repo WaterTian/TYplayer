@@ -156,9 +156,7 @@ TY.extend = function(origin, add)
 TY.templates = {
 	svg_template: '<div style="display:none"><svg><symbol id="process_bg"><line x1="0" y1="2" x2="1000" y2="2" style="stroke:#fff; stroke-width:2; fill-opacity:0.5"/></symbol><symbol id="process"><line x1="0" y1="2" x2="1000" y2="2" style="stroke:#7c85db;stroke-width:2"/></symbol><symbol id="process_btn"><circle cx="12" cy="17" r="12" style="fill:#fff; fill-opacity:0.5"/><circle cx="12" cy="17" r="6" style="fill:#fff"/></symbol><symbol id="play"><polyline class="play" points="0,0  14,9  0,18" style="stroke:#fff;fill:#fff;"/></symbol><symbol id="pause"><line class="pause" x1="2" y1="0" x2="2" y2="18" stroke="#fff" stroke-width="5" /><line class="pause" x1="11" y1="0" x2="11" y2="18" stroke="#fff" stroke-width="5" /></symbol><symbol id="control_btn_bg"><circle cx="25" cy="25" r="25" style="fill:#000; fill-opacity:0.3"/></symbol></svg></div>',
 
-	replay: '<div class="h5_player_tip_btn" style="background-size:100% 100%;width:100%;height:100%;position:absolute;left:0;top:0;z-index:20"><div class="h5_player_pause" style="display:none;left:50%;background-image:url(./playerIcons.png);z-index:4;position:absolute;width:93px;height:93px;top:50%;margin-left:-46px;margin-top:-46px;"></div><div class="h5_player_waiting" style="display:none;left:50%;background-image:url(./playerIcons.png);z-index:4;position:absolute;width:80px;height:100px;top:50%;margin-left:-40px;margin-top:-50px;background-position:left -128px"></div><div class="h5_player_warning" style="display:none;left:50%;background-image:url(./playerIcons.png);z-index:4;position:absolute;width:90px;height:90px;top:50%;margin-left:-45px;margin-top:-45px;background-position:left -254px"></div></div><div class="h5_player_process_bar" style="width:100%;height:18px;position:absolute;bottom:30px;left:0;z-index:20"><svg class="process_bg" style="position:absolute;height:10px;width:100%;left:0;bottom:0"><use xlink:href="#process_bg"/></svg><svg class="process_line" style="position:absolute;height:10px;width:100%;left:0;bottom:0"><use xlink:href="#process"/></svg><svg class="process_btn" style="position:absolute;width:44px;height:44px;bottom:-20px"><use xlink:href="#process_btn"/></svg></div>',
-
-	liveplay: '<div class="h5_player_tip_btn"><div class="h5_player_pause" style="display:none"></div><div class="h5_player_waiting" style="display:none"></div><div class="h5_player_warning" style="display:none"></div></div><div class="h5_player_control_bar" style="display:none"><svg class="h5_player_control_btn"><polyline class="play" points="0,0  14,9  0,18"style="stroke:#444844;fill:#444844; display:none"/><line class="pause" x1="2" y1="0" x2="2" y2="18" stroke="#444844" stroke-width="5" /><line class="pause" x1="11" y1="0" x2="11" y2="18" stroke="#444844" stroke-width="5" /></svg><div class="h5_player_control_time"><span class="now">00:00</span></div></div>'
+	replay: '<div class="h5_player_tip_btn" style="background-size:100% 100%;width:100%;height:100%;position:absolute;left:0;top:0;z-index:20"><div class="h5_player_pause" style="display:none;left:50%;background-image:url(./playerIcons.png);z-index:4;position:absolute;width:90px;height:90px;top:50%;margin-left:-45px;margin-top:-45px;"></div><div class="h5_player_waiting" style="display:none;left:50%;background-image:url(./playerIcons.png);z-index:4;position:absolute;width:90px;height:100px;top:50%;margin-left:-45px;margin-top:-50px;background-position:left -90px"></div><div class="h5_player_warning" style="display:none;left:50%;background-image:url(./playerIcons.png);z-index:4;position:absolute;width:90px;height:130px;top:50%;margin-left:-45px;margin-top:-65px;background-position:left -190px"></div></div><div class="h5_player_process_bar" style="width:100%;height:18px;position:absolute;bottom:30px;left:0;z-index:20"><svg class="process_bg" style="position:absolute;height:10px;width:100%;left:0;bottom:0"><use xlink:href="#process_bg"/></svg><svg class="process_line" style="position:absolute;height:10px;width:100%;left:0;bottom:0"><use xlink:href="#process"/></svg><svg class="process_btn" style="position:absolute;width:44px;height:44px;bottom:-20px"><use xlink:href="#process_btn"/></svg></div><div class="h5_player_process_forward" style="display:none;position:absolute;left:50%;top:65%;width:100px;height:50px;margin-top:-25px;margin-left:-50px"><div class="bg" style="filter:alpha(opacity=30);-moz-opacity:.3;-khtml-opacity:.3;opacity:.3;background-color:#fff;width:100px;height:50px;position:absolute;left:50%;margin-top:-22px;margin-left:-50px;border-radius:5px;-webkit-border-radius:5px;padding:20px 0 15px"></div><div class="forward" style="width:40px;height:32px;background-image:url(./playerIcons.png);background-position:left -330px;margin:0 auto;filter:alpha(opacity=60);-moz-opacity:.6;-khtml-opacity:.6;opacity:.6"></div><div class="time" style="padding:5px;text-align:center;color:#fff;font-size:14px">00:00</div></div>'
 }
 
 TY.videoUrl = "";
@@ -184,6 +182,15 @@ function isMobileDevice() {
 		return true;
 	}
 	return false;
+}
+
+TY.formatTime = function(e) {
+	var t = "",
+		n = parseInt(e),
+		r = n % 60,
+		i = parseInt(n / 60),
+		o = 0;
+	return i > 60 && (o = parseInt(i / 60), i = parseInt(i % 60)), 10 > i && (i = "0" + i), 10 > r && (r = "0" + r), 10 > o && (o = "0" + o), t = o + ":" + i + ":" + r
 }
 
 
@@ -289,26 +296,28 @@ TY.TYskin = function(_v, _d, _l) {
 	warning = $(".h5_player_warning");
 	tip_btn = $(".h5_player_tip_btn");
 	process_bar = $(".h5_player_process_bar");
+	process_forward = $(".h5_player_process_forward");
 
-	tip_btn.height(tip_btn.height() - 80*TY.dpr);
-	pause.css("top", (tip_btn.height() + 40*TY.dpr) / 2);
-	waiting.css("top", (tip_btn.height() + 40*TY.dpr) / 2);
-	warning.css("top", (tip_btn.height() + 40*TY.dpr) / 2);
-
+	tip_btn.height(tip_btn.height() - 80 * TY.dpr);
+	pause.css("top", (tip_btn.height() + 40 * TY.dpr) / 2);
+	waiting.css("top", (tip_btn.height() + 40 * TY.dpr) / 2);
+	warning.css("top", (tip_btn.height() + 40 * TY.dpr) / 2);
 
 	process_bar.css({
-		width: $(window).width() - 40*TY.dpr,
-		left: 20*TY.dpr
+		width: $(window).width() - 40 * TY.dpr,
+		left: 20 * TY.dpr
 	});
 
-
-
-	process_bar.find(".process_btn").css("transform", 'scale('+TY.dpr+','+TY.dpr+')');
-	process_bar.find(".process_bg").css("transform", 'scaleY('+TY.dpr+')');
-	process_bar.find(".process_line").css("transform", 'scaleY('+TY.dpr+')');
+	process_bar.find(".process_btn").css("transform", 'scale(' + TY.dpr + ',' + TY.dpr + ')');
+	process_bar.find(".process_bg").css("transform", 'scaleY(' + TY.dpr + ')');
+	process_bar.find(".process_line").css("transform", 'scaleY(' + TY.dpr + ')');
 
 	process_bar.find(".process_bg").css("width", process_bar.width());
 	process_bar.find(".process_line").css("width", 0);
+
+	process_forward.css("transform", 'scale(' + TY.dpr + ',' + TY.dpr + ')');
+	
+
 
 	_dom.append(TY.templates.svg_template);
 
@@ -382,6 +391,7 @@ TY.TYskin = function(_v, _d, _l) {
 
 
 	var l;
+	var forwardNum;
 	_isProcessing = 0;
 	_isWaiting = 0;
 
@@ -401,18 +411,24 @@ TY.TYskin = function(_v, _d, _l) {
 		0 > n ? n = 0 : n > i.width() - t.width() + parseInt(t.width()) / 2 && (n = i.width() - t.width() + parseInt(t.width()) / 2);
 		l = n;
 		setProcess(n);
-		// $(".h5_player_process_forward_wrap").show();
-		// $(".h5_player_process_forward").show();
-		// var _duration = parseInt(o.get_attributes("duration")),
-		//     s = _duration * n / parseInt($(".process_bg").width());
-		// $(".h5_player_process_forward .time").html(a.format_time(s));
+
+		//forward div
+		$(".h5_player_process_forward").show();
+
+		var _duration = parseInt(_video.duration);
+		var s = _duration * n / parseInt($(".process_bg").width());
+		$(".h5_player_process_forward .time").html(TY.formatTime(s));
+		if(s>forwardNum) $(".h5_player_process_forward .forward").css("transform", 'rotate(0deg)');
+		if(s<forwardNum) $(".h5_player_process_forward .forward").css("transform", 'rotate(180deg)');
+		forwardNum = s;
+
 	}
 
 	function processTouchend(e) {
 		e.stopPropagation();
 		_isProcessing = 0;
-		// $(".h5_player_process_forward_wrap").hide();
-		// $(".h5_player_process_forward").hide();
+		$(".h5_player_process_forward").hide();
+
 		var t = parseInt(_video.duration),
 			n = t * l / parseInt($(".process_bg").width());
 		seek(n);
@@ -473,13 +489,13 @@ TY.TYskin.prototype = {
 		pause.css("transform", 'scale(.1,.1)');
 		pause.animate({
 			opacity: 1,
-			transform: 'scale('+TY.dpr+','+TY.dpr+')'
+			transform: 'scale(' + TY.dpr + ',' + TY.dpr + ')'
 		}, 100, 'ease-out')
 	},
 	hidePause: function() {
 		pause.animate({
 			opacity: 0,
-			transform: 'scale('+2*TY.dpr+','+2*TY.dpr+')'
+			transform: 'scale(' + 2 * TY.dpr + ',' + 2 * TY.dpr + ')'
 		}, 100, 'ease-out', function() {
 			pause.hide();
 		})
@@ -493,7 +509,7 @@ TY.TYskin.prototype = {
 	},
 	hideProcessBar: function() {
 		process_bar.animate({
-			transform: 'translate(0px,'+80*TY.dpr+'px)'
+			transform: 'translate(0px,' + 80 * TY.dpr + 'px)'
 		}, 200, 'ease-out', function() {
 			process_bar.hide();
 		})
@@ -515,14 +531,14 @@ TY.TYskin.prototype = {
 		waiting.css("transform", 'scale(.1,.1)');
 		waiting.animate({
 			opacity: 1,
-			transform: 'scale('+TY.dpr+','+TY.dpr+')'
+			transform: 'scale(' + TY.dpr + ',' + TY.dpr + ')'
 		}, 100, 'ease-out')
 	},
 	hideWaiting: function() {
 		_isWaiting = 0;
 		waiting.animate({
 			opacity: 0,
-			transform: 'scale('+2*TY.dpr+','+2*TY.dpr+')'
+			transform: 'scale(' + 2 * TY.dpr + ',' + 2 * TY.dpr + ')'
 		}, 100, 'ease-out', function() {
 			waiting.hide();
 		})
@@ -532,6 +548,12 @@ TY.TYskin.prototype = {
 		if (_isProcessing) return !1;
 		hide_icon();
 		warning.show();
+		warning.css("opacity", 0);
+		warning.css("transform", 'scale(.1,.1)');
+		warning.animate({
+			opacity: 1,
+			transform: 'scale(' + TY.dpr + ',' + TY.dpr + ')'
+		}, 100, 'ease-out')
 	},
 	removeThis: function() {
 

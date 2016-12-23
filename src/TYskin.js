@@ -16,26 +16,28 @@ TY.TYskin = function(_v, _d, _l) {
 	warning = $(".h5_player_warning");
 	tip_btn = $(".h5_player_tip_btn");
 	process_bar = $(".h5_player_process_bar");
+	process_forward = $(".h5_player_process_forward");
 
-	tip_btn.height(tip_btn.height() - 80*TY.dpr);
-	pause.css("top", (tip_btn.height() + 40*TY.dpr) / 2);
-	waiting.css("top", (tip_btn.height() + 40*TY.dpr) / 2);
-	warning.css("top", (tip_btn.height() + 40*TY.dpr) / 2);
-
+	tip_btn.height(tip_btn.height() - 80 * TY.dpr);
+	pause.css("top", (tip_btn.height() + 40 * TY.dpr) / 2);
+	waiting.css("top", (tip_btn.height() + 40 * TY.dpr) / 2);
+	warning.css("top", (tip_btn.height() + 40 * TY.dpr) / 2);
 
 	process_bar.css({
-		width: $(window).width() - 40*TY.dpr,
-		left: 20*TY.dpr
+		width: $(window).width() - 40 * TY.dpr,
+		left: 20 * TY.dpr
 	});
 
-
-
-	process_bar.find(".process_btn").css("transform", 'scale('+TY.dpr+','+TY.dpr+')');
-	process_bar.find(".process_bg").css("transform", 'scaleY('+TY.dpr+')');
-	process_bar.find(".process_line").css("transform", 'scaleY('+TY.dpr+')');
+	process_bar.find(".process_btn").css("transform", 'scale(' + TY.dpr + ',' + TY.dpr + ')');
+	process_bar.find(".process_bg").css("transform", 'scaleY(' + TY.dpr + ')');
+	process_bar.find(".process_line").css("transform", 'scaleY(' + TY.dpr + ')');
 
 	process_bar.find(".process_bg").css("width", process_bar.width());
 	process_bar.find(".process_line").css("width", 0);
+
+	process_forward.css("transform", 'scale(' + TY.dpr + ',' + TY.dpr + ')');
+	
+
 
 	_dom.append(TY.templates.svg_template);
 
@@ -109,6 +111,7 @@ TY.TYskin = function(_v, _d, _l) {
 
 
 	var l;
+	var forwardNum;
 	_isProcessing = 0;
 	_isWaiting = 0;
 
@@ -128,18 +131,24 @@ TY.TYskin = function(_v, _d, _l) {
 		0 > n ? n = 0 : n > i.width() - t.width() + parseInt(t.width()) / 2 && (n = i.width() - t.width() + parseInt(t.width()) / 2);
 		l = n;
 		setProcess(n);
-		// $(".h5_player_process_forward_wrap").show();
-		// $(".h5_player_process_forward").show();
-		// var _duration = parseInt(o.get_attributes("duration")),
-		//     s = _duration * n / parseInt($(".process_bg").width());
-		// $(".h5_player_process_forward .time").html(a.format_time(s));
+
+		//forward div
+		$(".h5_player_process_forward").show();
+
+		var _duration = parseInt(_video.duration);
+		var s = _duration * n / parseInt($(".process_bg").width());
+		$(".h5_player_process_forward .time").html(TY.formatTime(s));
+		if(s>forwardNum) $(".h5_player_process_forward .forward").css("transform", 'rotate(0deg)');
+		if(s<forwardNum) $(".h5_player_process_forward .forward").css("transform", 'rotate(180deg)');
+		forwardNum = s;
+
 	}
 
 	function processTouchend(e) {
 		e.stopPropagation();
 		_isProcessing = 0;
-		// $(".h5_player_process_forward_wrap").hide();
-		// $(".h5_player_process_forward").hide();
+		$(".h5_player_process_forward").hide();
+
 		var t = parseInt(_video.duration),
 			n = t * l / parseInt($(".process_bg").width());
 		seek(n);
@@ -200,13 +209,13 @@ TY.TYskin.prototype = {
 		pause.css("transform", 'scale(.1,.1)');
 		pause.animate({
 			opacity: 1,
-			transform: 'scale('+TY.dpr+','+TY.dpr+')'
+			transform: 'scale(' + TY.dpr + ',' + TY.dpr + ')'
 		}, 100, 'ease-out')
 	},
 	hidePause: function() {
 		pause.animate({
 			opacity: 0,
-			transform: 'scale('+2*TY.dpr+','+2*TY.dpr+')'
+			transform: 'scale(' + 2 * TY.dpr + ',' + 2 * TY.dpr + ')'
 		}, 100, 'ease-out', function() {
 			pause.hide();
 		})
@@ -220,7 +229,7 @@ TY.TYskin.prototype = {
 	},
 	hideProcessBar: function() {
 		process_bar.animate({
-			transform: 'translate(0px,'+80*TY.dpr+'px)'
+			transform: 'translate(0px,' + 80 * TY.dpr + 'px)'
 		}, 200, 'ease-out', function() {
 			process_bar.hide();
 		})
@@ -242,14 +251,14 @@ TY.TYskin.prototype = {
 		waiting.css("transform", 'scale(.1,.1)');
 		waiting.animate({
 			opacity: 1,
-			transform: 'scale('+TY.dpr+','+TY.dpr+')'
+			transform: 'scale(' + TY.dpr + ',' + TY.dpr + ')'
 		}, 100, 'ease-out')
 	},
 	hideWaiting: function() {
 		_isWaiting = 0;
 		waiting.animate({
 			opacity: 0,
-			transform: 'scale('+2*TY.dpr+','+2*TY.dpr+')'
+			transform: 'scale(' + 2 * TY.dpr + ',' + 2 * TY.dpr + ')'
 		}, 100, 'ease-out', function() {
 			waiting.hide();
 		})
@@ -259,6 +268,12 @@ TY.TYskin.prototype = {
 		if (_isProcessing) return !1;
 		hide_icon();
 		warning.show();
+		warning.css("opacity", 0);
+		warning.css("transform", 'scale(.1,.1)');
+		warning.animate({
+			opacity: 1,
+			transform: 'scale(' + TY.dpr + ',' + TY.dpr + ')'
+		}, 100, 'ease-out')
 	},
 	removeThis: function() {
 
