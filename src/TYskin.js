@@ -147,7 +147,7 @@ TY.TYskin = function(_v, _d, _l) {
 
 		var t = parseInt(_video.duration),
 			n = t * l / parseInt($(".process_bg").width());
-		seek(n);
+		_TYskin.seek(n);
 	}
 
 	var _bar_x;
@@ -170,7 +170,7 @@ TY.TYskin = function(_v, _d, _l) {
 		setProcess(n);
 		var r = parseInt(_video.duration),
 			s = r * n / parseInt($(".process_bg").width() - t.width() + parseInt(t.width()) / 2);
-		seek(s);
+		_TYskin.seek(s);
 		_bar_x = 0;
 	}
 
@@ -180,10 +180,6 @@ TY.TYskin = function(_v, _d, _l) {
 		}), $(".process_btn").css({
 			left: e
 		})
-	}
-
-	seek = function(e) {
-		_video.currentTime = e
 	}
 
 	hide_icon = function() {
@@ -237,6 +233,9 @@ TY.TYskin.prototype = {
 			t = parseInt(_video.currentTime),
 			n = ($(".process_btn"), parseInt($(".process_bg").width() - $(".process_btn").width() / 2 + 12) * t / e);
 		setProcess(n);
+	},
+	seek: function(e) {
+		_video.currentTime = e
 	},
 	showWaiting: function() {
 		if (_isProcessing) return !1;

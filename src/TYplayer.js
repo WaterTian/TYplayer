@@ -111,6 +111,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         }, false);
         _video.addEventListener("ended", function() {
             tyLog("ended");
+            _skin.seek(0);
             _TYplayer.dispatchEvent("VidoeEnd", _TYplayer);
         }, false);
         _video.addEventListener("progress", function() {}, false);
