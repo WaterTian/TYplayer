@@ -329,7 +329,7 @@ TY.TYskin = function(_v, _d, _l) {
 		});
 		document.querySelector(".h5_player_tip_btn").addEventListener("touchend", function(e) {
 			e.stopPropagation(); //不再派发事件
-			_video.paused ? _video.play() : _video.pause();
+			if(_video.paused)_video.play();
 			_TYskin.dispatchEvent("VidoeClick", _TYskin);
 		});
 		document.querySelector(".h5_player_pause").addEventListener("touchend", function(e) {
