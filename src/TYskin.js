@@ -24,8 +24,9 @@ TY.TYskin = function(_v, _d, _l) {
 	warning.css("top", (tip_btn.height() + 40 * TY.dpr) / 2);
 
 	process_bar.css({
-		width: $(window).width() - 40 * TY.dpr,
-		left: 20 * TY.dpr
+		width: $(window).width() - (40 * TY.dpr),
+		left: 20 * TY.dpr,
+		bottom: 25 * TY.dpr
 	});
 
 	process_bar.find(".process_btn").css("transform", 'scale(' + TY.dpr + ',' + TY.dpr + ')');
