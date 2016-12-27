@@ -630,6 +630,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         }
     }
 
+
     function addVideoEvents(_video) {
         _video.addEventListener("error", videoError, false);
 
@@ -638,6 +639,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
             _skin.showWaiting();
         }, false);
         _video.addEventListener("loadedmetadata", function() {}, false);
+        _video.addEventListener("loadeddata", function() {}, false);
         _video.addEventListener("waiting", function() {
             tyLog("waiting");
             _skin.showWaiting();
@@ -646,8 +648,9 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
             tyLog("canplay")
             _skin.hideWaiting();
             if (TY.isIphone) hildPlayerBg();
-            setVideoPostion(_video.clientHeight);
+            if (TY.isIphone) setVideoPostion(_video.clientHeight);
         }, false);
+        _video.addEventListener("canplaythrough", function() {}, false);
         _video.addEventListener("play", function() {
             tyLog("play");
             if (!_skin.isFirstOpen) {
@@ -674,9 +677,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         }, false);
         _video.addEventListener("progress", function() {}, false);
         _video.addEventListener("suspend", function() {}, false);
-        _video.addEventListener("abort", function() {
-            tyLog("abort")
-        }, false);
+        _video.addEventListener("abort", function() {}, false);
         _video.addEventListener("stalled", function() {
             tyLog("stalled")
         }, false);
@@ -684,6 +685,10 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         _video.addEventListener("seeking", function() {
             tyLog("seeking")
         }, false);
+        _video.addEventListener("seeked", function() {}, false);
+        _video.addEventListener("ratechange", function() {}, false);
+        _video.addEventListener("durationchange", function() {}, false);
+        _video.addEventListener("volumechange", function() {}, false);
         _video.addEventListener("timeupdate", function() {
             // tyLog("timeupdate");
             update_time();

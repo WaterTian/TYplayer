@@ -61,10 +61,10 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     }
 
     function setVideoPostion(_height) {
-        if (_height < 200) {
+        if (_height < 300) {
             setTimeout(function() {
                 setVideoPostion(_video.clientHeight);
-            }, 1000)
+            }, 1000);
         } else {
             var _h = $(window).height();
             var _top = (_h - _height) / 2;
@@ -72,14 +72,16 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         }
     }
 
+
     function addVideoEvents(_video) {
         _video.addEventListener("error", videoError, false);
 
-        _video.addEventListener("loadstart", function() {
+        _video.addEventListener("loadstart", function() {    //客户端开始请求数据
             tyLog("loadstart");
             _skin.showWaiting();
         }, false);
         _video.addEventListener("loadedmetadata", function() {}, false);
+        _video.addEventListener("loadeddata", function() {}, false);
         _video.addEventListener("waiting", function() {
             tyLog("waiting");
             _skin.showWaiting();
@@ -88,8 +90,9 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
             tyLog("canplay")
             _skin.hideWaiting();
             if (TY.isIphone) hildPlayerBg();
-            setVideoPostion(_video.clientHeight);
+            if (TY.isIphone) setVideoPostion(_video.clientHeight);
         }, false);
+        _video.addEventListener("canplaythrough", function() {}, false);//可以播放，歌曲全部加载完毕
         _video.addEventListener("play", function() {
             tyLog("play");
             if (!_skin.isFirstOpen) {
@@ -115,17 +118,19 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
             _TYplayer.dispatchEvent("VidoeEnd", _TYplayer);
         }, false);
         _video.addEventListener("progress", function() {}, false);
-        _video.addEventListener("suspend", function() {}, false);
-        _video.addEventListener("abort", function() {
-            tyLog("abort")
-        }, false);
-        _video.addEventListener("stalled", function() {
+        _video.addEventListener("suspend", function() {}, false);//延迟下载
+        _video.addEventListener("abort", function() {}, false);//客户端主动终止下载（不是因为错误引起）
+        _video.addEventListener("stalled", function() { //网速失速
             tyLog("stalled")
         }, false);
 
         _video.addEventListener("seeking", function() {
             tyLog("seeking")
         }, false);
+        _video.addEventListener("seeked", function() {}, false);
+        _video.addEventListener("ratechange", function() {}, false);//播放速率改变
+        _video.addEventListener("durationchange", function() {}, false);//资源长度改变
+        _video.addEventListener("volumechange", function() {}, false);//音量改变
         _video.addEventListener("timeupdate", function() {
             // tyLog("timeupdate");
             update_time();

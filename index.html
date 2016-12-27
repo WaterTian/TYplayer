@@ -22,19 +22,19 @@
     </div>
 
 
-    <script src="lib/zepto.min.js"></script>
+<!--     <script src="lib/zepto.min.js"></script>
     <script src="src/core/TY.js"></script>
     <script src="src/core/utils.js"></script>
     <script src="src/core/EventDispatcher.js"></script>
     <script src="src/TYskin.js"></script>
-    <script src="src/TYplayer.js"></script>
+    <script src="src/TYplayer.js"></script> -->
 
 
-    <!-- <script src="./build/TYplayer_v1.min.js"></script> -->
+    <script src="./build/TYplayer_v1.min.js"></script>
 
     <script>
         console.log(TY.dpr);
-        if(TY.isAndroid)TY.dpr=2;
+        if(TY.isAndroid)TY.dpr=1;
         $("#viewport")[0].content="width=device-width, minimum-scale="+1/TY.dpr+", maximum-scale="+1/TY.dpr;
 
 
