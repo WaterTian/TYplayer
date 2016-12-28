@@ -306,32 +306,10 @@ TY.TYskin = function(_v, _d, _l) {
 
 	process_forward.css("transform", 'scale(' + TY.dpr + ',' + TY.dpr + ')');
 	
-
-
 	_dom.append(TY.templates.svg_template);
 
 
-	if (_isLive) {
-		document.querySelector(".h5_player_tip_btn").addEventListener("touchmove", function(e) {
-			e.preventDefault(); //取消事件的默认动作
-			e.stopPropagation(); //不再派发事件
-		});
-		document.querySelector(".h5_player_tip_btn").addEventListener("touchend", function(e) {
-			e.stopPropagation(); //不再派发事件
-			if(_video.paused)_video.play();
-			_TYskin.dispatchEvent("VidoeClick", _TYskin);
-		});
-		document.querySelector(".h5_player_pause").addEventListener("touchend", function(e) {
-			e.stopPropagation(); //不再派发事件
-			_video.play();
-		});
-		process_bar.hide();
-	} else {
-		addEvents();
-	}
-
-
-	function addEvents() {
+	var addEvents=function(){
 		var btn = document.querySelector(".h5_player_tip_btn");
 		btn.addEventListener("touchstart", tipTouchstart);
 		btn.addEventListener("touchmove", tipTouchmove);
@@ -351,19 +329,18 @@ TY.TYskin = function(_v, _d, _l) {
 	}
 
 	var _sy=0, _my=0;
-
-	function tipTouchstart(e) {
+	var tipTouchstart=function(e) {
 		e.stopPropagation(); //不再派发事件
 		_sy = e.touches[0].pageY;
 	}
 
-	function tipTouchmove(e) {
+	var tipTouchmove=function(e) {
 		e.preventDefault(); //取消事件的默认动作
 		e.stopPropagation(); //不再派发事件
 		_my = e.touches[0].pageY;
 	}
 
-	function tipTouchend(e) {
+	var tipTouchend=function(e) {
 		e.stopPropagation(); //不再派发事件
 		(Math.abs(Math.abs(_my) - Math.abs(_sy)) <= 5 || 0 == _my) ?
 		(_video.paused ? _video.play() : _video.pause()) :
@@ -380,12 +357,12 @@ TY.TYskin = function(_v, _d, _l) {
 	_isProcessing = 0;
 	_isWaiting = 0;
 
-	function processTouchstart(e) {
+	var processTouchstart=function(e) {
 		e.stopPropagation();
 		_isProcessing = 1;
 	}
 
-	function processTouchmove(e) {
+	var processTouchmove=function(e) {
 		e.preventDefault(); //取消事件的默认动作
 		e.stopPropagation(); //不再派发事件
 		_isProcessing = 1;
@@ -409,7 +386,7 @@ TY.TYskin = function(_v, _d, _l) {
 
 	}
 
-	function processTouchend(e) {
+	var processTouchend=function(e) {
 		e.stopPropagation();
 		_isProcessing = 0;
 		$(".h5_player_process_forward").hide();
@@ -421,17 +398,17 @@ TY.TYskin = function(_v, _d, _l) {
 
 	var _bar_x;
 
-	function barTouchstart(e) {
+	var barTouchstart=function(e) {
 		_bar_x = e.touches[0].pageX;
 	}
 
-	function barTouchmove(e) {
+	var barTouchmove=function(e) {
 		e.preventDefault(); //取消事件的默认动作
 		e.stopPropagation(); //不再派发事件
 		_bar_x = e.touches[0].pageX;
 	}
 
-	function barTouchend(e) {
+	var barTouchend=function(e) {
 		var t = $(".process_btn"),
 			i = $(".h5_player_process_bar"),
 			n = _bar_x - parseInt(i.css("left")) - parseInt(t.width()) / 4;
@@ -443,11 +420,24 @@ TY.TYskin = function(_v, _d, _l) {
 		_bar_x = 0;
 	}
 
-	hide_icon = function() {
-		_TYskin.hidePause();
-		waiting.hide();
-		warning.hide();
-		tip_btn.css("margin-left", "-1px")
+
+	if (_isLive) {
+		document.querySelector(".h5_player_tip_btn").addEventListener("touchmove", function(e) {
+			e.preventDefault(); //取消事件的默认动作
+			e.stopPropagation(); //不再派发事件
+		});
+		document.querySelector(".h5_player_tip_btn").addEventListener("touchend", function(e) {
+			e.stopPropagation(); //不再派发事件
+			if(_video.paused)_video.play();
+			_TYskin.dispatchEvent("VidoeClick", _TYskin);
+		});
+		document.querySelector(".h5_player_pause").addEventListener("touchend", function(e) {
+			e.stopPropagation(); //不再派发事件
+			_video.play();
+		});
+		process_bar.hide();
+	} else {
+		addEvents();
 	}
 
 };
@@ -487,6 +477,13 @@ TY.TYskin.prototype = {
 			process_bar.hide();
 		})
 	},
+
+	hide_icon : function() {
+		_TYskin.hidePause();
+		waiting.hide();
+		warning.hide();
+		tip_btn.css("margin-left", "-1px")
+	},
 	updateBar: function() {
 		if (_isLive) return !1;
 		if (_isProcessing) return !1;
@@ -507,7 +504,7 @@ TY.TYskin.prototype = {
 	},
 	showWaiting: function() {
 		if (_isProcessing) return !1;
-		hide_icon();
+		_TYskin.hide_icon();
 		_isWaiting = 1;
 		waiting.show();
 		waiting.css("opacity", 0);
@@ -529,7 +526,7 @@ TY.TYskin.prototype = {
 
 	showWarning: function() {
 		if (_isProcessing) return !1;
-		hide_icon();
+		_TYskin.hide_icon();
 		warning.show();
 		warning.css("opacity", 0);
 		warning.css("transform", 'scale(.1,.1)');
