@@ -30,6 +30,7 @@ TY.TYskin = function(_v, _d, _l) {
 	});
 
 	process_bar.find(".process_btn").css("transform", 'scale(' + TY.dpr + ',' + TY.dpr + ')');
+	process_bar.find(".process_btn").css("bottom", -28-(TY.dpr-1)*8);
 	process_bar.find(".process_bg").css("transform", 'scaleY(' + TY.dpr + ')');
 	process_bar.find(".process_line").css("transform", 'scaleY(' + TY.dpr + ')');
 
@@ -82,7 +83,7 @@ TY.TYskin = function(_v, _d, _l) {
 		document.querySelector(".h5_player_process_bar").addEventListener("touchend", barTouchend);
 	}
 
-	var _sy, _my;
+	var _sy=0, _my=0;
 
 	function tipTouchstart(e) {
 		e.stopPropagation(); //不再派发事件

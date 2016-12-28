@@ -98,7 +98,6 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
             if (!_skin.isFirstOpen) {
                 hildPlayerBg();
             }
-
         }, false);
         _video.addEventListener("playing", function() {
             tyLog("playing");
