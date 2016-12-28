@@ -128,7 +128,7 @@ TY.TYskin = function(_v, _d, _l) {
 			n = e.touches[0].pageX - parseInt(i.css("left")) - parseInt(t.width()) / 4;
 		0 > n ? n = 0 : n > i.width() - t.width() + parseInt(t.width()) / 2 && (n = i.width() - t.width() + parseInt(t.width()) / 2);
 		l = n;
-		setProcess(n);
+		_TYskin.setProcess(n);
 
 		//forward div
 		$(".h5_player_process_forward").show();
@@ -169,19 +169,11 @@ TY.TYskin = function(_v, _d, _l) {
 			i = $(".h5_player_process_bar"),
 			n = _bar_x - parseInt(i.css("left")) - parseInt(t.width()) / 4;
 		0 > n ? n = 0 : n > i.width() - t.width() + parseInt(t.width()) / 2 && (n = i.width() - t.width() + parseInt(t.width()) / 2);
-		setProcess(n);
+		_TYskin.setProcess(n);
 		var r = parseInt(_video.duration),
 			s = r * n / parseInt($(".process_bg").width() - t.width() + parseInt(t.width()) / 2);
 		_TYskin.seek(s);
 		_bar_x = 0;
-	}
-
-	setProcess = function(e) {
-		$(".process_line").css({
-			width: e + 10
-		}), $(".process_btn").css({
-			left: e
-		})
 	}
 
 	hide_icon = function() {
@@ -233,8 +225,15 @@ TY.TYskin.prototype = {
 		if (_isProcessing) return !1;
 		var e = parseInt(_video.duration),
 			t = parseInt(_video.currentTime),
-			n = ($(".process_btn"), parseInt($(".process_bg").width() - $(".process_btn").width() / 2 + 12) * t / e);
-		setProcess(n);
+			n = parseInt($(".process_bg").width() - $(".process_btn").width() / 2 + 12) * t / e;
+		_TYskin.setProcess(n);
+	},
+	setProcess:function(e){
+		$(".process_line").css({
+			width: e + 10
+		}), $(".process_btn").css({
+			left: e
+		})
 	},
 	seek: function(e) {
 		_video.currentTime = e

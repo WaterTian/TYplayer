@@ -49,6 +49,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     //skin
     _skin = new TY.TYskin(_video, _dom, isLive);
     _skin.showPause();
+    _skin.setProcess(0);
     _skin.addEventListener("VidoeClick", function(e) {
         _TYplayer.dispatchEvent("VidoeClick", e);
     })
@@ -64,10 +65,10 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         if (_height < 300) {
             setTimeout(function() {
                 setVideoPostion(_video.clientHeight);
-            }, 1000);
+            }, 500);
         } else {
             var _h = $(window).height();
-            var _top = (_h - _height) / 2;
+            var _top = (_h - _height);
             $("#video").css("margin-top", _top);
         }
     }
@@ -95,9 +96,8 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         _video.addEventListener("canplaythrough", function() {}, false);//可以播放，歌曲全部加载完毕
         _video.addEventListener("play", function() {
             tyLog("play");
-            if (!_skin.isFirstOpen) {
-                hildPlayerBg();
-            }
+            if (!_skin.isFirstOpen)hildPlayerBg();
+            if (TY.isIphone) setVideoPostion(_video.clientHeight);
         }, false);
         _video.addEventListener("playing", function() {
             tyLog("playing");
