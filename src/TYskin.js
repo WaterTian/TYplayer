@@ -18,13 +18,14 @@ TY.TYskin = function(_v, _d, _l) {
 	process_bar = $(".h5_player_process_bar");
 	process_forward = $(".h5_player_process_forward");
 
-	tip_btn.height(tip_btn.height() - 80 * TY.dpr);
+	tip_btn.height(tip_btn.height() - 60 * TY.dpr);
 	pause.css("top", (tip_btn.height() + 40 * TY.dpr) / 2);
 	waiting.css("top", (tip_btn.height() + 40 * TY.dpr) / 2);
 	warning.css("top", (tip_btn.height() + 40 * TY.dpr) / 2);
 
 	process_bar.css({
 		width: $(window).width() - (40 * TY.dpr),
+		height:20 * TY.dpr,
 		left: 20 * TY.dpr,
 		bottom: 25 * TY.dpr
 	});
