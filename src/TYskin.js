@@ -203,10 +203,11 @@ TY.TYskin.prototype = {
 		}, 200, 'ease-out')
 	},
 	hideProcessBar: function() {
+		var scope = this;
 		this.process_bar.animate({
 			transform: 'translate(0px,' + 80 * TY.dpr + 'px)'
 		}, 200, 'ease-out', function() {
-			this.process_bar.hide();
+			scope.process_bar.hide();
 		})
 	},
 
