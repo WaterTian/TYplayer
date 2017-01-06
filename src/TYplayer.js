@@ -2,15 +2,15 @@
  * @author waterTian
  */
 TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
-    _TYplayer = this;
+    var scope = this;
 
-    _dom = $(divID);
+    this._dom = $(divID);
 
     if (TY.isAndroid) TY.dpr = 1;
 
     //////
-    _dom.append(TY.videoDiv);
-    var h5_player = _dom.find(".h5_player");
+    this._dom.append(TY.videoDiv);
+    var h5_player = this._dom.find(".h5_player");
     h5_player.append(TY.videoTemplate);
 
     //videoBg
@@ -19,17 +19,17 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     showPlayerBg();
 
     //video
-    _video = h5_player.find("video")[0];
-    _video.src = videoUrl;
-    tyLog(_video);
-    addVideoEvents(_video);
+    this._video = h5_player.find("video")[0];
+    this._video.src = videoUrl;
+    tyLog(this._video);
+    addVideoEvents(this._video);
 
     //skin
-    _skin = new TY.TYskin(_video, _dom, isLive);
-    _skin.showPause();
-    _skin.setProcess(0);
-    _skin.addEventListener("VidoeClick", function(e) {
-        _TYplayer.dispatchEvent("VidoeClick", e);
+    this._skin = new TY.TYskin(this._video, this._dom, isLive);
+    this._skin.showPause();
+    this._skin.setProcess(0);
+    this._skin.addEventListener("VidoeClick", function(e) {
+        scope.dispatchEvent("VidoeClick", e);
     })
 
     function showPlayerBg() {
@@ -50,63 +50,63 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         })
     }
 
-    function addVideoEvents(_video) {
-        _video.addEventListener("error", videoError, false);
+    function addVideoEvents(_v) {
+        _v.addEventListener("error", videoError, false);
 
-        _video.addEventListener("loadstart", function() { //客户端开始请求数据
+        _v.addEventListener("loadstart", function() { //客户端开始请求数据
             tyLog("loadstart");
-            _skin.showWaiting();
+            scope._skin.showWaiting();
         }, false);
-        _video.addEventListener("loadedmetadata", function() {}, false);
-        _video.addEventListener("loadeddata", function() {}, false);
-        _video.addEventListener("waiting", function() {
+        _v.addEventListener("loadedmetadata", function() {}, false);
+        _v.addEventListener("loadeddata", function() {}, false);
+        _v.addEventListener("waiting", function() {
             tyLog("waiting");
-            _skin.showWaiting();
+            scope._skin.showWaiting();
         }, false);
-        _video.addEventListener("canplay", function() {
+        _v.addEventListener("canplay", function() {
             tyLog("canplay")
-            _skin.hideWaiting();
+            scope._skin.hideWaiting();
             if (TY.isIphone) hildPlayerBg();
-            if (TY.isIphone) setVideoPostion(_video.clientHeight);
+            if (TY.isIphone) setVideoPostion(_v.clientHeight);
         }, false);
-        _video.addEventListener("canplaythrough", function() {}, false); //可以播放，歌曲全部加载完毕
-        _video.addEventListener("play", function() {
+        _v.addEventListener("canplaythrough", function() {}, false); //可以播放，歌曲全部加载完毕
+        _v.addEventListener("play", function() {
             tyLog("play");
-            if (!_skin.isFirstOpen) hildPlayerBg();
-            if (TY.isIphone) setVideoPostion(_video.clientHeight);
+            if (!scope._skin.isFirstOpen) hildPlayerBg();
+            if (TY.isIphone) setVideoPostion(_v.clientHeight);
         }, false);
-        _video.addEventListener("playing", function() {
+        _v.addEventListener("playing", function() {
             tyLog("playing");
-            if (!_skin.isFirstOpen) {
-                _skin.hidePause();
+            if (!scope._skin.isFirstOpen) {
+                scope._skin.hidePause();
             }
-            _skin.isFirstOpen = false;
+            scope._skin.isFirstOpen = false;
 
         }, false);
-        _video.addEventListener("pause", function() {
+        _v.addEventListener("pause", function() {
             tyLog("pause");
-            _skin.showPause();
+            scope._skin.showPause();
         }, false);
-        _video.addEventListener("ended", function() {
+        _v.addEventListener("ended", function() {
             tyLog("ended");
-            _skin.seek(0);
-            _TYplayer.dispatchEvent("VidoeEnd", _TYplayer);
+            scope._skin.seek(0);
+            scope.dispatchEvent("VidoeEnd", scope);
         }, false);
-        _video.addEventListener("progress", function() {}, false);
-        _video.addEventListener("suspend", function() {}, false); //延迟下载
-        _video.addEventListener("abort", function() {}, false); //客户端主动终止下载（不是因为错误引起）
-        _video.addEventListener("stalled", function() { //网速失速
+        _v.addEventListener("progress", function() {}, false);
+        _v.addEventListener("suspend", function() {}, false); //延迟下载
+        _v.addEventListener("abort", function() {}, false); //客户端主动终止下载（不是因为错误引起）
+        _v.addEventListener("stalled", function() { //网速失速
             tyLog("stalled")
         }, false);
 
-        _video.addEventListener("seeking", function() {
+        _v.addEventListener("seeking", function() {
             tyLog("seeking")
         }, false);
-        _video.addEventListener("seeked", function() {}, false);
-        _video.addEventListener("ratechange", function() {}, false); //播放速率改变
-        _video.addEventListener("durationchange", function() {}, false); //资源长度改变
-        _video.addEventListener("volumechange", function() {}, false); //音量改变
-        _video.addEventListener("timeupdate", function() {
+        _v.addEventListener("seeked", function() {}, false);
+        _v.addEventListener("ratechange", function() {}, false); //播放速率改变
+        _v.addEventListener("durationchange", function() {}, false); //资源长度改变
+        _v.addEventListener("volumechange", function() {}, false); //音量改变
+        _v.addEventListener("timeupdate", function() {
             // tyLog("timeupdate");
             update_time();
         }, false);
@@ -115,7 +115,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
 
     function videoError() {
         var err = {};
-        err.code = _video.error.code;
+        err.code = scope._video.error.code;
         err.error = ""
         switch (err.code) {
             case 1:
@@ -132,16 +132,16 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         }
         tyLog("player VidoeError:" + err.error);
 
-        _TYplayer.dispatchEvent("VidoeError", err);
+        scope.dispatchEvent("VidoeError", err);
 
-        _skin.showWarning();
-        _skin.showWarning();
+        scope._skin.showWarning();
+        scope._skin.showWarning();
     }
 
     function setVideoPostion(_height) {
         if (_height < 300) {
             setTimeout(function() {
-                setVideoPostion(_video.clientHeight);
+                setVideoPostion(scope._video.clientHeight);
             }, 500);
         } else {
             var _h = $(window).height();
@@ -151,7 +151,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     }
 
     function update_time() {
-        _skin.updateBar();
+        scope._skin.updateBar();
     }
 
     function tyLog(_t) {
@@ -166,9 +166,9 @@ TY.TYplayer.prototype = {
     constructor: TY.TYplayer,
     removeThis: function() {
         document.addEventListener("touchmove", function(e) {});
-        _skin.removeThis();
-        _video.remove();
-        var videoBox = _dom.get(0)
+        this._skin.removeThis();
+        this._video.remove();
+        var videoBox = this._dom.get(0)
         var _num = videoBox.childNodes.length;
         for (var i = 0; i < _num; ++i) {
             videoBox.removeChild(videoBox.childNodes[0]);

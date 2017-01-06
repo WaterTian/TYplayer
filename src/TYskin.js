@@ -3,47 +3,49 @@
  */
 
 TY.TYskin = function(_v, _d, _l) {
-	_TYskin = this;
+	var scope = this;
 
-	var _video = _v;
-	var _dom = _d;
-	_isLive = _l;
+	this._video = _v;
+	this._dom = _d;
+	this._isLive = _l;
 
-	_dom.append(TY.templates.replay);
+	this._isProcessing = 0;
+	this._isWaiting = 0;
 
-	pause = $(".h5_player_pause");
-	waiting = $(".h5_player_waiting");
-	warning = $(".h5_player_warning");
-	tip_btn = $(".h5_player_tip_btn");
-	process_bar = $(".h5_player_process_bar");
-	process_forward = $(".h5_player_process_forward");
+	this._dom.append(TY.templates.replay);
 
-	tip_btn.height(tip_btn.height() - 60 * TY.dpr);
-	pause.css("top", (tip_btn.height() + 40 * TY.dpr) / 2);
-	waiting.css("top", (tip_btn.height() + 40 * TY.dpr) / 2);
-	warning.css("top", (tip_btn.height() + 40 * TY.dpr) / 2);
+	this.pause = $(".h5_player_pause");
+	this.waiting = $(".h5_player_waiting");
+	this.warning = $(".h5_player_warning");
+	this.tip_btn = $(".h5_player_tip_btn");
+	this.process_bar = $(".h5_player_process_bar");
 
-	process_bar.css({
+	this.tip_btn.height(this.tip_btn.height() - 60 * TY.dpr);
+	this.pause.css("top", (this.tip_btn.height() + 40 * TY.dpr) / 2);
+	this.waiting.css("top", (this.tip_btn.height() + 40 * TY.dpr) / 2);
+	this.warning.css("top", (this.tip_btn.height() + 40 * TY.dpr) / 2);
+
+	this.process_bar.css({
 		width: $(window).width() - (40 * TY.dpr),
-		height:20 * TY.dpr,
+		height: 20 * TY.dpr,
 		left: 20 * TY.dpr,
 		bottom: 25 * TY.dpr
 	});
 
-	process_bar.find(".process_btn").css("transform", 'scale(' + TY.dpr + ',' + TY.dpr + ')');
-	process_bar.find(".process_btn").css("bottom", -28-(TY.dpr-1)*8);
-	process_bar.find(".process_bg").css("transform", 'scaleY(' + TY.dpr + ')');
-	process_bar.find(".process_line").css("transform", 'scaleY(' + TY.dpr + ')');
+	this.process_bar.find(".process_btn").css("transform", 'scale(' + TY.dpr + ',' + TY.dpr + ')');
+	this.process_bar.find(".process_btn").css("bottom", -28 - (TY.dpr - 1) * 8);
+	this.process_bar.find(".process_bg").css("transform", 'scaleY(' + TY.dpr + ')');
+	this.process_bar.find(".process_line").css("transform", 'scaleY(' + TY.dpr + ')');
 
-	process_bar.find(".process_bg").css("width", process_bar.width());
-	process_bar.find(".process_line").css("width", 0);
+	this.process_bar.find(".process_bg").css("width", this.process_bar.width());
+	this.process_bar.find(".process_line").css("width", 0);
 
-	process_forward.css("transform", 'scale(' + TY.dpr + ',' + TY.dpr + ')');
-	
-	_dom.append(TY.templates.svg_template);
+	$(".h5_player_process_forward").css("transform", 'scale(' + TY.dpr + ',' + TY.dpr + ')');
+
+	this._dom.append(TY.templates.svg_template);
 
 
-	var addEvents=function(){
+	var addEvents = function() {
 		var btn = document.querySelector(".h5_player_tip_btn");
 		btn.addEventListener("touchstart", tipTouchstart);
 		btn.addEventListener("touchmove", tipTouchmove);
@@ -51,7 +53,7 @@ TY.TYskin = function(_v, _d, _l) {
 
 		document.querySelector(".h5_player_pause").addEventListener("touchend", function(e) {
 			e.stopPropagation();
-			_video.paused ? _video.play() : _video.pause();
+			scope._video.paused ? scope._video.play() : scope._video.pause();
 		});
 
 		document.querySelector(".process_btn").addEventListener("touchstart", processTouchstart);
@@ -62,114 +64,109 @@ TY.TYskin = function(_v, _d, _l) {
 		document.querySelector(".h5_player_process_bar").addEventListener("touchend", barTouchend);
 	}
 
-	var _sy=0, _my=0;
-	var tipTouchstart=function(e) {
+	var _sy = 0,
+		_my = 0;
+	var tipTouchstart = function(e) {
 		e.stopPropagation(); //不再派发事件
 		_sy = e.touches[0].pageY;
 	}
 
-	var tipTouchmove=function(e) {
+	var tipTouchmove = function(e) {
 		e.preventDefault(); //取消事件的默认动作
 		e.stopPropagation(); //不再派发事件
 		_my = e.touches[0].pageY;
 	}
 
-	var tipTouchend=function(e) {
+	var tipTouchend = function(e) {
 		e.stopPropagation(); //不再派发事件
 		(Math.abs(Math.abs(_my) - Math.abs(_sy)) <= 5 || 0 == _my) ?
-		(_video.paused ? _video.play() : _video.pause()) :
-		((process_bar.css("display") == "none") ? _TYskin.showProcessBar() : _TYskin.hideProcessBar());
+		(scope._video.paused ? scope._video.play() : scope._video.pause()) :
+		((scope.process_bar.css("display") == "none") ? scope.showProcessBar() : scope.hideProcessBar());
 		_sy = 0;
 		_my = 0;
 
-		_TYskin.dispatchEvent("VidoeClick", _TYskin);
+		scope.dispatchEvent("VidoeClick", scope);
 	}
 
 
 	var l;
 	var forwardNum;
-	_isProcessing = 0;
-	_isWaiting = 0;
 
-	var processTouchstart=function(e) {
+	var processTouchstart = function(e) {
 		e.stopPropagation();
-		_isProcessing = 1;
+		scope._isProcessing = 1;
 	}
 
-	var processTouchmove=function(e) {
+	var processTouchmove = function(e) {
 		e.preventDefault(); //取消事件的默认动作
 		e.stopPropagation(); //不再派发事件
-		_isProcessing = 1;
+		scope._isProcessing = 1;
 
 		var t = $(".process_btn"),
 			i = $(".h5_player_process_bar"),
 			n = e.touches[0].pageX - parseInt(i.css("left")) - parseInt(t.width()) / 4;
 		0 > n ? n = 0 : n > i.width() - t.width() + parseInt(t.width()) / 2 && (n = i.width() - t.width() + parseInt(t.width()) / 2);
 		l = n;
-		_TYskin.setProcess(n);
+		scope.setProcess(n);
 
 		//forward div
 		$(".h5_player_process_forward").show();
-
-		var _duration = parseInt(_video.duration);
+		var _duration = parseInt(scope._video.duration);
 		var s = _duration * n / parseInt($(".process_bg").width());
 		$(".h5_player_process_forward .time").html(TY.formatTime(s));
-		if(s>forwardNum) $(".h5_player_process_forward .forward").css("transform", 'rotate(0deg)');
-		if(s<forwardNum) $(".h5_player_process_forward .forward").css("transform", 'rotate(180deg)');
+		if (s > forwardNum) $(".h5_player_process_forward .forward").css("transform", 'rotate(0deg)');
+		if (s < forwardNum) $(".h5_player_process_forward .forward").css("transform", 'rotate(180deg)');
 		forwardNum = s;
-
 	}
 
-	var processTouchend=function(e) {
+	var processTouchend = function(e) {
 		e.stopPropagation();
-		_isProcessing = 0;
+		scope._isProcessing = 0;
 		$(".h5_player_process_forward").hide();
-
-		var t = parseInt(_video.duration),
+		var t = parseInt(scope._video.duration),
 			n = t * l / parseInt($(".process_bg").width());
-		_TYskin.seek(n);
+		scope.seek(n);
 	}
 
 	var _bar_x;
-
-	var barTouchstart=function(e) {
+	var barTouchstart = function(e) {
 		_bar_x = e.touches[0].pageX;
 	}
 
-	var barTouchmove=function(e) {
+	var barTouchmove = function(e) {
 		e.preventDefault(); //取消事件的默认动作
 		e.stopPropagation(); //不再派发事件
 		_bar_x = e.touches[0].pageX;
 	}
 
-	var barTouchend=function(e) {
+	var barTouchend = function(e) {
 		var t = $(".process_btn"),
 			i = $(".h5_player_process_bar"),
 			n = _bar_x - parseInt(i.css("left")) - parseInt(t.width()) / 4;
 		0 > n ? n = 0 : n > i.width() - t.width() + parseInt(t.width()) / 2 && (n = i.width() - t.width() + parseInt(t.width()) / 2);
-		_TYskin.setProcess(n);
-		var r = parseInt(_video.duration),
+		scope.setProcess(n);
+		var r = parseInt(scope._video.duration),
 			s = r * n / parseInt($(".process_bg").width() - t.width() + parseInt(t.width()) / 2);
-		_TYskin.seek(s);
+		scope.seek(s);
 		_bar_x = 0;
 	}
 
 
-	if (_isLive) {
+	if (this._isLive) {
 		document.querySelector(".h5_player_tip_btn").addEventListener("touchmove", function(e) {
 			e.preventDefault(); //取消事件的默认动作
 			e.stopPropagation(); //不再派发事件
 		});
 		document.querySelector(".h5_player_tip_btn").addEventListener("touchend", function(e) {
 			e.stopPropagation(); //不再派发事件
-			if(_video.paused)_video.play();
-			_TYskin.dispatchEvent("VidoeClick", _TYskin);
+			if (scope._video.paused) scope._video.play();
+			scope.dispatchEvent("VidoeClick", scope);
 		});
 		document.querySelector(".h5_player_pause").addEventListener("touchend", function(e) {
 			e.stopPropagation(); //不再派发事件
-			_video.play();
+			scope._video.play();
 		});
-		process_bar.hide();
+		this.process_bar.hide();
 	} else {
 		addEvents();
 	}
@@ -179,54 +176,55 @@ TY.TYskin.prototype = {
 	constructor: TY.TYskin,
 	isFirstOpen: true,
 	showPause: function() {
-		if (_isProcessing) return !1;
-		if (_isWaiting) return !1;
-		pause.show();
-		pause.css("opacity", 0);
-		pause.css("transform", 'scale(.1,.1)');
-		pause.animate({
+		if (this._isProcessing) return !1;
+		if (this._isWaiting) return !1;
+		this.pause.show();
+		this.pause.css("opacity", 0);
+		this.pause.css("transform", 'scale(.1,.1)');
+		this.pause.animate({
 			opacity: 1,
 			transform: 'scale(' + TY.dpr + ',' + TY.dpr + ')'
 		}, 100, 'ease-out')
 	},
 	hidePause: function() {
-		pause.animate({
+		var scope = this;
+		this.pause.animate({
 			opacity: 0,
 			transform: 'scale(' + 2 * TY.dpr + ',' + 2 * TY.dpr + ')'
 		}, 100, 'ease-out', function() {
-			pause.hide();
+			scope.pause.hide();
 		})
 	},
 	showProcessBar: function() {
-		process_bar.show();
-		_TYskin.updateBar();
-		process_bar.animate({
+		this.process_bar.show();
+		this.updateBar();
+		this.process_bar.animate({
 			transform: 'translate(0px,0px)'
 		}, 200, 'ease-out')
 	},
 	hideProcessBar: function() {
-		process_bar.animate({
+		this.process_bar.animate({
 			transform: 'translate(0px,' + 80 * TY.dpr + 'px)'
 		}, 200, 'ease-out', function() {
-			process_bar.hide();
+			this.process_bar.hide();
 		})
 	},
 
-	hide_icon : function() {
-		_TYskin.hidePause();
-		waiting.hide();
-		warning.hide();
-		tip_btn.css("margin-left", "-1px")
+	hide_icon: function() {
+		this.hidePause();
+		this.waiting.hide();
+		this.warning.hide();
+		this.tip_btn.css("margin-left", "-1px")
 	},
 	updateBar: function() {
-		if (_isLive) return !1;
-		if (_isProcessing) return !1;
-		var e = parseInt(_video.duration),
-			t = parseInt(_video.currentTime),
+		if (this._isLive) return !1;
+		if (this._isProcessing) return !1;
+		var e = parseInt(this._video.duration),
+			t = parseInt(this._video.currentTime),
 			n = parseInt($(".process_bg").width() - $(".process_btn").width() / 2 + 12) * t / e;
-		_TYskin.setProcess(n);
+		this.setProcess(n);
 	},
-	setProcess:function(e){
+	setProcess: function(e) {
 		$(".process_line").css({
 			width: e + 10
 		}), $(".process_btn").css({
@@ -234,37 +232,38 @@ TY.TYskin.prototype = {
 		})
 	},
 	seek: function(e) {
-		_video.currentTime = e
+		this._video.currentTime = e
 	},
 	showWaiting: function() {
-		if (_isProcessing) return !1;
-		_TYskin.hide_icon();
-		_isWaiting = 1;
-		waiting.show();
-		waiting.css("opacity", 0);
-		waiting.css("transform", 'scale(.1,.1)');
-		waiting.animate({
+		if (this._isProcessing) return !1;
+		this.hide_icon();
+		this._isWaiting = 1;
+		this.waiting.show();
+		this.waiting.css("opacity", 0);
+		this.waiting.css("transform", 'scale(.1,.1)');
+		this.waiting.animate({
 			opacity: 1,
 			transform: 'scale(' + TY.dpr + ',' + TY.dpr + ')'
 		}, 100, 'ease-out')
 	},
 	hideWaiting: function() {
-		_isWaiting = 0;
-		waiting.animate({
+		var scope = this;
+		this._isWaiting = 0;
+		this.waiting.animate({
 			opacity: 0,
 			transform: 'scale(' + 2 * TY.dpr + ',' + 2 * TY.dpr + ')'
 		}, 100, 'ease-out', function() {
-			waiting.hide();
+			scope.waiting.hide();
 		})
 	},
 
 	showWarning: function() {
-		if (_isProcessing) return !1;
-		_TYskin.hide_icon();
-		warning.show();
-		warning.css("opacity", 0);
-		warning.css("transform", 'scale(.1,.1)');
-		warning.animate({
+		if (this._isProcessing) return !1;
+		this.hide_icon();
+		this.warning.show();
+		this.warning.css("opacity", 0);
+		this.warning.css("transform", 'scale(.1,.1)');
+		this.warning.animate({
 			opacity: 1,
 			transform: 'scale(' + TY.dpr + ',' + TY.dpr + ')'
 		}, 100, 'ease-out')
