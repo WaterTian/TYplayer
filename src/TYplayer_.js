@@ -6,22 +6,44 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
 
     _dom = $(divID);
 
+    // if (!TY.isMobileDevice) return;
     if (TY.isAndroid) TY.dpr = 1;
 
     //////
     _dom.append(TY.videoDiv);
-    var h5_player = _dom.find(".h5_player");
-    h5_player.append(TY.videoTemplate);
+    _player = _dom.find(".h5_player");
+    _player.append(TY.videoTemplate);
 
     //videoBg
-    h5_player.append(TY.videoBgTemplate);
-    $(".h5_player_bg").css("background-image", 'url(' + videoBg + ')');
+    _player.append(TY.videoBgTemplate);
+    player_bg = $(".h5_player_bg");
+    player_bg.css("background-image", 'url(' + videoBg + ')');
     showPlayerBg();
 
+    function showPlayerBg() {
+        player_bg.css("opacity", 0);
+        player_bg.css("transform", 'scale(1.5,1.5)');
+        player_bg.animate({
+            opacity: 1,
+            transform: 'scale(1,1)'
+        }, 200, 'ease-out')
+    }
+
+    function hildPlayerBg() {
+        player_bg.animate({
+            opacity: 0,
+            transform: 'scale(1.5,1.5)'
+        }, 200, 'ease-out', function() {
+            player_bg.hide();
+        })
+    }
+
     //video
-    _video = h5_player.find("video")[0];
+    _video = _player.find("video")[0];
     _video.src = videoUrl;
     tyLog(_video);
+
+    // 
     addVideoEvents(_video);
 
     //skin
@@ -32,28 +54,30 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         _TYplayer.dispatchEvent("VidoeClick", e);
     })
 
-    function showPlayerBg() {
-        $(".h5_player_bg").css("opacity", 0);
-        $(".h5_player_bg").css("transform", 'scale(1.5,1.5)');
-        $(".h5_player_bg").animate({
-            opacity: 1,
-            transform: 'scale(1,1)'
-        }, 200, 'ease-out')
+
+    function tyLog(_t) {
+        if (!TY.Debug) return;
+        if (TY.isWeixin) alert(_t);
+        else console.log(_t);
     }
 
-    function hildPlayerBg() {
-        $(".h5_player_bg").animate({
-            opacity: 0,
-            transform: 'scale(1.5,1.5)'
-        }, 200, 'ease-out', function() {
-            $(".h5_player_bg").hide();
-        })
+    function setVideoPostion(_height) {
+        if (_height < 300) {
+            setTimeout(function() {
+                setVideoPostion(_video.clientHeight);
+            }, 500);
+        } else {
+            var _h = $(window).height();
+            var _top = (_h - _height);
+            $("#video").css("margin-top", _top);
+        }
     }
+
 
     function addVideoEvents(_video) {
         _video.addEventListener("error", videoError, false);
 
-        _video.addEventListener("loadstart", function() { //客户端开始请求数据
+        _video.addEventListener("loadstart", function() {    //客户端开始请求数据
             tyLog("loadstart");
             _skin.showWaiting();
         }, false);
@@ -69,10 +93,10 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
             if (TY.isIphone) hildPlayerBg();
             if (TY.isIphone) setVideoPostion(_video.clientHeight);
         }, false);
-        _video.addEventListener("canplaythrough", function() {}, false); //可以播放，歌曲全部加载完毕
+        _video.addEventListener("canplaythrough", function() {}, false);//可以播放，歌曲全部加载完毕
         _video.addEventListener("play", function() {
             tyLog("play");
-            if (!_skin.isFirstOpen) hildPlayerBg();
+            if (!_skin.isFirstOpen)hildPlayerBg();
             if (TY.isIphone) setVideoPostion(_video.clientHeight);
         }, false);
         _video.addEventListener("playing", function() {
@@ -93,8 +117,8 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
             _TYplayer.dispatchEvent("VidoeEnd", _TYplayer);
         }, false);
         _video.addEventListener("progress", function() {}, false);
-        _video.addEventListener("suspend", function() {}, false); //延迟下载
-        _video.addEventListener("abort", function() {}, false); //客户端主动终止下载（不是因为错误引起）
+        _video.addEventListener("suspend", function() {}, false);//延迟下载
+        _video.addEventListener("abort", function() {}, false);//客户端主动终止下载（不是因为错误引起）
         _video.addEventListener("stalled", function() { //网速失速
             tyLog("stalled")
         }, false);
@@ -103,9 +127,9 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
             tyLog("seeking")
         }, false);
         _video.addEventListener("seeked", function() {}, false);
-        _video.addEventListener("ratechange", function() {}, false); //播放速率改变
-        _video.addEventListener("durationchange", function() {}, false); //资源长度改变
-        _video.addEventListener("volumechange", function() {}, false); //音量改变
+        _video.addEventListener("ratechange", function() {}, false);//播放速率改变
+        _video.addEventListener("durationchange", function() {}, false);//资源长度改变
+        _video.addEventListener("volumechange", function() {}, false);//音量改变
         _video.addEventListener("timeupdate", function() {
             // tyLog("timeupdate");
             update_time();
@@ -138,26 +162,8 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         _skin.showWarning();
     }
 
-    function setVideoPostion(_height) {
-        if (_height < 300) {
-            setTimeout(function() {
-                setVideoPostion(_video.clientHeight);
-            }, 500);
-        } else {
-            var _h = $(window).height();
-            var _top = (_h - _height);
-            $("#video").css("margin-top", _top);
-        }
-    }
-
     function update_time() {
         _skin.updateBar();
-    }
-
-    function tyLog(_t) {
-        if (!TY.Debug) return;
-        if (TY.isWeixin) alert(_t);
-        else console.log(_t);
     }
 };
 
