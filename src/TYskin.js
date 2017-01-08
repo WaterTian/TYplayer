@@ -5,6 +5,8 @@
 TY.TYskin = function(_v, _d, _l) {
 	var scope = this;
 
+	this.isFirstOpen = true;
+
 	this._video = _v;
 	this._dom = _d;
 	this._isLive = _l;
@@ -174,7 +176,6 @@ TY.TYskin = function(_v, _d, _l) {
 };
 TY.TYskin.prototype = {
 	constructor: TY.TYskin,
-	isFirstOpen: true,
 	showPause: function() {
 		if (this._isProcessing) return !1;
 		if (this._isWaiting) return !1;
