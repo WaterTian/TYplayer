@@ -24,6 +24,6 @@ TY.extend = function(origin, add) {
 TY.logBox = {};
 TY.Log = function(_t) {
 	if (!TY.Debug) return;
-	if (TY.isWeixin) TY.logBox.innerHTML += _t + '<br>';
+	if (TY.isMobileDevice) TY.logBox.innerHTML += _t + '<br>';
 	else console.log(_t);
 }

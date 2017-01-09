@@ -5,7 +5,6 @@
 TY.TYskin = function(_v, _d, _l) {
 	var scope = this;
 
-	this.isFirstOpen = true;
 	this.isFirstToPlay = true;
 
 	this._video = _v;
@@ -244,7 +243,8 @@ TY.TYskin.prototype = {
 		this._video.play();
 		if (this.isFirstToPlay) {
 			this.showProcessBar();
-			TY.Log("isFirstToPlay:" + this.isFirstToPlay);
+			this.dispatchEvent("FirstToPlay", this);
+			TY.Log("isFirstToPlay");
 		}
 		this.isFirstToPlay = false;
 	},

@@ -30,6 +30,9 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     this._skin.setProcess(0);
     this._skin.addEventListener("VidoeClick", function(e) {
         scope.dispatchEvent("VidoeClick", e);
+    });
+    this._skin.addEventListener("FirstToPlay", function(e) {
+        hildPlayerBg();
     })
 
     function showPlayerBg() {
@@ -55,7 +58,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
 
         _v.addEventListener("loadstart", function() { //客户端开始请求数据
             TY.Log("loadstart");
-            scope._skin.showWaiting();
+            scope._skin.showPause();
         }, false);
         _v.addEventListener("loadedmetadata", function() {}, false);
         _v.addEventListener("loadeddata", function() {}, false);
@@ -66,21 +69,16 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         _v.addEventListener("canplay", function() {
             TY.Log("canplay")
             scope._skin.hideWaiting();
-            if (TY.isIphone) hildPlayerBg();
             if (TY.isIphone) setVideoPostion(_v.clientHeight);
         }, false);
         _v.addEventListener("canplaythrough", function() {}, false); //可以播放，歌曲全部加载完毕
         _v.addEventListener("play", function() {
             TY.Log("play");
-            if (!scope._skin.isFirstOpen) hildPlayerBg();
             if (TY.isIphone) setVideoPostion(_v.clientHeight);
         }, false);
         _v.addEventListener("playing", function() {
             TY.Log("playing");
-            if (!scope._skin.isFirstOpen) {
-                scope._skin.hidePause();
-            }
-            scope._skin.isFirstOpen = false;
+            scope._skin.hidePause();
             
         }, false);
         _v.addEventListener("pause", function() {

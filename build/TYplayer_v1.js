@@ -152,7 +152,7 @@ TY.extend = function(origin, add) {
 TY.logBox = {};
 TY.Log = function(_t) {
 	if (!TY.Debug) return;
-	if (TY.isWeixin) TY.logBox.innerHTML += _t + '<br>';
+	if (TY.isMobileDevice) TY.logBox.innerHTML += _t + '<br>';
 	else console.log(_t);
 }
 TY.templates = {
@@ -167,7 +167,7 @@ TY.templates = {
 
 TY.videoUrl = "";
 TY.videoDiv = '<div class="h5_player" style="width: 100%; height: 100%; margin: 0;padding: 0; border: 0;font: inherit; vertical-align: baseline;"></div>';
-TY.videoTemplate = '<video id="video" autoplay=""  webkit-playsinline="true" x-webkit-airplay="true" x5-video-player-type="h5" playsinline width="100%"  preload="auto" poster="" src="' + TY.videoUrl + '" ></video>';
+TY.videoTemplate = '<video id="video"  webkit-playsinline="true" x-webkit-airplay="true" x5-video-player-type="h5" playsinline width="100%"  preload="auto" poster="" src="' + TY.videoUrl + '" ></video>';
 TY.videoBgTemplate = '<div class="h5_player_bg" style="position:absolute;width:100%;height:100%;top:0;background-position:center;background-size: cover; background-color:transparent;;background-image:url()"></div>';
 
 TY.dpr = window.devicePixelRatio || 1;
@@ -276,7 +276,6 @@ TY.EventDispatcher.prototype = {
 TY.TYskin = function(_v, _d, _l) {
 	var scope = this;
 
-	this.isFirstOpen = true;
 	this.isFirstToPlay = true;
 
 	this._video = _v;
@@ -515,7 +514,8 @@ TY.TYskin.prototype = {
 		this._video.play();
 		if (this.isFirstToPlay) {
 			this.showProcessBar();
-			TY.Log("isFirstToPlay:" + this.isFirstToPlay);
+			this.dispatchEvent("FirstToPlay", this);
+			TY.Log("isFirstToPlay");
 		}
 		this.isFirstToPlay = false;
 	},
@@ -593,6 +593,9 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     this._skin.setProcess(0);
     this._skin.addEventListener("VidoeClick", function(e) {
         scope.dispatchEvent("VidoeClick", e);
+    });
+    this._skin.addEventListener("FirstToPlay", function(e) {
+        hildPlayerBg();
     })
 
     function showPlayerBg() {
@@ -618,7 +621,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
 
         _v.addEventListener("loadstart", function() { //客户端开始请求数据
             TY.Log("loadstart");
-            scope._skin.showWaiting();
+            scope._skin.showPause();
         }, false);
         _v.addEventListener("loadedmetadata", function() {}, false);
         _v.addEventListener("loadeddata", function() {}, false);
@@ -629,21 +632,16 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         _v.addEventListener("canplay", function() {
             TY.Log("canplay")
             scope._skin.hideWaiting();
-            if (TY.isIphone) hildPlayerBg();
             if (TY.isIphone) setVideoPostion(_v.clientHeight);
         }, false);
         _v.addEventListener("canplaythrough", function() {}, false); //可以播放，歌曲全部加载完毕
         _v.addEventListener("play", function() {
             TY.Log("play");
-            if (!scope._skin.isFirstOpen) hildPlayerBg();
             if (TY.isIphone) setVideoPostion(_v.clientHeight);
         }, false);
         _v.addEventListener("playing", function() {
             TY.Log("playing");
-            if (!scope._skin.isFirstOpen) {
-                scope._skin.hidePause();
-            }
-            scope._skin.isFirstOpen = false;
+            scope._skin.hidePause();
             
         }, false);
         _v.addEventListener("pause", function() {
