@@ -472,6 +472,7 @@ TY.TYskin.prototype = {
 		})
 	},
 	showProcessBar: function() {
+		if(!this.isToPlayed)return;
 		this.process_bar.show();
 		this.updateBar();
 		this.process_bar.animate({

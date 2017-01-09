@@ -201,17 +201,18 @@ TY.TYskin.prototype = {
 		})
 	},
 	showProcessBar: function() {
+		if(!this.isToPlayed)return;
 		this.process_bar.show();
 		this.updateBar();
 		this.process_bar.animate({
 			transform: 'translate(0px,0px)'
-		}, 200, 'ease-out')
+		}, 300, 'ease-out')
 	},
 	hideProcessBar: function() {
 		var scope = this;
 		this.process_bar.animate({
 			transform: 'translate(0px,' + 80 * TY.dpr + 'px)'
-		}, 200, 'ease-out', function() {
+		}, 300, 'ease-out', function() {
 			scope.process_bar.hide();
 		})
 	},

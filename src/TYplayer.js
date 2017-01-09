@@ -21,7 +21,6 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     //video
     this._video = h5_player.find("video")[0];
     this._video.src = videoUrl;
-    TY.Log(this._video);
     addVideoEvents(this._video);
 
     //skin
@@ -38,19 +37,22 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         $(".h5_player_bg").animate({
             opacity: 1,
             transform: 'scale(1,1)'
-        }, 200, 'ease-out')
+        }, 300, 'ease-out')
     }
 
     function hildPlayerBg() {
-        if($(".h5_player_bg")[0].style.display=="none") return;
-        $(".h5_player_bg").animate({
-            opacity: 0,
-            transform: 'scale(1.5,1.5)'
-        }, 200, 'ease-out', function() {
-            $(".h5_player_bg").hide();
-        });
+        if ($(".h5_player_bg")[0].style.display == "none") return;
+        setTimeout(function() {
+            $(".h5_player_bg").animate({
+                opacity: 0,
+                transform: 'scale(1.5,1.5)'
+            }, 300, 'ease-out', function() {
+                $(".h5_player_bg").hide();
+            });
 
-        if(!isLive)scope._skin.showProcessBar();
+            if (!isLive) scope._skin.showProcessBar();
+        }, 300);
+        
     }
 
     function addVideoEvents(_v) {
