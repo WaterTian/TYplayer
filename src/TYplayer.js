@@ -31,9 +31,6 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     this._skin.addEventListener("VidoeClick", function(e) {
         scope.dispatchEvent("VidoeClick", e);
     });
-    this._skin.addEventListener("FirstToPlay", function(e) {
-        hildPlayerBg();
-    })
 
     function showPlayerBg() {
         $(".h5_player_bg").css("opacity", 0);
@@ -45,12 +42,15 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     }
 
     function hildPlayerBg() {
+        if($(".h5_player_bg")[0].style.display=="none") return;
         $(".h5_player_bg").animate({
             opacity: 0,
             transform: 'scale(1.5,1.5)'
         }, 200, 'ease-out', function() {
             $(".h5_player_bg").hide();
-        })
+        });
+
+        if(!isLive)scope._skin.showProcessBar();
     }
 
     function addVideoEvents(_v) {
@@ -78,8 +78,9 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         }, false);
         _v.addEventListener("playing", function() {
             TY.Log("playing");
-            scope._skin.hidePause();
-            
+            if (scope._skin.isToPlayed) hildPlayerBg();
+            if (scope._skin.isToPlayed) scope._skin.hidePause();
+
         }, false);
         _v.addEventListener("pause", function() {
             TY.Log("pause");

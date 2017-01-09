@@ -276,7 +276,7 @@ TY.EventDispatcher.prototype = {
 TY.TYskin = function(_v, _d, _l) {
 	var scope = this;
 
-	this.isFirstToPlay = true;
+	this.isToPlayed = false;
 
 	this._video = _v;
 	this._dom = _d;
@@ -435,17 +435,18 @@ TY.TYskin = function(_v, _d, _l) {
 		});
 		document.querySelector(".h5_player_tip_btn").addEventListener("touchend", function(e) {
 			e.stopPropagation(); //不再派发事件
-			if (scope._video.paused) scope._video.play();
+			if (scope._video.paused) scope.toPlay();
 			scope.dispatchEvent("VidoeClick", scope);
 		});
 		document.querySelector(".h5_player_pause").addEventListener("touchend", function(e) {
 			e.stopPropagation(); //不再派发事件
-			scope._video.play();
+			if (scope._video.paused) scope.toPlay();
 		});
 		this.process_bar.hide();
 	} else {
 		addEvents();
 	}
+
 
 };
 TY.TYskin.prototype = {
@@ -512,12 +513,11 @@ TY.TYskin.prototype = {
 	},
 	toPlay: function() {
 		this._video.play();
-		if (this.isFirstToPlay) {
-			this.showProcessBar();
-			this.dispatchEvent("FirstToPlay", this);
-			TY.Log("isFirstToPlay");
+		if (!this.isToPlayed) {
+			TY.Log("isToPlayed");
+			this.isToPlayed = true;
 		}
-		this.isFirstToPlay = false;
+		
 	},
 	toPause: function() {
 		this._video.pause();
@@ -594,9 +594,6 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     this._skin.addEventListener("VidoeClick", function(e) {
         scope.dispatchEvent("VidoeClick", e);
     });
-    this._skin.addEventListener("FirstToPlay", function(e) {
-        hildPlayerBg();
-    })
 
     function showPlayerBg() {
         $(".h5_player_bg").css("opacity", 0);
@@ -608,12 +605,15 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     }
 
     function hildPlayerBg() {
+        if($(".h5_player_bg")[0].style.display=="none") return;
         $(".h5_player_bg").animate({
             opacity: 0,
             transform: 'scale(1.5,1.5)'
         }, 200, 'ease-out', function() {
             $(".h5_player_bg").hide();
-        })
+        });
+
+        if(!isLive)scope._skin.showProcessBar();
     }
 
     function addVideoEvents(_v) {
@@ -641,8 +641,9 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         }, false);
         _v.addEventListener("playing", function() {
             TY.Log("playing");
-            scope._skin.hidePause();
-            
+            if (scope._skin.isToPlayed) hildPlayerBg();
+            if (scope._skin.isToPlayed) scope._skin.hidePause();
+
         }, false);
         _v.addEventListener("pause", function() {
             TY.Log("pause");

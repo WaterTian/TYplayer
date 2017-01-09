@@ -5,7 +5,7 @@
 TY.TYskin = function(_v, _d, _l) {
 	var scope = this;
 
-	this.isFirstToPlay = true;
+	this.isToPlayed = false;
 
 	this._video = _v;
 	this._dom = _d;
@@ -164,17 +164,18 @@ TY.TYskin = function(_v, _d, _l) {
 		});
 		document.querySelector(".h5_player_tip_btn").addEventListener("touchend", function(e) {
 			e.stopPropagation(); //不再派发事件
-			if (scope._video.paused) scope._video.play();
+			if (scope._video.paused) scope.toPlay();
 			scope.dispatchEvent("VidoeClick", scope);
 		});
 		document.querySelector(".h5_player_pause").addEventListener("touchend", function(e) {
 			e.stopPropagation(); //不再派发事件
-			scope._video.play();
+			if (scope._video.paused) scope.toPlay();
 		});
 		this.process_bar.hide();
 	} else {
 		addEvents();
 	}
+
 
 };
 TY.TYskin.prototype = {
@@ -241,12 +242,11 @@ TY.TYskin.prototype = {
 	},
 	toPlay: function() {
 		this._video.play();
-		if (this.isFirstToPlay) {
-			this.showProcessBar();
-			this.dispatchEvent("FirstToPlay", this);
-			TY.Log("isFirstToPlay");
+		if (!this.isToPlayed) {
+			TY.Log("isToPlayed");
+			this.isToPlayed = true;
 		}
-		this.isFirstToPlay = false;
+		
 	},
 	toPause: function() {
 		this._video.pause();
