@@ -21,7 +21,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     //video
     this._video = h5_player.find("video")[0];
     this._video.src = videoUrl;
-    tyLog(this._video);
+    TY.Log(this._video);
     addVideoEvents(this._video);
 
     //skin
@@ -54,41 +54,41 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         _v.addEventListener("error", videoError, false);
 
         _v.addEventListener("loadstart", function() { //客户端开始请求数据
-            tyLog("loadstart");
+            TY.Log("loadstart");
             scope._skin.showWaiting();
         }, false);
         _v.addEventListener("loadedmetadata", function() {}, false);
         _v.addEventListener("loadeddata", function() {}, false);
         _v.addEventListener("waiting", function() {
-            tyLog("waiting");
+            TY.Log("waiting");
             scope._skin.showWaiting();
         }, false);
         _v.addEventListener("canplay", function() {
-            tyLog("canplay")
+            TY.Log("canplay")
             scope._skin.hideWaiting();
             if (TY.isIphone) hildPlayerBg();
             if (TY.isIphone) setVideoPostion(_v.clientHeight);
         }, false);
         _v.addEventListener("canplaythrough", function() {}, false); //可以播放，歌曲全部加载完毕
         _v.addEventListener("play", function() {
-            tyLog("play");
+            TY.Log("play");
             if (!scope._skin.isFirstOpen) hildPlayerBg();
             if (TY.isIphone) setVideoPostion(_v.clientHeight);
         }, false);
         _v.addEventListener("playing", function() {
-            tyLog("playing");
+            TY.Log("playing");
             if (!scope._skin.isFirstOpen) {
                 scope._skin.hidePause();
             }
             scope._skin.isFirstOpen = false;
-
+            
         }, false);
         _v.addEventListener("pause", function() {
-            tyLog("pause");
+            TY.Log("pause");
             scope._skin.showPause();
         }, false);
         _v.addEventListener("ended", function() {
-            tyLog("ended");
+            TY.Log("ended");
             scope._skin.seek(0);
             scope.dispatchEvent("VidoeEnd", scope);
         }, false);
@@ -96,18 +96,18 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         _v.addEventListener("suspend", function() {}, false); //延迟下载
         _v.addEventListener("abort", function() {}, false); //客户端主动终止下载（不是因为错误引起）
         _v.addEventListener("stalled", function() { //网速失速
-            tyLog("stalled")
+            TY.Log("stalled")
         }, false);
 
         _v.addEventListener("seeking", function() {
-            tyLog("seeking")
+            TY.Log("seeking")
         }, false);
         _v.addEventListener("seeked", function() {}, false);
         _v.addEventListener("ratechange", function() {}, false); //播放速率改变
         _v.addEventListener("durationchange", function() {}, false); //资源长度改变
         _v.addEventListener("volumechange", function() {}, false); //音量改变
         _v.addEventListener("timeupdate", function() {
-            // tyLog("timeupdate");
+            // TY.Log("timeupdate");
             update_time();
         }, false);
 
@@ -130,7 +130,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
             case 4:
                 err.error = "播放过程中URL无效"
         }
-        tyLog("player VidoeError:" + err.error);
+        TY.Log("player VidoeError:" + err.error);
 
         scope.dispatchEvent("VidoeError", err);
 
@@ -153,17 +153,14 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     function update_time() {
         scope._skin.updateBar();
     }
-
-    function tyLog(_t) {
-        if (!TY.Debug) return;
-        if (TY.isWeixin) alert(_t);
-        else console.log(_t);
-    }
 };
 
 
 TY.TYplayer.prototype = {
     constructor: TY.TYplayer,
+    toPlay: function() {
+        this._skin.toPlay();
+    },
     removeThis: function() {
         document.addEventListener("touchmove", function(e) {});
         this._skin.removeThis();

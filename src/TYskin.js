@@ -6,6 +6,7 @@ TY.TYskin = function(_v, _d, _l) {
 	var scope = this;
 
 	this.isFirstOpen = true;
+	this.isFirstToPlay = true;
 
 	this._video = _v;
 	this._dom = _d;
@@ -42,6 +43,9 @@ TY.TYskin = function(_v, _d, _l) {
 	this.process_bar.find(".process_bg").css("width", this.process_bar.width());
 	this.process_bar.find(".process_line").css("width", 0);
 
+	this.process_bar.hide();
+	this.hideProcessBar();
+
 	$(".h5_player_process_forward").css("transform", 'scale(' + TY.dpr + ',' + TY.dpr + ')');
 
 	this._dom.append(TY.templates.svg_template);
@@ -55,7 +59,7 @@ TY.TYskin = function(_v, _d, _l) {
 
 		document.querySelector(".h5_player_pause").addEventListener("touchend", function(e) {
 			e.stopPropagation();
-			scope._video.paused ? scope._video.play() : scope._video.pause();
+			scope._video.paused ? scope.toPlay() : scope.toPause();
 		});
 
 		document.querySelector(".process_btn").addEventListener("touchstart", processTouchstart);
@@ -82,7 +86,7 @@ TY.TYskin = function(_v, _d, _l) {
 	var tipTouchend = function(e) {
 		e.stopPropagation(); //不再派发事件
 		(Math.abs(Math.abs(_my) - Math.abs(_sy)) <= 5 || 0 == _my) ?
-		(scope._video.paused ? scope._video.play() : scope._video.pause()) :
+		(scope._video.paused ? scope.toPlay() : scope.toPause()) :
 		((scope.process_bar.css("display") == "none") ? scope.showProcessBar() : scope.hideProcessBar());
 		_sy = 0;
 		_my = 0;
@@ -235,6 +239,17 @@ TY.TYskin.prototype = {
 	},
 	seek: function(e) {
 		this._video.currentTime = e
+	},
+	toPlay: function() {
+		this._video.play();
+		if (this.isFirstToPlay) {
+			this.showProcessBar();
+			TY.Log("isFirstToPlay:" + this.isFirstToPlay);
+		}
+		this.isFirstToPlay = false;
+	},
+	toPause: function() {
+		this._video.pause();
 	},
 	showWaiting: function() {
 		if (this._isProcessing) return !1;

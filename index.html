@@ -22,27 +22,39 @@
     </div>
 
 
-    <script src="lib/zepto.min.js"></script>
+<!--     <script src="lib/zepto.min.js"></script>
     <script src="src/core/TY.js"></script>
     <script src="src/core/utils.js"></script>
     <script src="src/core/EventDispatcher.js"></script>
     <script src="src/TYskin.js"></script>
-    <script src="src/TYplayer.js"></script>
+    <script src="src/TYplayer.js"></script> -->
 
 
 
-
-    <!-- <script src="./build/TYplayer_v1.min.js"></script> -->
+    <script src="./build/TYplayer_v1.min.js"></script>
 
     <script>
-        console.log(TY.dpr);
+        TY.Debug = 1;
+
+        //log
+        logBox = document.createElement('div');
+        logBox.style='position:absolute;text-align:left;color:#fff;font-size:10px;-webkit-text-shadow:0 1px 0 #000;-moz-text-shadow:0 1px 0 #000;-ms-text-shadow:0 1px 0 #000;-o-text-shadow:0 1px 0 #000;text-shadow:0 1px 0 #000;';
+        logBox.style.position = 'absolute';
+        logBox.style.top = '90px';
+        logBox.style.width = '100%';
+
+        document.body.appendChild(logBox);
+        TY.logBox=logBox;
+        TY.logBox.innerHTML = '...';
+
+
         if(TY.isAndroid)TY.dpr=1;
         $("#viewport")[0].content="width=device-width, minimum-scale="+1/TY.dpr+", maximum-scale="+1/TY.dpr;
 
 
         var videoUrl1 = 'http://pili-live-hls.appmagics.cn/appmagics-avatar-live/785192071480585578293.m3u8';
-        var videoUrl2 = 'http://alcdn.hls.xiaoka.tv/2016121/4c8/834/JQzoRZZaz2zJ5GbS/index.m3u8';
-        var videoUrl = './v3.mp4';
+        var videoUrl = 'http://alcdn.hls.xiaoka.tv/2016121/4c8/834/JQzoRZZaz2zJ5GbS/index.m3u8';
+        var videoUrl3 = './v3.mp4';
 
         var videoBg='./p.jpg';
         var isLive=0;
@@ -50,21 +62,23 @@
 
         
         var player = new TY.TYplayer(videoUrl,"#video_wrap",videoBg,isLive);
+        console.log(player);
+
         player.addEventListener("VidoeError",function(e)
         {
-            console.log(e);
+            TY.Log(e);
             //{code: 4, error: "播放过程中URL无效"}
         })
 
         player.addEventListener("VidoeEnd",function(e)
         {
-            console.log(e);
+            TY.Log(e);
             // alert(e);
             // player.removeThis();
         }) 
         player.addEventListener("VidoeClick",function(e)
         {
-            console.log("VidoeClick");
+            TY.Log("VidoeClick");
             // alert("VidoeClick");
         }) 
 

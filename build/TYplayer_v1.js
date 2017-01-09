@@ -129,30 +129,32 @@
 // namespace:
 this.TY = this.TY || {};
 
-TY.VERSION = "0";
+TY.VERSION = "1";
 TY.Debug = 0;
 
-TY.inherit = function(ctor, superCtor)
-{
+TY.inherit = function(ctor, superCtor) {
 	ctor.superClass = superCtor;
 	ctor.prototype = Object.create(superCtor.prototype);
 	ctor.prototype.constructor = ctor;
 };
-TY.extend = function(origin, add)
-{
+TY.extend = function(origin, add) {
 	// Don't do anything if add isn't an object
 	if (!add || typeof add !== 'object')
 		return origin;
 	var keys = Object.keys(add);
 	var i = keys.length;
-	while (i--)
-	{
+	while (i--) {
 		origin[keys[i]] = add[keys[i]];
 	}
 	return origin;
 };
 
-
+TY.logBox = {};
+TY.Log = function(_t) {
+	if (!TY.Debug) return;
+	if (TY.isWeixin) TY.logBox.innerHTML += _t + '<br>';
+	else console.log(_t);
+}
 TY.templates = {
 	svg_template: '<div style="display:none"><svg><symbol id="process_bg"><line x1="0" y1="2" x2="2000" y2="2" style="stroke:#fff; stroke-width:2; fill-opacity:0.5"/></symbol><symbol id="process"><line x1="0" y1="2" x2="2000" y2="2" style="stroke:#7c85db;stroke-width:2"/></symbol><symbol id="process_btn"><circle cx="12" cy="12" r="12" style="fill:#fff; fill-opacity:0.5"/><circle cx="12" cy="12" r="6" style="fill:#fff"/></symbol><symbol id="play"><polyline class="play" points="0,0  14,9  0,18" style="stroke:#fff;fill:#fff;"/></symbol><symbol id="pause"><line class="pause" x1="2" y1="0" x2="2" y2="18" stroke="#fff" stroke-width="5" /><line class="pause" x1="11" y1="0" x2="11" y2="18" stroke="#fff" stroke-width="5" /></symbol><symbol id="control_btn_bg"><circle cx="25" cy="25" r="25" style="fill:#000; fill-opacity:0.3"/></symbol></svg></div>',
 
@@ -274,6 +276,9 @@ TY.EventDispatcher.prototype = {
 TY.TYskin = function(_v, _d, _l) {
 	var scope = this;
 
+	this.isFirstOpen = true;
+	this.isFirstToPlay = true;
+
 	this._video = _v;
 	this._dom = _d;
 	this._isLive = _l;
@@ -309,6 +314,9 @@ TY.TYskin = function(_v, _d, _l) {
 	this.process_bar.find(".process_bg").css("width", this.process_bar.width());
 	this.process_bar.find(".process_line").css("width", 0);
 
+	this.process_bar.hide();
+	this.hideProcessBar();
+
 	$(".h5_player_process_forward").css("transform", 'scale(' + TY.dpr + ',' + TY.dpr + ')');
 
 	this._dom.append(TY.templates.svg_template);
@@ -322,7 +330,7 @@ TY.TYskin = function(_v, _d, _l) {
 
 		document.querySelector(".h5_player_pause").addEventListener("touchend", function(e) {
 			e.stopPropagation();
-			scope._video.paused ? scope._video.play() : scope._video.pause();
+			scope._video.paused ? scope.toPlay() : scope.toPause();
 		});
 
 		document.querySelector(".process_btn").addEventListener("touchstart", processTouchstart);
@@ -349,7 +357,7 @@ TY.TYskin = function(_v, _d, _l) {
 	var tipTouchend = function(e) {
 		e.stopPropagation(); //不再派发事件
 		(Math.abs(Math.abs(_my) - Math.abs(_sy)) <= 5 || 0 == _my) ?
-		(scope._video.paused ? scope._video.play() : scope._video.pause()) :
+		(scope._video.paused ? scope.toPlay() : scope.toPause()) :
 		((scope.process_bar.css("display") == "none") ? scope.showProcessBar() : scope.hideProcessBar());
 		_sy = 0;
 		_my = 0;
@@ -443,7 +451,6 @@ TY.TYskin = function(_v, _d, _l) {
 };
 TY.TYskin.prototype = {
 	constructor: TY.TYskin,
-	isFirstOpen: true,
 	showPause: function() {
 		if (this._isProcessing) return !1;
 		if (this._isWaiting) return !1;
@@ -503,6 +510,17 @@ TY.TYskin.prototype = {
 	},
 	seek: function(e) {
 		this._video.currentTime = e
+	},
+	toPlay: function() {
+		this._video.play();
+		if (this.isFirstToPlay) {
+			this.showProcessBar();
+			TY.Log("isFirstToPlay:" + this.isFirstToPlay);
+		}
+		this.isFirstToPlay = false;
+	},
+	toPause: function() {
+		this._video.pause();
 	},
 	showWaiting: function() {
 		if (this._isProcessing) return !1;
@@ -566,7 +584,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     //video
     this._video = h5_player.find("video")[0];
     this._video.src = videoUrl;
-    tyLog(this._video);
+    TY.Log(this._video);
     addVideoEvents(this._video);
 
     //skin
@@ -599,41 +617,41 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         _v.addEventListener("error", videoError, false);
 
         _v.addEventListener("loadstart", function() { //客户端开始请求数据
-            tyLog("loadstart");
+            TY.Log("loadstart");
             scope._skin.showWaiting();
         }, false);
         _v.addEventListener("loadedmetadata", function() {}, false);
         _v.addEventListener("loadeddata", function() {}, false);
         _v.addEventListener("waiting", function() {
-            tyLog("waiting");
+            TY.Log("waiting");
             scope._skin.showWaiting();
         }, false);
         _v.addEventListener("canplay", function() {
-            tyLog("canplay")
+            TY.Log("canplay")
             scope._skin.hideWaiting();
             if (TY.isIphone) hildPlayerBg();
             if (TY.isIphone) setVideoPostion(_v.clientHeight);
         }, false);
         _v.addEventListener("canplaythrough", function() {}, false); //可以播放，歌曲全部加载完毕
         _v.addEventListener("play", function() {
-            tyLog("play");
+            TY.Log("play");
             if (!scope._skin.isFirstOpen) hildPlayerBg();
             if (TY.isIphone) setVideoPostion(_v.clientHeight);
         }, false);
         _v.addEventListener("playing", function() {
-            tyLog("playing");
+            TY.Log("playing");
             if (!scope._skin.isFirstOpen) {
                 scope._skin.hidePause();
             }
             scope._skin.isFirstOpen = false;
-
+            
         }, false);
         _v.addEventListener("pause", function() {
-            tyLog("pause");
+            TY.Log("pause");
             scope._skin.showPause();
         }, false);
         _v.addEventListener("ended", function() {
-            tyLog("ended");
+            TY.Log("ended");
             scope._skin.seek(0);
             scope.dispatchEvent("VidoeEnd", scope);
         }, false);
@@ -641,18 +659,18 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         _v.addEventListener("suspend", function() {}, false); //延迟下载
         _v.addEventListener("abort", function() {}, false); //客户端主动终止下载（不是因为错误引起）
         _v.addEventListener("stalled", function() { //网速失速
-            tyLog("stalled")
+            TY.Log("stalled")
         }, false);
 
         _v.addEventListener("seeking", function() {
-            tyLog("seeking")
+            TY.Log("seeking")
         }, false);
         _v.addEventListener("seeked", function() {}, false);
         _v.addEventListener("ratechange", function() {}, false); //播放速率改变
         _v.addEventListener("durationchange", function() {}, false); //资源长度改变
         _v.addEventListener("volumechange", function() {}, false); //音量改变
         _v.addEventListener("timeupdate", function() {
-            // tyLog("timeupdate");
+            // TY.Log("timeupdate");
             update_time();
         }, false);
 
@@ -675,7 +693,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
             case 4:
                 err.error = "播放过程中URL无效"
         }
-        tyLog("player VidoeError:" + err.error);
+        TY.Log("player VidoeError:" + err.error);
 
         scope.dispatchEvent("VidoeError", err);
 
@@ -698,17 +716,14 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     function update_time() {
         scope._skin.updateBar();
     }
-
-    function tyLog(_t) {
-        if (!TY.Debug) return;
-        if (TY.isWeixin) alert(_t);
-        else console.log(_t);
-    }
 };
 
 
 TY.TYplayer.prototype = {
     constructor: TY.TYplayer,
+    toPlay: function() {
+        this._skin.toPlay();
+    },
     removeThis: function() {
         document.addEventListener("touchmove", function(e) {});
         this._skin.removeThis();
