@@ -304,7 +304,6 @@ TY.EventDispatcher.prototype = {
 
 TY.TYskin = function(_v, _d, _l) {
 	var scope = this;
-	TY.EventDispatcher.call(this);
 
 	this.isToPlayed = false;
 
@@ -479,7 +478,7 @@ TY.TYskin = function(_v, _d, _l) {
 
 
 };
-TY.TYskin.prototype = Object.assign(TY.EventDispatcher.prototype, {
+TY.TYskin.prototype = {
 	constructor: TY.TYskin,
 	showPause: function() {
 		if (this._isProcessing) return !1;
@@ -589,14 +588,13 @@ TY.TYskin.prototype = Object.assign(TY.EventDispatcher.prototype, {
 	removeThis: function() {
 
 	}
-});
-
+};
+TY.extend(TY.TYskin.prototype, TY.EventDispatcher.prototype);
 /**
  * @author waterTian
  */
 TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     var scope = this;
-    TY.EventDispatcher.call(this);
 
     this._dom = $(divID);
 
@@ -755,7 +753,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
 };
 
 
-TY.TYplayer.prototype = Object.assign(TY.EventDispatcher.prototype, {
+TY.TYplayer.prototype = {
     constructor: TY.TYplayer,
     toPlay: function() {
         this._skin.toPlay();
@@ -770,4 +768,5 @@ TY.TYplayer.prototype = Object.assign(TY.EventDispatcher.prototype, {
             videoBox.removeChild(videoBox.childNodes[0]);
         }
     }
-});
+};
+TY.extend(TY.TYplayer.prototype, TY.EventDispatcher.prototype);
