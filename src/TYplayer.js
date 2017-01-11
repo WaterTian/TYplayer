@@ -3,6 +3,7 @@
  */
 TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     var scope = this;
+    TY.EventDispatcher.call(this);
 
     this._dom = $(divID);
 
@@ -161,7 +162,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
 };
 
 
-TY.TYplayer.prototype = {
+TY.TYplayer.prototype = Object.assign(TY.EventDispatcher.prototype, {
     constructor: TY.TYplayer,
     toPlay: function() {
         this._skin.toPlay();
@@ -176,5 +177,4 @@ TY.TYplayer.prototype = {
             videoBox.removeChild(videoBox.childNodes[0]);
         }
     }
-};
-TY.extend(TY.TYplayer.prototype, TY.EventDispatcher.prototype);
+});

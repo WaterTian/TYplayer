@@ -4,6 +4,7 @@
 
 TY.TYskin = function(_v, _d, _l) {
 	var scope = this;
+	TY.EventDispatcher.call(this);
 
 	this.isToPlayed = false;
 
@@ -178,7 +179,7 @@ TY.TYskin = function(_v, _d, _l) {
 
 
 };
-TY.TYskin.prototype = {
+TY.TYskin.prototype = Object.assign(TY.EventDispatcher.prototype, {
 	constructor: TY.TYskin,
 	showPause: function() {
 		if (this._isProcessing) return !1;
@@ -288,5 +289,4 @@ TY.TYskin.prototype = {
 	removeThis: function() {
 
 	}
-};
-TY.extend(TY.TYskin.prototype, TY.EventDispatcher.prototype);
+});
