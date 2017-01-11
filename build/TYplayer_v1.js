@@ -164,7 +164,6 @@ TY.templates = {
 
 
 
-
 TY.videoUrl = "";
 TY.videoDiv = '<div class="h5_player" style="width: 100%; height: 100%; margin: 0;padding: 0; border: 0;font: inherit; vertical-align: baseline;"></div>';
 TY.videoTemplate = '<video id="video"  webkit-playsinline="true" x-webkit-airplay="true" x5-video-player-type="h5" playsinline width="100%"  preload="auto" poster="" src="' + TY.videoUrl + '" ></video>';
@@ -180,15 +179,46 @@ TY.isWeibo = /Weibo/i.test(navigator.userAgent);
 
 TY.isMobileDevice = isMobileDevice;
 function isMobileDevice() {
-	if (navigator === undefined || navigator.userAgent === undefined) {
-		return true;
-	}
-	var s = navigator.userAgent;
-	if (s.match(/iPhone/i) || s.match(/iPad/i) || s.match(/iPod/i) || s.match(/webOS/i) || s.match(/BlackBerry/i) || (s.match(/Windows/i) && s.match(/Phone/i)) || (s.match(/Android/i) && s.match(/Mobile/i))) {
-		return true;
-	}
-	return false;
+	var e = navigator.userAgent.toLowerCase();
+	return !!/(iphone|ios|android|mini|mobile|mobi|nokia|symbian|ipod|ipad|ws\s+phone|mqqbrowser|wp7|wp8|ucbrowser7|ucweb|360\s+aphone\s+browser)/i.test(e)
 }
+TY.isIosDevice = function() {
+	var e = navigator.userAgent.toLowerCase(),
+		t = !!e.match(/\(i[^;]+;( U;)? cpu.+mac os x/),
+		n = e.indexOf("iphone") > -1 || e.indexOf("Mac") > -1,
+		r = e.indexOf("ipad") > -1;
+	return !!(t || r || n)
+}
+
+
+TY.browserTypeInfo = function() {
+	var t = navigator.userAgent.toLowerCase(),
+		n = t.indexOf("trident") > -1,
+		r = t.indexOf("presto") > -1,
+		i = t.indexOf("applewebkit") > -1,
+		o = t.indexOf("Gecko") > -1 && -1 === t.indexOf("KHTML"),
+		a = t.indexOf("chrome") > -1,
+		u = !!t.match(/\(i[^;]+;( U;)? cpu.+mac os x/),
+		c = t.indexOf("android") > -1 || t.indexOf("Linux") > -1,
+		l = t.indexOf("iphone") > -1 || t.indexOf("Mac") > -1,
+		d = t.indexOf("ipad") > -1,
+		f = -1 === t.indexOf("safari"),
+		p = {
+			ie: n,
+			op: r,
+			wk: i,
+			cr: a,
+			mz: o,
+			io: u,
+			an: c,
+			ih: l,
+			id: d,
+			wa: f
+		};
+	return p;
+}
+
+
 
 TY.formatTime = function(e) {
 	var t = "",
@@ -198,7 +228,6 @@ TY.formatTime = function(e) {
 		o = 0;
 	return i > 60 && (o = parseInt(i / 60), i = parseInt(i % 60)), 10 > i && (i = "0" + i), 10 > r && (r = "0" + r), 10 > o && (o = "0" + o), t = o + ":" + i + ":" + r
 }
-
 /**
  * @author waterTian
  */
@@ -472,18 +501,18 @@ TY.TYskin.prototype = {
 		})
 	},
 	showProcessBar: function() {
-		if(!this.isToPlayed)return;
+		if (!this.isToPlayed) return;
 		this.process_bar.show();
 		this.updateBar();
 		this.process_bar.animate({
 			transform: 'translate(0px,0px)'
-		}, 200, 'ease-out')
+		}, 300, 'ease-out')
 	},
 	hideProcessBar: function() {
 		var scope = this;
 		this.process_bar.animate({
 			transform: 'translate(0px,' + 80 * TY.dpr + 'px)'
-		}, 200, 'ease-out', function() {
+		}, 300, 'ease-out', function() {
 			scope.process_bar.hide();
 		})
 	},
@@ -518,7 +547,6 @@ TY.TYskin.prototype = {
 			TY.Log("isToPlayed");
 			this.isToPlayed = true;
 		}
-		
 	},
 	toPause: function() {
 		this._video.pause();
@@ -585,7 +613,6 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     //video
     this._video = h5_player.find("video")[0];
     this._video.src = videoUrl;
-    TY.Log(this._video);
     addVideoEvents(this._video);
 
     //skin
@@ -596,25 +623,27 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         scope.dispatchEvent("VidoeClick", e);
     });
 
+
     function showPlayerBg() {
         $(".h5_player_bg").css("opacity", 0);
         $(".h5_player_bg").css("transform", 'scale(1.5,1.5)');
         $(".h5_player_bg").animate({
             opacity: 1,
             transform: 'scale(1,1)'
-        }, 200, 'ease-out')
+        }, 300, 'ease-out')
     }
 
     function hildPlayerBg() {
-        if($(".h5_player_bg")[0].style.display=="none") return;
-        $(".h5_player_bg").animate({
-            opacity: 0,
-            transform: 'scale(1.5,1.5)'
-        }, 200, 'ease-out', function() {
-            $(".h5_player_bg").hide();
-        });
-
-        if(!isLive)scope._skin.showProcessBar();
+        if ($(".h5_player_bg")[0].style.display == "none") return;
+        setTimeout(function() {
+            $(".h5_player_bg").animate({
+                opacity: 0,
+                transform: 'scale(1.5,1.5)'
+            }, 300, 'ease-out', function() {
+                $(".h5_player_bg").hide();
+            });
+            if (!isLive) scope._skin.showProcessBar();
+        }, 300);
     }
 
     function addVideoEvents(_v) {
@@ -633,12 +662,12 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         _v.addEventListener("canplay", function() {
             TY.Log("canplay")
             scope._skin.hideWaiting();
-            if (TY.isIphone) setVideoPostion(_v.clientHeight);
+            setVideoPostion(_v.clientHeight);
         }, false);
         _v.addEventListener("canplaythrough", function() {}, false); //可以播放，歌曲全部加载完毕
         _v.addEventListener("play", function() {
             TY.Log("play");
-            if (TY.isIphone) setVideoPostion(_v.clientHeight);
+            setVideoPostion(_v.clientHeight);
         }, false);
         _v.addEventListener("playing", function() {
             TY.Log("playing");
@@ -702,15 +731,20 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     }
 
     function setVideoPostion(_height) {
-        if (_height < 300) {
-            setTimeout(function() {
-                setVideoPostion(scope._video.clientHeight);
-            }, 500);
-        } else {
-            var _h = $(window).height();
-            var _top = (_h - _height);
-            $("#video").css("margin-top", _top);
-        }
+        var _h = $(window).height();
+        var _top = (_h - _height);
+        $("#video").css("margin-top", _top);
+
+        setTimeout(function() {
+            setVideoPostion(scope._video.clientHeight);
+        }, 500);
+        // //debug
+        // $("#video").css("margin-top", 200);
+        // $("#video").css("width", 200);
+        // $("#video").css("display", "inline-block");
+        // console.log(scope._video)
+        // TY.Log("MediaController:"+scope._video.controller);
+        // TY.Log(scope._video.controls);
     }
 
     function update_time() {

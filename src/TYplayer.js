@@ -31,6 +31,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         scope.dispatchEvent("VidoeClick", e);
     });
 
+
     function showPlayerBg() {
         $(".h5_player_bg").css("opacity", 0);
         $(".h5_player_bg").css("transform", 'scale(1.5,1.5)');
@@ -49,10 +50,8 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
             }, 300, 'ease-out', function() {
                 $(".h5_player_bg").hide();
             });
-
             if (!isLive) scope._skin.showProcessBar();
         }, 300);
-        
     }
 
     function addVideoEvents(_v) {
@@ -71,12 +70,12 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         _v.addEventListener("canplay", function() {
             TY.Log("canplay")
             scope._skin.hideWaiting();
-            if (TY.isIphone) setVideoPostion(_v.clientHeight);
+            setVideoPostion(_v.clientHeight);
         }, false);
         _v.addEventListener("canplaythrough", function() {}, false); //可以播放，歌曲全部加载完毕
         _v.addEventListener("play", function() {
             TY.Log("play");
-            if (TY.isIphone) setVideoPostion(_v.clientHeight);
+            setVideoPostion(_v.clientHeight);
         }, false);
         _v.addEventListener("playing", function() {
             TY.Log("playing");
@@ -140,15 +139,20 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     }
 
     function setVideoPostion(_height) {
-        if (_height < 300) {
-            setTimeout(function() {
-                setVideoPostion(scope._video.clientHeight);
-            }, 500);
-        } else {
-            var _h = $(window).height();
-            var _top = (_h - _height);
-            $("#video").css("margin-top", _top);
-        }
+        var _h = $(window).height();
+        var _top = (_h - _height);
+        $("#video").css("margin-top", _top);
+
+        setTimeout(function() {
+            setVideoPostion(scope._video.clientHeight);
+        }, 500);
+        // //debug
+        // $("#video").css("margin-top", 200);
+        // $("#video").css("width", 200);
+        // $("#video").css("display", "inline-block");
+        // console.log(scope._video)
+        // TY.Log("MediaController:"+scope._video.controller);
+        // TY.Log(scope._video.controls);
     }
 
     function update_time() {

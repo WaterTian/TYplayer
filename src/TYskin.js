@@ -201,7 +201,7 @@ TY.TYskin.prototype = {
 		})
 	},
 	showProcessBar: function() {
-		if(!this.isToPlayed)return;
+		if (!this.isToPlayed) return;
 		this.process_bar.show();
 		this.updateBar();
 		this.process_bar.animate({
@@ -247,7 +247,6 @@ TY.TYskin.prototype = {
 			TY.Log("isToPlayed");
 			this.isToPlayed = true;
 		}
-		
 	},
 	toPause: function() {
 		this._video.pause();

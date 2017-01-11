@@ -7,7 +7,6 @@ TY.templates = {
 
 
 
-
 TY.videoUrl = "";
 TY.videoDiv = '<div class="h5_player" style="width: 100%; height: 100%; margin: 0;padding: 0; border: 0;font: inherit; vertical-align: baseline;"></div>';
 TY.videoTemplate = '<video id="video"  webkit-playsinline="true" x-webkit-airplay="true" x5-video-player-type="h5" playsinline width="100%"  preload="auto" poster="" src="' + TY.videoUrl + '" ></video>';
@@ -23,15 +22,46 @@ TY.isWeibo = /Weibo/i.test(navigator.userAgent);
 
 TY.isMobileDevice = isMobileDevice;
 function isMobileDevice() {
-	if (navigator === undefined || navigator.userAgent === undefined) {
-		return true;
-	}
-	var s = navigator.userAgent;
-	if (s.match(/iPhone/i) || s.match(/iPad/i) || s.match(/iPod/i) || s.match(/webOS/i) || s.match(/BlackBerry/i) || (s.match(/Windows/i) && s.match(/Phone/i)) || (s.match(/Android/i) && s.match(/Mobile/i))) {
-		return true;
-	}
-	return false;
+	var e = navigator.userAgent.toLowerCase();
+	return !!/(iphone|ios|android|mini|mobile|mobi|nokia|symbian|ipod|ipad|ws\s+phone|mqqbrowser|wp7|wp8|ucbrowser7|ucweb|360\s+aphone\s+browser)/i.test(e)
 }
+TY.isIosDevice = function() {
+	var e = navigator.userAgent.toLowerCase(),
+		t = !!e.match(/\(i[^;]+;( U;)? cpu.+mac os x/),
+		n = e.indexOf("iphone") > -1 || e.indexOf("Mac") > -1,
+		r = e.indexOf("ipad") > -1;
+	return !!(t || r || n)
+}
+
+
+TY.browserTypeInfo = function() {
+	var t = navigator.userAgent.toLowerCase(),
+		n = t.indexOf("trident") > -1,
+		r = t.indexOf("presto") > -1,
+		i = t.indexOf("applewebkit") > -1,
+		o = t.indexOf("Gecko") > -1 && -1 === t.indexOf("KHTML"),
+		a = t.indexOf("chrome") > -1,
+		u = !!t.match(/\(i[^;]+;( U;)? cpu.+mac os x/),
+		c = t.indexOf("android") > -1 || t.indexOf("Linux") > -1,
+		l = t.indexOf("iphone") > -1 || t.indexOf("Mac") > -1,
+		d = t.indexOf("ipad") > -1,
+		f = -1 === t.indexOf("safari"),
+		p = {
+			ie: n,
+			op: r,
+			wk: i,
+			cr: a,
+			mz: o,
+			io: u,
+			an: c,
+			ih: l,
+			id: d,
+			wa: f
+		};
+	return p;
+}
+
+
 
 TY.formatTime = function(e) {
 	var t = "",
