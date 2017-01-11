@@ -662,12 +662,12 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         _v.addEventListener("canplay", function() {
             TY.Log("canplay")
             scope._skin.hideWaiting();
-            setVideoPostion(_v.clientHeight);
+            if (TY.isIphone)setVideoPostion(_v.clientHeight);
         }, false);
         _v.addEventListener("canplaythrough", function() {}, false); //可以播放，歌曲全部加载完毕
         _v.addEventListener("play", function() {
             TY.Log("play");
-            setVideoPostion(_v.clientHeight);
+            if (TY.isIphone)setVideoPostion(_v.clientHeight);
         }, false);
         _v.addEventListener("playing", function() {
             TY.Log("playing");
