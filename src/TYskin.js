@@ -59,6 +59,7 @@ TY.TYskin = function(_v, _d, _l) {
 		document.querySelector(".h5_player_pause").addEventListener("touchend", function(e) {
 			e.stopPropagation();
 			scope._video.paused ? scope.toPlay() : scope.toPause();
+			scope.dispatchEvent("VidoeClick", scope);
 		});
 
 		document.querySelector(".process_btn").addEventListener("touchstart", processTouchstart);
@@ -170,6 +171,7 @@ TY.TYskin = function(_v, _d, _l) {
 		document.querySelector(".h5_player_pause").addEventListener("touchend", function(e) {
 			e.stopPropagation(); //不再派发事件
 			if (scope._video.paused) scope.toPlay();
+			scope.dispatchEvent("VidoeClick", scope);
 		});
 		this.process_bar.hide();
 	} else {

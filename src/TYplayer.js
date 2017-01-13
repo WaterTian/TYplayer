@@ -29,7 +29,19 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     this._skin.setProcess(0);
     this._skin.addEventListener("VidoeClick", function(e) {
         scope.dispatchEvent("VidoeClick", e);
+
+        setVideoPostion(scope._video.clientHeight);
     });
+
+    function setVideoPostion(_height) {
+        var _h = $(window).height();
+        var _top = (_h - _height);
+        $("#video").css("margin-top", _top);
+
+        setTimeout(function() {
+            setVideoPostion(scope._video.clientHeight);
+        }, 500);
+    }
 
 
     function showPlayerBg() {
@@ -54,6 +66,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         }, 300);
     }
 
+
     function addVideoEvents(_v) {
         _v.addEventListener("error", videoError, false);
 
@@ -70,12 +83,10 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         _v.addEventListener("canplay", function() {
             TY.Log("canplay")
             scope._skin.hideWaiting();
-            if (TY.isIphone)setVideoPostion(_v.clientHeight);
         }, false);
         _v.addEventListener("canplaythrough", function() {}, false); //可以播放，歌曲全部加载完毕
         _v.addEventListener("play", function() {
             TY.Log("play");
-            if (TY.isIphone)setVideoPostion(_v.clientHeight);
         }, false);
         _v.addEventListener("playing", function() {
             TY.Log("playing");
@@ -138,22 +149,6 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
         scope._skin.showWarning();
     }
 
-    function setVideoPostion(_height) {
-        var _h = $(window).height();
-        var _top = (_h - _height);
-        $("#video").css("margin-top", _top);
-
-        setTimeout(function() {
-            setVideoPostion(scope._video.clientHeight);
-        }, 500);
-        // //debug
-        // $("#video").css("margin-top", 200);
-        // $("#video").css("width", 200);
-        // $("#video").css("display", "inline-block");
-        // console.log(scope._video)
-        // TY.Log("MediaController:"+scope._video.controller);
-        // TY.Log(scope._video.controls);
-    }
 
     function update_time() {
         scope._skin.updateBar();
