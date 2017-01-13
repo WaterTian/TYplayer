@@ -30,17 +30,23 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     this._skin.addEventListener("VidoeClick", function(e) {
         scope.dispatchEvent("VidoeClick", e);
 
-        setVideoPostion(scope._video.clientHeight);
+        setVideoPostion();
     });
 
-    function setVideoPostion(_height) {
+    function setVideoPostion() {
+        if(TY.isAndroid)return;
+        var _vh = scope._video.clientHeight;
         var _h = $(window).height();
-        var _top = (_h - _height);
+        var _top = (_h - _vh);
         $("#video").css("margin-top", _top);
 
-        setTimeout(function() {
-            setVideoPostion(scope._video.clientHeight);
-        }, 500);
+        setTimeout(function()
+        {
+            var _vh = scope._video.clientHeight;
+            var _h = $(window).height();
+            var _top = (_h - _vh);
+            $("#video").css("margin-top", _top);
+        },1000)
     }
 
 
@@ -92,6 +98,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
             TY.Log("playing");
             if (scope._skin.isToPlayed) hildPlayerBg();
             if (scope._skin.isToPlayed) scope._skin.hidePause();
+            setVideoPostion();
 
         }, false);
         _v.addEventListener("pause", function() {
