@@ -1,7 +1,7 @@
 /**
  * @author waterTian
  */
-TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
+TY.TYplayer = function(videoUrl, divID, videoBg, isLive ,skin_bottom) {
     var scope = this;
 
     this._dom = $(divID);
@@ -24,7 +24,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     addVideoEvents(this._video);
 
     //skin
-    this._skin = new TY.TYskin(this._video, this._dom, isLive);
+    this._skin = new TY.TYskin(this._video, this._dom, isLive ,skin_bottom);
     this._skin.showPause();
     this._skin.setProcess(0);
     this._skin.addEventListener("VidoeClick", function(e) {
@@ -34,19 +34,18 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     });
 
     function setVideoPostion() {
-        if(TY.isAndroid)return;
+        if (TY.isAndroid) return;
         var _vh = scope._video.clientHeight;
         var _h = $(window).height();
         var _top = (_h - _vh);
         $("#video").css("margin-top", _top);
 
-        setTimeout(function()
-        {
+        setTimeout(function() {
             var _vh = scope._video.clientHeight;
             var _h = $(window).height();
             var _top = (_h - _vh);
             $("#video").css("margin-top", _top);
-        },1000)
+        }, 1000)
     }
 
 
@@ -80,8 +79,12 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
             TY.Log("loadstart");
             scope._skin.showPause();
         }, false);
-        _v.addEventListener("loadedmetadata", function() {}, false);
-        _v.addEventListener("loadeddata", function() {}, false);
+        _v.addEventListener("loadedmetadata", function() {
+            TY.Log("loadedmetadata");
+        }, false);
+        _v.addEventListener("loadeddata", function() {
+            TY.Log("loadeddata_"+_v.clientHeight);
+        }, false);
         _v.addEventListener("waiting", function() {
             TY.Log("waiting");
             scope._skin.showWaiting();

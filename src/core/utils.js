@@ -6,13 +6,27 @@ TY.templates = {
 }
 
 
-
 TY.videoUrl = "";
 TY.videoDiv = '<div class="h5_player" style="width: 100%; height: 100%; margin: 0;padding: 0; border: 0;font: inherit; vertical-align: baseline;"></div>';
 TY.videoTemplate = '<video id="video"  webkit-playsinline="true" x-webkit-airplay="true" x5-video-player-type="h5" playsinline width="100%"  preload="auto" poster="" src="' + TY.videoUrl + '" ></video>';
 TY.videoBgTemplate = '<div class="h5_player_bg" style="position:absolute;width:100%;height:100%;top:0;background-position:center;background-size: cover; background-color:transparent;;background-image:url()"></div>';
 
 TY.dpr = window.devicePixelRatio || 1;
+
+
+
+TY.jsURL = function(_name) {
+	var js = document.scripts;
+	var jsPath;
+	for (var i = js.length; i > 0; i--) {
+		if (js[i - 1].src.indexOf(_name) > -1) {
+			jsPath = js[i - 1].src.substring(0, js[i - 1].src.lastIndexOf("/") + 1);
+		}
+	}
+	return jsPath;
+}
+
+
 
 TY.isAndroid = /Android/i.test(navigator.userAgent);
 TY.isIphone = /iphone/i.test(navigator.userAgent);
@@ -21,6 +35,7 @@ TY.isWeixin = /MicroMessenger\//i.test(navigator.userAgent);
 TY.isWeibo = /Weibo/i.test(navigator.userAgent);
 
 TY.isMobileDevice = isMobileDevice;
+
 function isMobileDevice() {
 	var e = navigator.userAgent.toLowerCase();
 	return !!/(iphone|ios|android|mini|mobile|mobi|nokia|symbian|ipod|ipad|ws\s+phone|mqqbrowser|wp7|wp8|ucbrowser7|ucweb|360\s+aphone\s+browser)/i.test(e)

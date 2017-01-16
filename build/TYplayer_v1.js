@@ -163,13 +163,27 @@ TY.templates = {
 }
 
 
-
 TY.videoUrl = "";
 TY.videoDiv = '<div class="h5_player" style="width: 100%; height: 100%; margin: 0;padding: 0; border: 0;font: inherit; vertical-align: baseline;"></div>';
 TY.videoTemplate = '<video id="video"  webkit-playsinline="true" x-webkit-airplay="true" x5-video-player-type="h5" playsinline width="100%"  preload="auto" poster="" src="' + TY.videoUrl + '" ></video>';
 TY.videoBgTemplate = '<div class="h5_player_bg" style="position:absolute;width:100%;height:100%;top:0;background-position:center;background-size: cover; background-color:transparent;;background-image:url()"></div>';
 
 TY.dpr = window.devicePixelRatio || 1;
+
+
+
+TY.jsURL = function(_name) {
+	var js = document.scripts;
+	var jsPath;
+	for (var i = js.length; i > 0; i--) {
+		if (js[i - 1].src.indexOf(_name) > -1) {
+			jsPath = js[i - 1].src.substring(0, js[i - 1].src.lastIndexOf("/") + 1);
+		}
+	}
+	return jsPath;
+}
+
+
 
 TY.isAndroid = /Android/i.test(navigator.userAgent);
 TY.isIphone = /iphone/i.test(navigator.userAgent);
@@ -178,6 +192,7 @@ TY.isWeixin = /MicroMessenger\//i.test(navigator.userAgent);
 TY.isWeibo = /Weibo/i.test(navigator.userAgent);
 
 TY.isMobileDevice = isMobileDevice;
+
 function isMobileDevice() {
 	var e = navigator.userAgent.toLowerCase();
 	return !!/(iphone|ios|android|mini|mobile|mobi|nokia|symbian|ipod|ipad|ws\s+phone|mqqbrowser|wp7|wp8|ucbrowser7|ucweb|360\s+aphone\s+browser)/i.test(e)
@@ -302,7 +317,7 @@ TY.EventDispatcher.prototype = {
  * @author waterTian
  */
 
-TY.TYskin = function(_v, _d, _l) {
+TY.TYskin = function(_v, _d, _l, _bottom) {
 	var scope = this;
 
 	this.isToPlayed = false;
@@ -326,6 +341,10 @@ TY.TYskin = function(_v, _d, _l) {
 	this.pause.css("top", (this.tip_btn.height() + 40 * TY.dpr) / 2);
 	this.waiting.css("top", (this.tip_btn.height() + 40 * TY.dpr) / 2);
 	this.warning.css("top", (this.tip_btn.height() + 40 * TY.dpr) / 2);
+
+
+	this.process_bar_bottom = 0;
+	if (_bottom) this.process_bar_bottom = -_bottom;
 
 	this.process_bar.css({
 		width: $(window).width() - (40 * TY.dpr),
@@ -504,10 +523,11 @@ TY.TYskin.prototype = {
 	},
 	showProcessBar: function() {
 		if (!this.isToPlayed) return;
+		var scope = this;
 		this.process_bar.show();
 		this.updateBar();
 		this.process_bar.animate({
-			transform: 'translate(0px,0px)'
+			transform: 'translate(0px,' + scope.process_bar_bottom + 'px)'
 		}, 300, 'ease-out')
 	},
 	hideProcessBar: function() {
@@ -595,7 +615,7 @@ TY.extend(TY.TYskin.prototype, TY.EventDispatcher.prototype);
 /**
  * @author waterTian
  */
-TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
+TY.TYplayer = function(videoUrl, divID, videoBg, isLive ,skin_bottom) {
     var scope = this;
 
     this._dom = $(divID);
@@ -618,7 +638,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     addVideoEvents(this._video);
 
     //skin
-    this._skin = new TY.TYskin(this._video, this._dom, isLive);
+    this._skin = new TY.TYskin(this._video, this._dom, isLive ,skin_bottom);
     this._skin.showPause();
     this._skin.setProcess(0);
     this._skin.addEventListener("VidoeClick", function(e) {
@@ -628,19 +648,18 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
     });
 
     function setVideoPostion() {
-        if(TY.isAndroid)return;
+        if (TY.isAndroid) return;
         var _vh = scope._video.clientHeight;
         var _h = $(window).height();
         var _top = (_h - _vh);
         $("#video").css("margin-top", _top);
 
-        setTimeout(function()
-        {
+        setTimeout(function() {
             var _vh = scope._video.clientHeight;
             var _h = $(window).height();
             var _top = (_h - _vh);
             $("#video").css("margin-top", _top);
-        },1000)
+        }, 1000)
     }
 
 
@@ -674,8 +693,12 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive) {
             TY.Log("loadstart");
             scope._skin.showPause();
         }, false);
-        _v.addEventListener("loadedmetadata", function() {}, false);
-        _v.addEventListener("loadeddata", function() {}, false);
+        _v.addEventListener("loadedmetadata", function() {
+            TY.Log("loadedmetadata");
+        }, false);
+        _v.addEventListener("loadeddata", function() {
+            TY.Log("loadeddata_"+_v.clientHeight);
+        }, false);
         _v.addEventListener("waiting", function() {
             TY.Log("waiting");
             scope._skin.showWaiting();

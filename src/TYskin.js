@@ -2,7 +2,7 @@
  * @author waterTian
  */
 
-TY.TYskin = function(_v, _d, _l) {
+TY.TYskin = function(_v, _d, _l, _bottom) {
 	var scope = this;
 
 	this.isToPlayed = false;
@@ -26,6 +26,10 @@ TY.TYskin = function(_v, _d, _l) {
 	this.pause.css("top", (this.tip_btn.height() + 40 * TY.dpr) / 2);
 	this.waiting.css("top", (this.tip_btn.height() + 40 * TY.dpr) / 2);
 	this.warning.css("top", (this.tip_btn.height() + 40 * TY.dpr) / 2);
+
+
+	this.process_bar_bottom = 0;
+	if (_bottom) this.process_bar_bottom = -_bottom;
 
 	this.process_bar.css({
 		width: $(window).width() - (40 * TY.dpr),
@@ -204,10 +208,11 @@ TY.TYskin.prototype = {
 	},
 	showProcessBar: function() {
 		if (!this.isToPlayed) return;
+		var scope = this;
 		this.process_bar.show();
 		this.updateBar();
 		this.process_bar.animate({
-			transform: 'translate(0px,0px)'
+			transform: 'translate(0px,' + scope.process_bar_bottom + 'px)'
 		}, 300, 'ease-out')
 	},
 	hideProcessBar: function() {
