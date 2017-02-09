@@ -3,9 +3,9 @@ TYplayer
 
 ![QR](https://watertian.github.io/TYplayer/assets/TYplayerQR.gif)
 
-## HTML5 Live Player v1 0.1.3
-Mobile Html5 VideoPlayer framework
-Compatible with IOS & Android Weixin Weibo
+## Mobile HTML5 Live Player v1 0.1.3
+
+Compatible with IOS & Android. Weixin Weibo
 
 ## Usage
 ```javascript
