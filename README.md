@@ -1,7 +1,7 @@
 TYplayer
 ======
 
-[![QR](https://watertian.github.io/TYplayer/assets/TYplayerQR.gif)]
+![QR](https://watertian.github.io/TYplayer/assets/TYplayerQR.gif)
 
 ## HTML5 Live Player v1 0.1.3
 Mobile Html5 VideoPlayer framework
