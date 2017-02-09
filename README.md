@@ -1,6 +1,7 @@
 # TYplayer
 
-[QR](https://watertian.github.io/TYplayer/assets/TYplayerQR.gif)
+[![QR](https://watertian.github.io/TYplayer/assets/TYplayerQR.gif)](http://watertian.github.io/TYplayer/)
+
 
 HTML5 Live Player v1 0.1.3
 =============
