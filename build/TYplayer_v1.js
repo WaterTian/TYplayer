@@ -630,7 +630,7 @@ TY.extend(TY.TYskin.prototype, TY.EventDispatcher.prototype);
 /**
  * @author waterTian
  */
-TY.TYplayer = function(videoUrl, divID, videoBg, isLive ,skin_bottom) {
+TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skin_bottom) {
     var scope = this;
 
     this._dom = $(divID);
@@ -653,7 +653,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive ,skin_bottom) {
     addVideoEvents(this._video);
 
     //skin
-    this._skin = new TY.TYskin(this._video, this._dom, isLive ,skin_bottom);
+    this._skin = new TY.TYskin(this._video, this._dom, isLive, skin_bottom);
     this._skin.showPause();
     this._skin.setProcess(0);
     this._skin.addEventListener("VidoeClick", function(e) {
@@ -666,10 +666,17 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive ,skin_bottom) {
         // if (TY.isAndroid) return;
         var _vh = scope._video.clientHeight;
         var _h = $(window).height();
-        var _top = (_h - _vh)*0.5;
+        var _top = (_h - _vh) * 0.5;
         $("#video").css("margin-top", _top);
-
         scope._skin.resetPostions();
+
+        setTimeout(function() {
+            var _vh = scope._video.clientHeight;
+            var _h = $(window).height();
+            var _top = (_h - _vh) * 0.5;
+            $("#video").css("margin-top", _top);
+            scope._skin.resetPostions();
+        }, 1000);
     }
 
 
@@ -707,7 +714,7 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive ,skin_bottom) {
             TY.Log("loadedmetadata");
         }, false);
         _v.addEventListener("loadeddata", function() {
-            TY.Log("loadeddata_"+_v.clientHeight);
+            TY.Log("loadeddata_" + _v.clientHeight);
         }, false);
         _v.addEventListener("waiting", function() {
             TY.Log("waiting");
