@@ -22,10 +22,10 @@ TY.TYskin = function(_v, _d, _l, _bottom) {
 	this.tip_btn = $(".h5_player_tip_btn");
 	this.process_bar = $(".h5_player_process_bar");
 
-	this.tip_btn.height(this.tip_btn.height() - 60 * TY.dpr);
-	this.pause.css("top", (this.tip_btn.height() + 40 * TY.dpr) / 2);
-	this.waiting.css("top", (this.tip_btn.height() + 40 * TY.dpr) / 2);
-	this.warning.css("top", (this.tip_btn.height() + 40 * TY.dpr) / 2);
+	this.tip_btn.height($(window).height() - 60 * TY.dpr);
+	this.pause.css("top", ($(window).height() + 40 * TY.dpr) / 2);
+	this.waiting.css("top", ($(window).height() + 40 * TY.dpr) / 2);
+	this.warning.css("top", ($(window).height() + 40 * TY.dpr) / 2);
 
 
 	this.process_bar_bottom = 0;
@@ -186,6 +186,19 @@ TY.TYskin = function(_v, _d, _l, _bottom) {
 };
 TY.TYskin.prototype = {
 	constructor: TY.TYskin,
+
+	resetPostions: function() {
+		this.tip_btn.height($(window).height() - 60 * TY.dpr);
+		this.pause.css("top", ($(window).height() + 40 * TY.dpr) / 2);
+		this.waiting.css("top", ($(window).height() + 40 * TY.dpr) / 2);
+		this.warning.css("top", ($(window).height() + 40 * TY.dpr) / 2);
+
+		this.process_bar.css("width", $(window).width() - (40 * TY.dpr));
+		this.process_bar.find(".process_bg").css("width", $(window).width() - (40 * TY.dpr));
+		this.updateBar();
+	},
+
+
 	showPause: function() {
 		if (this._isProcessing) return !1;
 		if (this._isWaiting) return !1;
@@ -240,7 +253,7 @@ TY.TYskin.prototype = {
 	},
 	setProcess: function(e) {
 		$(".process_line").css({
-			width: e + 10
+			width: e + 2 * TY.dpr
 		}), $(".process_btn").css({
 			left: e
 		})
