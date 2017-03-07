@@ -663,21 +663,24 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skin_bottom) {
     window.addEventListener('resize', resetPostions, false);
 
     function resetPostions(e) {
-        // if (TY.isAndroid) return;
-        var _vh = scope._video.clientHeight;
-        var _h = $(window).height();
-        var _top = (_h - _vh) * 0.5;
-        $("#video").css("margin-top", _top);
-        scope._skin.resetPostions();
 
-        setTimeout(function() {
+        if (TY.isAndroid) {
+            setTimeout(doit, 1600)
+            setTimeout(doit, 3200)
+        } else {
+            doit();
+        }
+
+        function doit() {
             var _vh = scope._video.clientHeight;
+            TY.Log("videoHeight:" + _vh);
             var _h = $(window).height();
             var _top = (_h - _vh) * 0.5;
             $("#video").css("margin-top", _top);
             scope._skin.resetPostions();
-        }, 1000);
+        }
     }
+
 
 
     function showPlayerBg() {
