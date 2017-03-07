@@ -663,7 +663,6 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skin_bottom) {
     window.addEventListener('resize', resetPostions, false);
 
     function resetPostions(e) {
-
         if (TY.isAndroid) {
             setTimeout(doit, 1600)
             setTimeout(doit, 3200)
