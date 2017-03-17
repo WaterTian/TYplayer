@@ -168,7 +168,7 @@ TY.templates = {
 
 TY.videoUrl = "";
 TY.videoDiv = '<div class="h5_player" style="width: 100%; height: 100%; margin: 0;padding: 0; border: 0;font: inherit; vertical-align: baseline;"></div>';
-TY.videoTemplate = '<video id="video"  webkit-playsinline="true" x-webkit-airplay="true" x5-video-player-type="h5" playsinline width="100%"  preload="auto" poster="" src="' + TY.videoUrl + '" ></video>';
+TY.videoTemplate = '<video id="video"  webkit-playsinline="true" x-webkit-airplay="true" x5-video-player-type="h5" playsinline width="100%" height="100%" preload="auto" poster="" src="' + TY.videoUrl + '" ></video>';
 TY.videoBgTemplate = '<div class="h5_player_bg" style="position:absolute;width:100%;height:100%;top:0;background-position:center;background-size: cover; background-color:transparent;;background-image:url()"></div>';
 
 TY.dpr = window.devicePixelRatio || 1;
@@ -679,10 +679,11 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skin_bottom) {
             scope.VideoHeight = scope._video.clientHeight;
             scope.VideoWidth = scope._video.clientWidth;
             
-            TY.Log("videoHeight:" + scope.VideoHeight);
-            var _h = $(window).height();
-            var _top = (_h - scope.VideoHeight) * 0.5;
-            $("#video").css("margin-top", _top);
+            // TY.Log("videoHeight:" + scope.VideoHeight);
+            // var _h = $(window).height();
+            // var _top = (_h - scope.VideoHeight) * 0.5;
+            // $("#video").css("margin-top", _top);
+            // $("#video").css("height", '100%');
             scope._skin.resetPostions();
         }
     }

@@ -50,10 +50,11 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skin_bottom) {
             scope.VideoHeight = scope._video.clientHeight;
             scope.VideoWidth = scope._video.clientWidth;
             
-            TY.Log("videoHeight:" + scope.VideoHeight);
-            var _h = $(window).height();
-            var _top = (_h - scope.VideoHeight) * 0.5;
-            $("#video").css("margin-top", _top);
+            // TY.Log("videoHeight:" + scope.VideoHeight);
+            // var _h = $(window).height();
+            // var _top = (_h - scope.VideoHeight) * 0.5;
+            // $("#video").css("margin-top", _top);
+            // $("#video").css("height", '100%');
             scope._skin.resetPostions();
         }
     }
