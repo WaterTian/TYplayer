@@ -1,7 +1,7 @@
 /**
  * @author waterTian
  */
-TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skin_bottom) {
+TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skinBottom, orientationStyle) {
     var scope = this;
 
     this._dom = $(divID);
@@ -26,8 +26,12 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skin_bottom) {
     this.VideoHeight = this._video.clientHeight;
     this.VideoWidth = this._video.clientWidth;
 
+    ///片源默认为0:竖版  1:竖版  2:横版 
+    this.OrientationStyle = 0;
+    if (orientationStyle) this.OrientationStyle = orientationStyle;
+
     //skin
-    this._skin = new TY.TYskin(this._video, this._dom, isLive, skin_bottom);
+    this._skin = new TY.TYskin(this._video, this._dom, isLive, skinBottom);
     this._skin.showPause();
     this._skin.setProcess(0);
     this._skin.addEventListener("VidoeClick", function(e) {
@@ -39,26 +43,30 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skin_bottom) {
     window.addEventListener('resize', resetPostions, false);
 
     function resetPostions(e) {
+        doit();
         if (TY.isAndroid) {
-            setTimeout(doit, 1600)
-            setTimeout(doit, 3200)
-        } else {
-            doit();
+            setTimeout(doit, 2000);
         }
 
         function doit() {
             scope.VideoHeight = scope._video.clientHeight;
             scope.VideoWidth = scope._video.clientWidth;
-            
-            // TY.Log("videoHeight:" + scope.VideoHeight);
-            // var _h = $(window).height();
-            // var _top = (_h - scope.VideoHeight) * 0.5;
-            // $("#video").css("margin-top", _top);
-            // $("#video").css("height", '100%');
+
+            var _h = $(window).height();
+            TY.Log("OrientationStyle"+scope.OrientationStyle);
+
+            if (scope.OrientationStyle == 2) {
+                //横版片源
+                $("#video").css("height", _h);
+            } else {
+                //默认竖版片源
+                var _top = (_h - scope.VideoHeight) * 0.5;
+                $("#video").css("margin-top", _top);
+            }
+
             scope._skin.resetPostions();
         }
     }
-
 
 
     function showPlayerBg() {

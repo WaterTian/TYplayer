@@ -168,7 +168,7 @@ TY.templates = {
 
 TY.videoUrl = "";
 TY.videoDiv = '<div class="h5_player" style="width: 100%; height: 100%; margin: 0;padding: 0; border: 0;font: inherit; vertical-align: baseline;"></div>';
-TY.videoTemplate = '<video id="video"  webkit-playsinline="true" x-webkit-airplay="true" x5-video-player-type="h5" playsinline width="100%" height="100%" preload="auto" poster="" src="' + TY.videoUrl + '" ></video>';
+TY.videoTemplate = '<video id="video"  webkit-playsinline="true" x-webkit-airplay="true" x5-video-player-type="h5" playsinline width="100%"  preload="auto" poster="" src="' + TY.videoUrl + '" ></video>';
 TY.videoBgTemplate = '<div class="h5_player_bg" style="position:absolute;width:100%;height:100%;top:0;background-position:center;background-size: cover; background-color:transparent;;background-image:url()"></div>';
 
 TY.dpr = window.devicePixelRatio || 1;
@@ -340,9 +340,9 @@ TY.TYskin = function(_v, _d, _l, _bottom) {
 	this.process_bar = $(".h5_player_process_bar");
 
 	this.tip_btn.height($(window).height() - 60 * TY.dpr);
-	this.pause.css("top", ($(window).height() + 40 * TY.dpr) / 2);
-	this.waiting.css("top", ($(window).height() + 40 * TY.dpr) / 2);
-	this.warning.css("top", ($(window).height() + 40 * TY.dpr) / 2);
+	this.pause.css("top", ($(window).height()) / 2);
+	this.waiting.css("top", ($(window).height()) / 2);
+	this.warning.css("top", ($(window).height()) / 2);
 
 
 	this.process_bar_bottom = 0;
@@ -506,9 +506,9 @@ TY.TYskin.prototype = {
 
 	resetPostions: function() {
 		this.tip_btn.height($(window).height() - 60 * TY.dpr);
-		this.pause.css("top", ($(window).height() + 40 * TY.dpr) / 2);
-		this.waiting.css("top", ($(window).height() + 40 * TY.dpr) / 2);
-		this.warning.css("top", ($(window).height() + 40 * TY.dpr) / 2);
+		this.pause.css("top", ($(window).height()) / 2);
+		this.waiting.css("top", ($(window).height()) / 2);
+		this.warning.css("top", ($(window).height()) / 2);
 
 		this.process_bar.css("width", $(window).width() - (40 * TY.dpr));
 		this.process_bar.find(".process_bg").css("width", $(window).width() - (40 * TY.dpr));
@@ -630,7 +630,7 @@ TY.extend(TY.TYskin.prototype, TY.EventDispatcher.prototype);
 /**
  * @author waterTian
  */
-TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skin_bottom) {
+TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skinBottom, orientationStyle) {
     var scope = this;
 
     this._dom = $(divID);
@@ -655,8 +655,12 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skin_bottom) {
     this.VideoHeight = this._video.clientHeight;
     this.VideoWidth = this._video.clientWidth;
 
+    ///片源默认为0:竖版  1:竖版  2:横版 
+    this.OrientationStyle = 0;
+    if (orientationStyle) this.OrientationStyle = orientationStyle;
+
     //skin
-    this._skin = new TY.TYskin(this._video, this._dom, isLive, skin_bottom);
+    this._skin = new TY.TYskin(this._video, this._dom, isLive, skinBottom);
     this._skin.showPause();
     this._skin.setProcess(0);
     this._skin.addEventListener("VidoeClick", function(e) {
@@ -668,26 +672,30 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skin_bottom) {
     window.addEventListener('resize', resetPostions, false);
 
     function resetPostions(e) {
+        doit();
         if (TY.isAndroid) {
-            setTimeout(doit, 1600)
-            setTimeout(doit, 3200)
-        } else {
-            doit();
+            setTimeout(doit, 2000);
         }
 
         function doit() {
             scope.VideoHeight = scope._video.clientHeight;
             scope.VideoWidth = scope._video.clientWidth;
-            
-            // TY.Log("videoHeight:" + scope.VideoHeight);
-            // var _h = $(window).height();
-            // var _top = (_h - scope.VideoHeight) * 0.5;
-            // $("#video").css("margin-top", _top);
-            // $("#video").css("height", '100%');
+
+            var _h = $(window).height();
+            TY.Log("OrientationStyle"+scope.OrientationStyle);
+
+            if (scope.OrientationStyle == 2) {
+                //横版片源
+                $("#video").css("height", _h);
+            } else {
+                //默认竖版片源
+                var _top = (_h - scope.VideoHeight) * 0.5;
+                $("#video").css("margin-top", _top);
+            }
+
             scope._skin.resetPostions();
         }
     }
-
 
 
     function showPlayerBg() {

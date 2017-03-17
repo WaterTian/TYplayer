@@ -52,17 +52,22 @@
         $("#viewport")[0].content="width=device-width, minimum-scale="+1/TY.dpr+", maximum-scale="+1/TY.dpr;
 
 
-        var videoUrl0 = 'http://alcdn.hls.xiaoka.tv/2016121/4c8/834/JQzoRZZaz2zJ5GbS/index.m3u8';
-        var videoUrl1 = 'http://playback.appmagics.cn/recordings/z1.appmagics-avatar-live.911113281488810851066/0_1488810917.m3u8';
+        var videoUrl = 'http://alcdn.hls.xiaoka.tv/2016121/4c8/834/JQzoRZZaz2zJ5GbS/index.m3u8';
+        var videoUrl1 = 'http://pullhls6.a8.com/live/1489723744380350/playlist.m3u8';
         var videoUrl2 = './v3.mp4';
-        var videoUrl = './v4.mp4';
+        var videoUrl3 = './v4.mp4';
 
         var videoBg='./p.jpg';
         var isLive=0;
 
+        //控制条距底的距离
+        var skinBottom=0;
+
+        ///片源 默认为0:竖版  1:竖版  2:横版 
+        var orientationStyle=1;
 
         
-        var player = new TY.TYplayer(videoUrl,"#video_wrap",videoBg,isLive);
+        var player = new TY.TYplayer(videoUrl,"#video_wrap",videoBg,isLive,skinBottom,orientationStyle);
         console.log(player);
 
         console.log(player.VideoHeight);
