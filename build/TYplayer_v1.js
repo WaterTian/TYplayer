@@ -651,6 +651,9 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skin_bottom) {
     this._video = h5_player.find("video")[0];
     this._video.src = videoUrl;
     addVideoEvents(this._video);
+    //
+    this.VideoHeight = this._video.clientHeight;
+    this.VideoWidth = this._video.clientWidth;
 
     //skin
     this._skin = new TY.TYskin(this._video, this._dom, isLive, skin_bottom);
@@ -659,6 +662,8 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skin_bottom) {
     this._skin.addEventListener("VidoeClick", function(e) {
         scope.dispatchEvent("VidoeClick", e);
     });
+
+
     //Resize the windows
     window.addEventListener('resize', resetPostions, false);
 
@@ -671,10 +676,12 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skin_bottom) {
         }
 
         function doit() {
-            var _vh = scope._video.clientHeight;
-            TY.Log("videoHeight:" + _vh);
+            scope.VideoHeight = scope._video.clientHeight;
+            scope.VideoWidth = scope._video.clientWidth;
+            
+            TY.Log("videoHeight:" + scope.VideoHeight);
             var _h = $(window).height();
-            var _top = (_h - _vh) * 0.5;
+            var _top = (_h - scope.VideoHeight) * 0.5;
             $("#video").css("margin-top", _top);
             scope._skin.resetPostions();
         }
