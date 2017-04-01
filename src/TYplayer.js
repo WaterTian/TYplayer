@@ -45,7 +45,8 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skinBottom, orientation
     function resetPostions(e) {
         doit();
         if (TY.isAndroid) {
-            setTimeout(doit, 2000);
+            setTimeout(doit, 1000);
+            setTimeout(doit, 2500);
         }
 
         function doit() {

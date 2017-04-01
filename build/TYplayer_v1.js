@@ -161,7 +161,7 @@ TY.icons="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAAGKCAMAAAC7P6arAAAB
 TY.templates = {
 	svg_template: '<div style="display:none"><svg><symbol id="process_bg"><line x1="0" y1="2" x2="2000" y2="2" style="stroke:#fff; stroke-width:2; fill-opacity:0.5"/></symbol><symbol id="process"><line x1="0" y1="2" x2="2000" y2="2" style="stroke:#7c85db;stroke-width:2"/></symbol><symbol id="process_btn"><circle cx="12" cy="12" r="12" style="fill:#fff; fill-opacity:0.5"/><circle cx="12" cy="12" r="6" style="fill:#fff"/></symbol><symbol id="play"><polyline class="play" points="0,0  14,9  0,18" style="stroke:#fff;fill:#fff;"/></symbol><symbol id="pause"><line class="pause" x1="2" y1="0" x2="2" y2="18" stroke="#fff" stroke-width="5" /><line class="pause" x1="11" y1="0" x2="11" y2="18" stroke="#fff" stroke-width="5" /></symbol><symbol id="control_btn_bg"><circle cx="25" cy="25" r="25" style="fill:#000; fill-opacity:0.3"/></symbol></svg></div>',
 
-	replay: '<div class="h5_player_tip_btn" style="background-size:100% 100%;width:100%;height:100%;position:absolute;left:0;top:0;z-index:20"><div class="h5_player_pause" style="display:none;left:50%;background-image:url('+TY.icons+');z-index:4;position:absolute;width:90px;height:90px;top:50%;margin-left:-45px;margin-top:-45px;"></div><div class="h5_player_waiting" style="display:none;left:50%;background-image:url('+TY.icons+');z-index:4;position:absolute;width:90px;height:100px;top:50%;margin-left:-45px;margin-top:-50px;background-position:left -90px"></div><div class="h5_player_warning" style="display:none;left:50%;background-image:url('+TY.icons+');z-index:4;position:absolute;width:90px;height:130px;top:50%;margin-left:-45px;margin-top:-65px;background-position:left -190px"></div></div><div class="h5_player_process_bar" style="width:100%;height:18px;position:absolute;bottom:30px;left:0;z-index:20"><svg class="process_bg" style="position:absolute;height:10px;width:100%;left:0;bottom:0"><use xlink:href="#process_bg"/></svg><svg class="process_line" style="position:absolute;height:10px;width:100%;left:0;bottom:0"><use xlink:href="#process"/></svg><svg class="process_btn" style="position:absolute;width:48px;height:48px;bottom:-28px"><use xlink:href="#process_btn"/></svg></div><div class="h5_player_process_forward" style="display:none;position:absolute;left:50%;top:65%;width:100px;height:50px;margin-top:-25px;margin-left:-50px"><div class="bg" style="filter:alpha(opacity=50);-moz-opacity:.5;-khtml-opacity:.5;opacity:.5;background-color:#fff;width:100px;height:50px;position:absolute;left:50%;margin-top:-22px;margin-left:-50px;border-radius:5px;-webkit-border-radius:5px;padding:20px 0 15px"></div><div class="forward" style="width:40px;height:32px;background-image:url('+TY.icons+');background-position:left -330px;margin:0 auto"></div><div class="time" style="padding:5px;text-align:center;color:#fff;font-size:14px;font-size:14px;line-height:14px;-webkit-text-shadow:0 1px 0 #000;-moz-text-shadow:0 1px 0 #000;-ms-text-shadow:0 1px 0 #000;-o-text-shadow:0 1px 0 #000;text-shadow:0 1px 0 #000;">00:00</div></div>'
+	replay: '<div class="h5_player_tip_btn" style="background-size:100% 100%;width:100%;height:100%;position:absolute;left:0;top:0;z-index:20"><div class="h5_player_pause" style="display:none;left:50%;background-image:url('+TY.icons+');z-index:4;position:absolute;width:90px;height:90px;top:50%;margin-left:-45px;margin-top:-45px;"></div><div class="h5_player_waiting" style="display:none;left:50%;background-image:url('+TY.icons+');z-index:4;position:absolute;width:90px;height:100px;top:50%;margin-left:-45px;margin-top:-50px;background-position:left -90px"></div><div class="h5_player_warning" style="display:none;left:50%;background-image:url('+TY.icons+');z-index:4;position:absolute;width:90px;height:130px;top:50%;margin-left:-45px;margin-top:-65px;background-position:left -190px"></div></div><div class="h5_player_process_bar" style="width:100%;height:18px;position:absolute;bottom:30px;left:0;z-index:20"><svg class="process_bg" style="position:absolute;height:10px;width:100%;left:0;bottom:0"><use xlink:href="#process_bg"/></svg><svg class="process_line" style="position:absolute;height:10px;width:100%;left:0;bottom:0"><use xlink:href="#process"/></svg><svg class="process_btn" style="position:absolute;width:48px;height:48px;bottom:-28px"><use xlink:href="#process_btn"/></svg></div><div class="h5_player_process_forward" style="display:none;position:absolute;left:50%;top:76%;width:100px;height:50px;margin-top:-25px;margin-left:-50px"><div class="bg" style="filter:alpha(opacity=50);-moz-opacity:.5;-khtml-opacity:.5;opacity:.5;background-color:#fff;width:100px;height:50px;position:absolute;left:50%;margin-top:-22px;margin-left:-50px;border-radius:5px;-webkit-border-radius:5px;padding:20px 0 15px"></div><div class="forward" style="width:40px;height:32px;background-image:url('+TY.icons+');background-position:left -330px;margin:0 auto"></div><div class="time" style="padding:5px;text-align:center;color:#fff;font-size:14px;font-size:14px;line-height:14px;-webkit-text-shadow:0 1px 0 #000;-moz-text-shadow:0 1px 0 #000;-ms-text-shadow:0 1px 0 #000;-o-text-shadow:0 1px 0 #000;text-shadow:0 1px 0 #000;">00:00</div></div>'
 
 }
 
@@ -416,7 +416,7 @@ TY.TYskin = function(_v, _d, _l, _bottom) {
 	}
 
 
-	var l;
+	var processX;
 	var forwardNum;
 
 	var processTouchstart = function(e) {
@@ -429,17 +429,17 @@ TY.TYskin = function(_v, _d, _l, _bottom) {
 		e.stopPropagation(); //不再派发事件
 		scope._isProcessing = 1;
 
-		var t = $(".process_btn"),
-			i = $(".h5_player_process_bar"),
-			n = e.touches[0].pageX - parseInt(i.css("left")) - parseInt(t.width()) / 4;
-		0 > n ? n = 0 : n > i.width() - t.width() + parseInt(t.width()) / 2 && (n = i.width() - t.width() + parseInt(t.width()) / 2);
-		l = n;
+		var btn = $(".process_btn"),
+			bar = $(".process_bg"),
+			n = e.touches[0].pageX - parseInt(bar.css("left")) - btn.width()/2;
+		0 > n ? n = 0 : n > bar.width() && (n = bar.width());
+
 		scope.setProcess(n);
+		processX = n;
 
 		//forward div
 		$(".h5_player_process_forward").show();
-		var _duration = parseInt(scope._video.duration);
-		var s = _duration * n / parseInt($(".process_bg").width());
+		var s = scope._video.duration * processX / bar.width();
 		$(".h5_player_process_forward .time").html(TY.formatTime(s));
 		if (s > forwardNum) $(".h5_player_process_forward .forward").css("transform", 'rotate(0deg)');
 		if (s < forwardNum) $(".h5_player_process_forward .forward").css("transform", 'rotate(180deg)');
@@ -450,8 +450,8 @@ TY.TYskin = function(_v, _d, _l, _bottom) {
 		e.stopPropagation();
 		scope._isProcessing = 0;
 		$(".h5_player_process_forward").hide();
-		var t = parseInt(scope._video.duration),
-			n = t * l / parseInt($(".process_bg").width());
+		var bar = $(".process_bg"),
+			n = scope._video.duration * processX / bar.width();
 		scope.seek(n);
 	}
 
@@ -467,13 +467,13 @@ TY.TYskin = function(_v, _d, _l, _bottom) {
 	}
 
 	var barTouchend = function(e) {
-		var t = $(".process_btn"),
-			i = $(".h5_player_process_bar"),
-			n = _bar_x - parseInt(i.css("left")) - parseInt(t.width()) / 4;
-		0 > n ? n = 0 : n > i.width() - t.width() + parseInt(t.width()) / 2 && (n = i.width() - t.width() + parseInt(t.width()) / 2);
-		scope.setProcess(n);
-		var r = parseInt(scope._video.duration),
-			s = r * n / parseInt($(".process_bg").width() - t.width() + parseInt(t.width()) / 2);
+
+		var btn = $(".process_btn"),
+			bar = $(".process_bg"),
+			n = _bar_x - parseInt(bar.css("left")) - btn.width()/2;
+		0 > n ? n = 0 : n > bar.width() && (n = bar.width());
+
+		var s = scope._video.duration * n / bar.width();
 		scope.seek(s);
 		_bar_x = 0;
 	}
@@ -563,9 +563,7 @@ TY.TYskin.prototype = {
 	updateBar: function() {
 		if (this._isLive) return !1;
 		if (this._isProcessing) return !1;
-		var e = parseInt(this._video.duration),
-			t = parseInt(this._video.currentTime),
-			n = parseInt($(".process_bg").width() - $(".process_btn").width() / 2 + 12) * t / e;
+		var n = $(".process_bg").width() * this._video.currentTime / this._video.duration;
 		this.setProcess(n);
 	},
 	setProcess: function(e) {
@@ -674,7 +672,8 @@ TY.TYplayer = function(videoUrl, divID, videoBg, isLive, skinBottom, orientation
     function resetPostions(e) {
         doit();
         if (TY.isAndroid) {
-            setTimeout(doit, 2000);
+            setTimeout(doit, 1000);
+            setTimeout(doit, 2500);
         }
 
         function doit() {

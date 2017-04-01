@@ -99,7 +99,7 @@ TY.TYskin = function(_v, _d, _l, _bottom) {
 	}
 
 
-	var l;
+	var processX;
 	var forwardNum;
 
 	var processTouchstart = function(e) {
@@ -112,17 +112,17 @@ TY.TYskin = function(_v, _d, _l, _bottom) {
 		e.stopPropagation(); //不再派发事件
 		scope._isProcessing = 1;
 
-		var t = $(".process_btn"),
-			i = $(".h5_player_process_bar"),
-			n = e.touches[0].pageX - parseInt(i.css("left")) - parseInt(t.width()) / 4;
-		0 > n ? n = 0 : n > i.width() - t.width() + parseInt(t.width()) / 2 && (n = i.width() - t.width() + parseInt(t.width()) / 2);
-		l = n;
+		var btn = $(".process_btn"),
+			bar = $(".process_bg"),
+			n = e.touches[0].pageX - parseInt(bar.css("left")) - btn.width()/2;
+		0 > n ? n = 0 : n > bar.width() && (n = bar.width());
+
 		scope.setProcess(n);
+		processX = n;
 
 		//forward div
 		$(".h5_player_process_forward").show();
-		var _duration = parseInt(scope._video.duration);
-		var s = _duration * n / parseInt($(".process_bg").width());
+		var s = scope._video.duration * processX / bar.width();
 		$(".h5_player_process_forward .time").html(TY.formatTime(s));
 		if (s > forwardNum) $(".h5_player_process_forward .forward").css("transform", 'rotate(0deg)');
 		if (s < forwardNum) $(".h5_player_process_forward .forward").css("transform", 'rotate(180deg)');
@@ -133,8 +133,8 @@ TY.TYskin = function(_v, _d, _l, _bottom) {
 		e.stopPropagation();
 		scope._isProcessing = 0;
 		$(".h5_player_process_forward").hide();
-		var t = parseInt(scope._video.duration),
-			n = t * l / parseInt($(".process_bg").width());
+		var bar = $(".process_bg"),
+			n = scope._video.duration * processX / bar.width();
 		scope.seek(n);
 	}
 
@@ -150,13 +150,13 @@ TY.TYskin = function(_v, _d, _l, _bottom) {
 	}
 
 	var barTouchend = function(e) {
-		var t = $(".process_btn"),
-			i = $(".h5_player_process_bar"),
-			n = _bar_x - parseInt(i.css("left")) - parseInt(t.width()) / 4;
-		0 > n ? n = 0 : n > i.width() - t.width() + parseInt(t.width()) / 2 && (n = i.width() - t.width() + parseInt(t.width()) / 2);
-		scope.setProcess(n);
-		var r = parseInt(scope._video.duration),
-			s = r * n / parseInt($(".process_bg").width() - t.width() + parseInt(t.width()) / 2);
+
+		var btn = $(".process_btn"),
+			bar = $(".process_bg"),
+			n = _bar_x - parseInt(bar.css("left")) - btn.width()/2;
+		0 > n ? n = 0 : n > bar.width() && (n = bar.width());
+
+		var s = scope._video.duration * n / bar.width();
 		scope.seek(s);
 		_bar_x = 0;
 	}
@@ -246,9 +246,7 @@ TY.TYskin.prototype = {
 	updateBar: function() {
 		if (this._isLive) return !1;
 		if (this._isProcessing) return !1;
-		var e = parseInt(this._video.duration),
-			t = parseInt(this._video.currentTime),
-			n = parseInt($(".process_bg").width() - $(".process_btn").width() / 2 + 12) * t / e;
+		var n = $(".process_bg").width() * this._video.currentTime / this._video.duration;
 		this.setProcess(n);
 	},
 	setProcess: function(e) {
