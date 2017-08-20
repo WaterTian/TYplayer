@@ -1,3 +1,11 @@
+<?php
+    $url = rawurlencode("$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
+    $signPackage = json_decode(file_get_contents("http://px.appmagics.cn/WxAPI/lib/getSignPackage.php?path=$url"),true);
+?>
+
+
+
+
 <html>
     <head>
         <title>TYpalyer</title>
@@ -20,17 +28,11 @@
     <div id="video_wrap"></div>
 
 
-    <script src="lib/zepto.min.js"></script>
-    <script src="src/core/TY.js"></script>
-    <script src="src/core/utils.js"></script>
-    <script src="src/core/EventDispatcher.js"></script>
-    <script src="src/TYskin.js"></script>
-    <script src="src/TYplayer.js"></script>
+    <script src="./build/TYplayer_v1.min.js"></script>
 
 
-
-    <!-- <script src="./build/TYplayer_v1.min.js"></script> -->
-
+    <!-- <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script>
         TY.Debug = 1;
 
@@ -52,11 +54,12 @@
 
         var videoUrl0 = 'http://pili-live-hls.appmagics.cn/appmagics-avatar-live/796911761490325842048.m3u8';
         var videoUrl1 = 'http://pullhls6.a8.com/live/1489723744380350/playlist.m3u8';
-        var videoUrl = './v3.mp4';
+        var videoUrl = 'http://pili-live-hls.appmagics.cn/appmagics-avatar-live/796135781493177438007.m3u8';
+        var videoUrl4 = './v3.mp4';
         var videoUrl3 = './v4.mp4';
 
         var videoBg='./p.jpg';
-        var isLive=0;
+        var isLive=1;
 
         //控制条距底的距离
         var skinBottom=0;
@@ -70,14 +73,6 @@
 
         console.log(player.VideoHeight);
         console.log(player.VideoWidth);
-
-
-        setTimeout(function()
-        {
-            player.toPlay();
-        },1000)
-
-
 
 
         player.addEventListener("VidoeError",function(e)
@@ -98,8 +93,38 @@
             // alert("VidoeClick");
         }) 
 
+
+
+
+
+        wx.config({
+          debug: false,
+          appId: '<?php echo $signPackage["appId"];?>',
+          timestamp: <?php echo $signPackage["timestamp"];?>,
+          nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+          signature: '<?php echo $signPackage["signature"];?>',
+          jsApiList: [
+              'checkJsApi',
+              'onMenuShareTimeline',
+              'onMenuShareAppMessage',
+              'onMenuShareQQ',
+              'onMenuShareWeibo'
+          ]
+        });
+        wx.ready(function(){
+            setTimeout(function()
+            {
+                player.toPlay();
+            },600)
+        });
+
+
+
+
     </script>    
 
 
     </body>
 </html>
+
+
